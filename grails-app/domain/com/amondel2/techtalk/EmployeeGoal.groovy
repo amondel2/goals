@@ -4,19 +4,18 @@ import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
+@Resource(uri='/employeeGoal', formats=['json', 'xml'])
 class EmployeeGoal implements Serializable  {
 
-    def utilService = Utils.getInstance()
+    def utilService = new Utils()
     private static final serialVersionUID = 1L
 
     static belongsTo = [employee:Employees]
-    static hasMany = [types:EmployeeGoalType, comments:EmployeeGoalComment]
+    static hasMany = [types:EmployeeGoalType]
 
     static mapping = {
         id generator:'assigned'
         version false
-        sort "title"
-        description type: 'text'
     }
 
     static constraints = {
@@ -25,25 +24,19 @@ class EmployeeGoal implements Serializable  {
         employee nullable: false, blank: false
         targetCompletDate nullable: false, blank: false
         actualCompletedDate  nullable: true, blank: false
-        orginTargetDate nullable: false, blank: false
     }
 
     def beforeValidate() {
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
         }
-        if(!createdDate || createdDate.equals(null)) {
-            createdDate = new Date()
-            modifiedDate = new Date()
-        }
     }
 
     def beforeInsert() {
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
+            createdDate = new Date()
         }
-        createdDate = new Date()
-        modifiedDate = new Date()
     }
 
     def beforeUpdate() {
@@ -61,7 +54,6 @@ class EmployeeGoal implements Serializable  {
     String title
     GoalStatus status = GoalStatus.NotStarted
     Date targetCompletDate
-    Date orginTargetDate
     Date actualCompletedDate
     Date createdDate
     Date modifiedDate

@@ -3,9 +3,10 @@ package com.amondel2.techtalk
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
+import org.hibernate.FetchMode
 
 @Secured(['ROLE_USER'])
-class ProjectManagerController extends MondelMapperUIController {
+class ProjectManagerController extends FranchiseMapperUIController {
 
     SpringSecurityService springSecurityService
     def assetResourceLocator
@@ -20,11 +21,12 @@ class ProjectManagerController extends MondelMapperUIController {
         }
 
 
+
         def cal = Calendar.getInstance()
         def date = params?.myDate_year ? new GregorianCalendar(params.myDate_year?.toInteger(),0,1) : new GregorianCalendar(cal.get(Calendar.YEAR),0,1)
 //        def edate = params?.myDate_year ? new GregorianCalendar(params.myDate_year?.toInteger(),11,31) : new GregorianCalendar(cal.get(Calendar.YEAR),11,31)
 
-        render(view:"index",model:[date:date,boss:boss,companyName:Company.first().name,goalTypes:KPOType.list()])
+        render(view:"index",model:[date:date,boss:boss,companyName:Company.first().name,goalTypes:GoalType.list()])
     }
 
 
@@ -49,10 +51,10 @@ class ProjectManagerController extends MondelMapperUIController {
     }
 
     def getResultSet() {
-        def paramsback = goalService.getGoalSetForEmployee(params?.empId,params.year)
+        def paramsback = goalService.getResponseSetForEmployee(params?.empId,params.year)
             withFormat {
             '*' {
-                render([rs:paramsback] as JSON)
+                render([rs:paramsback[0],smonth:paramsback[1][0],emonth:paramsback[1][1]] as JSON)
             }
         }
     }

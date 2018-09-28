@@ -7,7 +7,7 @@ import grails.rest.*
 class EmployeeBoss implements Serializable {
 
     private static final long serialVersionUID = 1
-    def utilService = Utils.getInstance()
+    def utilService = new Utils()
 
     String id
     Employees employee
@@ -47,9 +47,6 @@ class EmployeeBoss implements Serializable {
     static constraints = {
         defaultBoss display:true
         id display:true
-        defaultBoss unique: ['boss','employee']
-        employee unique: 'boss'
-        boss unique: 'employee'
     }
 
     def removeOtherDefaults() {

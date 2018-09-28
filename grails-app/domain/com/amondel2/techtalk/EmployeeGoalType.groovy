@@ -1,15 +1,16 @@
 package com.amondel2.techtalk
 
-
+import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
+@Resource(uri='/employeeGoalType', formats=['json', 'xml'])
 class EmployeeGoalType implements Serializable  {
 
-    def utilService = Utils.getInstance()
+    def utilService = new Utils()
     private static final serialVersionUID = 1L
 
-    static belongsTo = [employeeGoal:EmployeeGoal,type:KPOType]
+    static belongsTo = [employeeGoal:EmployeeGoal,type:GoalType]
 
 
     static mapping = {
@@ -36,7 +37,7 @@ class EmployeeGoalType implements Serializable  {
     }
 
 
-    KPOType type
+    GoalType type
     EmployeeGoal employeeGoal
     String id
 }

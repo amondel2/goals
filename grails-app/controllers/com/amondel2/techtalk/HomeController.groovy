@@ -11,15 +11,9 @@ class HomeController {
 	SpringSecurityService springSecurityService
 	def employeeService
     def reportsService
-        def index() {
-			def hasDirect;
-			try {
-				Employees me = Employees.findByUser(springSecurityService.getCurrentUser())
-				hasDirect = employeeService.doesEmpHaveDirects(me)
-			} catch(Exception e) {
-				hasDirect = false;
-			}
-		render(view:"index",model:[param:params,messages:[],has_directs:hasDirect])
+        def index() { 
+		
+		render(view:"index",model:[param:params,messages:[]])		
 	}
 
 	def generateEmpReport() {
@@ -79,39 +73,15 @@ class HomeController {
 	def getPeopleUnder() {
 		Employees me = Employees.findByUser(springSecurityService.getCurrentUser())
 		def currentTime = new GregorianCalendar().getInstance()
-		def gtTime
+		def cal = new GregorianCalendar(currentTime.get(Calendar.YEAR), currentTime.get(Calendar.MONTH), 1, 0, 0, 0, 0)
 		if(params.fut && params.fut?.toInteger() > 0) {
-			gtTime = new GregorianCalendar().getInstance()
-			currentTime.add(Calendar.DAY_OF_YEAR,params.fut?.toInteger())
+			cal.add(Calendar.MONTH,params.fut?.toInteger())
 		}
 		def rtn = [:]
 		if(me) {
-			employeeService.peopleUnder(rtn,me,currentTime,gtTime)
+			employeeService.peopleUnder(rtn,me,cal)
 		} else {
 			rtn.error = "You Some Sorta Super user man."
-		}
-
-		withFormat {
-			'*' {
-				render([msg: rtn] as JSON)
-			}
-		}
-	}
-
-
-	def getMyGoals() {
-		Employees me = Employees.findByUser(springSecurityService.getCurrentUser())
-		def rtn = [:]
-		if(me) {
-			def currentTime = new GregorianCalendar().getInstance()
-			def gtTime
-			if (params.fut && params.fut?.toInteger() > 0) {
-				gtTime = new GregorianCalendar().getInstance()
-				currentTime.add(Calendar.DAY_OF_YEAR, params.fut?.toInteger())
-			}
-			employeeService.getSingleEmployee(rtn, me, currentTime, gtTime)
-		} else {
-			rtn.error = "Super User"
 		}
 
 		withFormat {

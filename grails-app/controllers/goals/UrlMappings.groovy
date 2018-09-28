@@ -8,6 +8,7 @@ class UrlMappings {
                 // apply constraints here
             }
         }
+        "/home/contact" (view:"/home/contact")
         "/"(controller:"home",params:params)
         "500"(view:'/error')
         "404"(view:'/notFound')

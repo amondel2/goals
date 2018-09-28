@@ -18,7 +18,7 @@
 
 	<asset:javascript src="report.js" />
 	<script>
-        var fmBaseDir = '${request.contextPath}/${controllerName}/';
+        var fmBaseDir = '/${controllerName}/';
 	</script>
 	</body>
 </html>
