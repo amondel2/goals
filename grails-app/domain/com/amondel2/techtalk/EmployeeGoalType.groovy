@@ -11,7 +11,7 @@ class EmployeeGoalType implements Serializable  {
     private static final serialVersionUID = 1L
 
     static belongsTo = [employeeGoal:EmployeeGoal,type:GoalType]
-
+    static hasMany = [comments:EmployeeGoalComment]
 
     static mapping = {
         id generator:'assigned'

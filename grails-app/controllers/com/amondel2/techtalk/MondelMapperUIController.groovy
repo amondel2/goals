@@ -3,7 +3,7 @@ package com.amondel2.techtalk
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 
-abstract class FranchiseMapperUIController {
+abstract class MondelMapperUIController {
                
     def portfolioFMService
     def baseFMService

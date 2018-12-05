@@ -31,4 +31,8 @@ class GoalService {
         }
         [restultSet,empSet]
     }
+
+    def getActiveGoalTypes(){
+        GoalType.findAllByActive(true)
+    }
 }

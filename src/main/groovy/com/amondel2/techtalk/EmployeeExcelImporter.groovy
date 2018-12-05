@@ -8,7 +8,7 @@ import static org.grails.plugins.excelimport.ExpectedPropertyType.StringType
 
 
 class EmployeeExcelImporter extends AbstractExcelImporter {
-    static cellReporter = new DefaultImportCellCollector()
+   static cellReporter = new DefaultImportCellCollector()
 
    def myExcelImportService
 
@@ -16,11 +16,9 @@ class EmployeeExcelImporter extends AbstractExcelImporter {
 //            dateIssued: ([expectedType: DateType, defaultValue: null]),
             firstName: ([expectedType: StringType, defaultValue: null]),
             employeeID: ([expectedType: StringType, defaultValue: null]),
-            employeeLocation : ([expectedType: StringType, defaultValue: null]),
             lastName : ([expectedType: StringType, defaultValue: null]),
             hireDate : ([expectedType: DateType, defaultValue: null]),
             endDate: ([expectedType: DateType, defaultValue: null]),
-            employeeGeo : ([expectedType: StringType, defaultValue: null]),
             email : ([expectedType: StringType, defaultValue: null]),
             bossEmployeeID: ([expectedType: StringType, defaultValue: null]),
             hasAdmin:  ([expectedType: StringType, defaultValue: null]),
@@ -32,17 +30,16 @@ class EmployeeExcelImporter extends AbstractExcelImporter {
             sheet: 'Employee Import',
             startRow: 1,
             columnMap:  [
-                    'A' : 'firstName',
+                    'A':'firstName',
                     'B':'lastName',
                     'C':'employeeID',
-                    'D':'employeeLocation',
-                    'E':'employeeGeo',
-                    'F': 'hireDate',
-                    'G': 'endDate',
-                    'H': 'email',
-                    'I' : 'bossEmployeeID',
-                    'J' : 'hasAdmin',
-                    'K' : 'username'
+                    'D':'hireDate',
+                    'E':'endDate',
+                    'F':'email',
+                    'G':'bossEmployeeID',
+                    'H':'hasAdmin',
+                    'I':'username'
+
             ]
     ]
 

@@ -49,7 +49,7 @@ class Employees implements Serializable  {
         return this.firstName + ' ' + this.lastName
     }
 
-    static belongsTo = [company:Company,location:EmpLocation]
+    static belongsTo = [company:Company]
     static hasMany = [bosses:EmployeeBoss,employees:EmployeeBoss,goals:EmployeeGoal]
     static mappedBy = [bosses:'employee',employees:'boss']
 
@@ -58,7 +58,6 @@ class Employees implements Serializable  {
     String employeeId
     String firstName
     String lastName
-    EmpLocation location
     Date hireDate
     Date endDate
     String email

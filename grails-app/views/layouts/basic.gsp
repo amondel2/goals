@@ -42,7 +42,6 @@
         				<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="/employees">Employees</a> </li>
-							<li><a href="/empLocation">Employee Location Codes</a></li>
 							<li><a href="/goalType">Goal Type</a></li>
 							<li><a href="/employeeBoss">Employee to Boss Relationship</a></li>
 						 </ul>

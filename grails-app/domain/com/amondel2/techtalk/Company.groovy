@@ -41,7 +41,7 @@ class Company implements Serializable  {
         return this.name
     }
 
-    static hasMany = [employees:Employees, empLocations:EmpLocation]
+    static hasMany = [employees:Employees]
 
     String id
     String name

@@ -4,40 +4,45 @@ import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/goalType', formats=['json', 'xml'])
-class GoalType implements Serializable  {
+@Resource(uri='/employeeGoalComment', formats=['json', 'xml'])
+class EmployeeGoalComment implements Serializable  {
 
     def utilService = new Utils()
     private static final serialVersionUID = 1L
 
-    static hasMany = [employeeGoalTypes:EmployeeGoalType]
+    static belongsTo = [employeeGoal:EmployeeGoal]
+
 
     static mapping = {
         id generator:'assigned'
         version false
-        sort 'title'
+        sort createdDate: "desc"
     }
 
     static constraints = {
-        title unique: true, nullable: false, blank: false, maxSize: 100
+        employeeGoal nullable: false, blank: false
+        createdDate nullable: false, blank: false, maxSize: 500
+        commentStr nullable: false, blank: false, maxSize: 500
     }
 
     def beforeValidate() {
+        createdDate = new Date()
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
         }
     }
 
     def beforeInsert() {
+        createdDate = new Date()
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
+
         }
     }
 
 
-
-
+    Date createdDate
+    String commentStr
+    EmployeeGoal employeeGoal
     String id
-    String title
-    Boolean isActive = false
 }

@@ -3,10 +3,9 @@ package com.amondel2.techtalk
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
-import org.hibernate.FetchMode
 
 @Secured(['ROLE_USER'])
-class ProjectManagerController extends FranchiseMapperUIController {
+class ProjectManagerController extends MondelMapperUIController {
 
     SpringSecurityService springSecurityService
     def assetResourceLocator
