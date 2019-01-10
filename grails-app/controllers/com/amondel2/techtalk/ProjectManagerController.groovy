@@ -50,10 +50,10 @@ class ProjectManagerController extends MondelMapperUIController {
     }
 
     def getResultSet() {
-        def paramsback = goalService.getResponseSetForEmployee(params?.empId,params.year)
+        def paramsback = goalService.getGoalSetForEmployee(params?.empId,params.year)
             withFormat {
             '*' {
-                render([rs:paramsback[0],smonth:paramsback[1][0],emonth:paramsback[1][1]] as JSON)
+                render([rs:paramsback] as JSON)
             }
         }
     }

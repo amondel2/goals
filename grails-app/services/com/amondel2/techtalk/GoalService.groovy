@@ -5,19 +5,18 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class GoalService {
 
-
-    def getResponseSetForEmployee(empId,year) {
+    def getGoalSetForEmployee(Employees emp, year) {
+        year = year ? year.toInteger() : GregorianCalendar.getInstance().get(Calendar.YEAR).toInteger()
         def restultSet = []
-        def empSet = []
-        Employees emp = Employees.findById(empId)
-        GregorianCalendar gc = new GregorianCalendar(year?.toInteger(),0,1,0,0,0)
+
+        GregorianCalendar gc = new GregorianCalendar(year,0,1,0,0,0)
         EmployeeGoal.withCriteria {
             eq('employee', emp)
-            not{
-                'in'('status', [GoalStatus.Cancelled, GoalStatus.Completed])
-                gte('actualCompletedDate', gc.getTime())
-
-            }
+//            not{
+//                'in'('status', [GoalStatus.Cancelled, GoalStatus.Completed])
+//                gte('actualCompletedDate', gc.getTime())
+//
+//            }
         }?.each { EmployeeGoal eg ->
             def rs = [:]
             rs['id'] = eg.id
@@ -29,7 +28,11 @@ class GoalService {
             rs['goalType'] = eg.types.collect{it.type.title}
             restultSet.add(rs)
         }
-        [restultSet,empSet]
+        restultSet
+    }
+
+    def getGoalSetForEmployee(empId, year) {
+        getGoalSetForEmployee(Employees.findById(empId),year)
     }
 
     def getActiveGoalTypes(){

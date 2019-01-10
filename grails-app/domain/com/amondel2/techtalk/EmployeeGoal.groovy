@@ -4,7 +4,7 @@ import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/employeeGoal', formats=['json', 'xml'])
+@Resource(uri='/= new Date()', formats=['json', 'xml'])
 class EmployeeGoal implements Serializable  {
 
     def utilService = new Utils()
@@ -29,6 +29,8 @@ class EmployeeGoal implements Serializable  {
     def beforeValidate() {
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
+            createdDate = new Date()
+            modifiedDate = new Date()
         }
     }
 

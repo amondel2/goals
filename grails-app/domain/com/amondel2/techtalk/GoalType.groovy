@@ -39,5 +39,7 @@ class GoalType implements Serializable  {
 
     String id
     String title
-    Boolean isActive = false
+    String description
+    Date endDate
+    Boolean isActive = true
 }

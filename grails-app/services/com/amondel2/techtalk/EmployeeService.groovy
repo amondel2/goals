@@ -14,6 +14,10 @@ class EmployeeService extends BaseService {
         }
     }
 
+    def getEmployee(String id){
+        Employees.load(id)
+    }
+
     def getInitialData(year,bossId) throws Exception {
 
         def cmdList = []

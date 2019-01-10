@@ -1,10 +1,12 @@
 <%@ page import="java.util.Calendar"%>
+<%@ page import="com.amondel2.techtalk.GoalStatus"%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="basic"/>
                 <script>
-                    fmBaseDir = '/${controllerName}/';
+                    fmBaseDir = '${request.contextPath}/${controllerName}/';
+                    var fmGoalsDir = '${request.contextPath}/goals/';
                     fmCompanyName = '${companyName}';
                     var fmBossId = '${boss?.id}';
                     var fmBossName = '${boss.toString()}';
@@ -51,7 +53,7 @@
                 <div class="fm-right-info">
                         <div class="fm-right-info-buttonset">
                             <input type="button"
-                                   id="edit-person-work-btn"
+                                   id="edit-person-goals-btn"
                                    onclick="editpersongoal(this)"
                                    class="ui-button ui-widget ui-state-default ui-corner-all fm-only-on-select"
                                    value="<g:message code='page.button.editGoals' default="Edit Person Goals" encodeAs='HTML' />">
@@ -98,10 +100,16 @@
         <div id="fm-delete-confirm">
             <p><g:message code="page.orphan.msg" encodeAs="HTML" default="Are You Sure you want to delete?"/></p>
         </div>
-        <div id="fm-editpersonwork">
+        <div id="fm-editpersongoals">
             <div>
-                Enter Leave Date: <g:datePicker name="leaveDate" default="${date.getTime()}" precision="day" relativeYears="[-3..2]"/>
-                <input type="hidden" name="leaveEmpId" id="leaveEmpId" value="" />
+                <table id="editpersongoalstable">
+                    <thead>
+                    <tr><th>Title</th><th>Status</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -115,6 +123,10 @@
             <g:each  in="${goalTypes}" var="gt">
                 <input type="checkbox" name="goalTypes[]" id="gen_${gt.id}" value="${gt.id}" /><label for="gen_${gt.id}">${gt.title}</label>
             </g:each>
+        </div>
+        <div id="gs_select">
+            <g:select name="goalStatus" from="${GoalStatus}" />
+
         </div>
     </div>
 	</body>

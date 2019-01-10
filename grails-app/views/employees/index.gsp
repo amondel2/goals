@@ -11,9 +11,9 @@
             <ul>
                 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
                 <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-                <li><a class="home" href="/employees/importEmployee">Import Employees</a></li>
+                <li><a class="home" href="${request.contextPath}/employees/importEmployee">Import Employees</a></li>
 
-                <li><a class="home" href="/employees/exportUsers">Export Users</a></li>
+                <li><a class="home" href="${request.contextPath}/employees/exportUsers">Export Users</a></li>
             </ul>
         </div>
         <div id="list-profile" class="content scaffold-list" role="main">
@@ -58,7 +58,7 @@
     <script>
         $("button[name='resetToken']").on('click',function(){
             var that = this;
-           $.get("/employees/generateResetToken?emp=" + $(this).attr('empid')).then(function(data) {
+           $.get("${request.contextPath}/employees/generateResetToken?emp=" + $(this).attr('empid')).then(function(data) {
                 $(that).parent().find('span').html(data.emp );
            })
         });

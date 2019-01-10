@@ -236,7 +236,27 @@ function copyEditDropDowns(disableDropDowns,startmonth,endmonth){
     var item = $("<button name='delete' onclick='deleteRow("+workDropdownCount + ",\""+currentNodeId+"\");'>Delete</button>");
     $(item).appendTo(td);
     $(td).appendTo(tr);
-    $(tr).appendTo('#fm-editpersonwork table');
+    $(tr).appendTo('#fm-editpersongoals table');
+}
+
+function copyGoalStatusDropDowns(title,status){
+    var jstree = $('#jstree').jstree(true);
+    var currentNodeId = jstree.get_selected();
+    var tr = $("<tr id='" + workDropdownCount + '_' + currentNodeId+"'></tr>");
+    $("<td><input type='text' name='"+workDropdownCount+"_title_" + currentNodeId + "' value='" + title + "'></td>").appendTo(tr);
+    var td = $("<td></td>");
+        var item = $("#gs_select").children().first().clone(true,true);
+        $(item).attr('name',workDropdownCount + "_" + $(item).attr('name') + "_" + currentNodeId);
+        $(item).attr('id', workDropdownCount + "_goalStatusSelect_" + currentNodeId);
+        $(item).appendTo(td);
+        $(td).appendTo(tr);
+
+    var td1 = $("<td></td>");
+    var itemdel = $("<button name='delete' onclick='deleteRow("+workDropdownCount + ",\""+currentNodeId+"\");'>Delete</button>");
+    $(itemdel).appendTo(td1);
+    $(td1).appendTo(tr);
+    $(tr).appendTo('#fm-editpersongoals table');
+    $("#" + workDropdownCount + "_goalStatusSelect_" + currentNodeId).val(status);
 }
 
 function populateDropDown(counter,workDropdownCount,currentNodeId,resultSet) {
@@ -316,46 +336,34 @@ function editpersongoal() {
     removeSelectedBtnClassFromAll();
     $('.fm-right-form').hide();
 
-    $('#fm-editpersonwork').dialog({
+    $('#fm-editpersongoals').dialog({
         modal: true,
         minWidth: 800,
         minHeight: 250,
-        maxHeight: 600,
+        maxHeight: 1000,
         resizable: true,
 
         open: function( event, ui ) {
             var jstree = $('#jstree').jstree(true);
             var currentNodeId = jstree.get_selected();
             workDropdownCount = 0;
-            $('#editpersonresponsetable tr td').find('select').remove();
-            $('#editpersonresponsetable tr td').find('input').remove();
-            $('#editpersonresponsetable tr:not(:first)').remove();
+            $('#editpersongoalstable tr:not(:first)').remove();
 
             var data = {};
             data['empId'] = currentNodeId[0];
             data['year'] = workingYear;
+
             $.post(window.fmBaseDir + 'getResultSet', data)
                 .then(function(res) {
                     if(res.rs && res.rs.length > 0 ) {
                         var x = 0;
                         for(x;x < res.rs.length;x++){
                             workDropdownCount++;
-                            // copyEditDropDowns(true,currentsmonth,currenendmonth);
-                            var resultSet = res.rs[x].jobinfo;
-                            // populateDropDown(0,workDropdownCount,currentNodeId,resultSet);
-                            var valueSet = res.rs[x].monthPercent;
-                            var n=1;
-                            var trinputs =   $($("#editpersonresponsetable tbody tr").get(workDropdownCount)).find('td input');
-                            for(n;n <= 12;n++) {
-                                $(trinputs[n-1]).val(valueSet[n]);
-                            }
+                            copyGoalStatusDropDowns(res.rs[x].title,res.rs[x].status.name);
                         }
-                    } else {
-                        workDropdownCount = 1;
-                        copyEditDropDowns(false,currentsmonth,currenendmonth);
                     }
                 }).fail(displayErrorMsg);
-            $('#fm-editpersonwork').dialog( "option", "title", $.trim(jstree.get_selected(true)[0]['text']));
+            $('#fm-editpersongoals').dialog( "option", "title", $.trim(jstree.get_selected(true)[0]['text']));
         },
         buttons: [
             {
@@ -365,10 +373,17 @@ function editpersongoal() {
                 }
             },
             {
+              text: "view",
+                click: function() {
+                    var currentNodeId = jstree.get_selected();
+                    window.location.href = window.fmGoalsDir + 'index?id='+ currentNodeId + '&year=' + workingYear;
+                }
+            },
+            {
                 text: 'add',
                 click: function() {
-                    workDropdownCount++;
-                    copyEditDropDowns(false,currentsmonth,currenendmonth);
+                    ++workDropdownCount;
+                    copyGoalStatusDropDowns("","");
                 }
             },
             {
@@ -385,52 +400,43 @@ function editpersongoal() {
                     var warnMsg = "";
                     var errorMsg = "";
                     var countPercentBox = [];
-                    $("#fm-editpersonwork table tr td").css('backgroundColor','white');
+                    $("#fm-editpersongoals table tr td").css('backgroundColor','white');
                     for(i;i<=workDropdownCount;i++) {
                         var selectBox = {};
                         var hashBox = "";
-                        $.each($("#editpersonresponsetable tr td select[name^='" + i + "_']"), function (index, val) {
-                            if ($(val).find("option:selected").text() == 'Select') {
+                        var val = $("#editpersongoalstable tr td select[name^='" + i + "_']");
+                        var text = $.trim(val.find("option:selected").text())
+                            if (!text || text.length === 0 ) {
                                 valid = false;
                                 var elm = $(val).parent().parent();
-                                errorMsg +=  "Row " +  $("#editpersonresponsetable tbody tr").index(elm)  + " is not completly filled out\n\r";
+                                errorMsg +=  "Row " +  ($("#editpersongoalstable tbody tr").index(elm)  + 1) + " is not completly filled out\n\r";
                                 $(elm).find('td').css('backgroundColor','red');
                                 return false;
-                            } else {
-                                hashBox += $(val).find("option:selected").text()
                             }
+                        selectBox[$(val).attr('name')] = text;
 
-                            selectBox[$(val).attr('name')] = $(val).val();
-                        });
-                        if( hashBoxes[hashBox] == 1) {
-                            valid = false;
-                            errorMsg += "Multiple Rows of the same selection exists\r\n";
-                        } else {
-                            hashBoxes[hashBox] = 1;
-                        }
 
-                        selectBoxes[i] = selectBox;
-                        var responseBox = {};
-                        $.each($("#fm-editpersonwork table tr td input[name^='" + i + "_']"), function (index, td) {
-                            responseBox[$(td).attr('name')] = $(td).val();
+
+                        $("#fm-editpersongoals table tr td input[name^='" + i + "_']");
+                        responseBox[$(td).attr('name')] = $(td).val();
                             countPercentBox[index] = parseFloat(countPercentBox[index] ? countPercentBox[index] : 0)  + parseFloat($(td).val() ? $(td).val() : 0);
-                        });
                         responses[i] = responseBox;
+                        selectBoxes[i] = selectBox;
                     }
                     i=0;
 
                     for(i;i<12;i++) {
                         if(countPercentBox[i] > 100 ) {
                             valid = false;
-                            var count = $("#fm-editpersonwork table tr").last().find('td select').length;
+                            var count = $("#fm-editpersongoals table tr").last().find('td select').length;
                             errorMsg += "Column " + (i + count + 1) + " is over 100\r\n";
-                            $.each($("#fm-editpersonwork table tr td input").parent().parent(),function(index, val){
+                            $.each($("#fm-editpersongoals table tr td input").parent().parent(),function(index, val){
 
                                 $($(val).find('td input').get(i)).parent().css('backgroundColor','red');
                             });
                         } else if (countPercentBox[i] > 0 && countPercentBox[i] < 100  ) {
                             warn = true;
-                            var count = $("#fm-editpersonwork table tr").last().find('td select').length;
+                            var count = $("#fm-editpersongoals table tr").last().find('td select').length;
                             warnMsg += "Column " + (i + count + 1) + " is under 100\r\n";
                         }
                     }
@@ -661,9 +667,9 @@ function toggleExportButtonVisibility() {
 }
 
 function deleteRow(index,empId) {
-    var elm = $("select[name='"+index+"_portfolio_"+empId+"']").parent().parent();
+    var elm = $("tr[id='"+index+"_"+empId+"']");
 
-    $("#empRowId").html($("#editpersonresponsetable tbody tr").index(elm));
+    $("#empRowId").html($("#editpersongoalstable tbody tr").index(elm) + 1);
     $( function() {
         $( "#dialog-confirm" ).dialog({
             resizable: false,

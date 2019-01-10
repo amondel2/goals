@@ -3,7 +3,7 @@
 	<head>
 		<meta name="layout" content="basic"/>
         <script>
-            fmBaseDir = '/${controllerName}/';
+            fmBaseDir = '${request.contextPath}/${controllerName}/';
         </script>
         <asset:javascript src="jquery.tablesorter.min.js" />
         <asset:javascript src="jquery.tablesorter.widgets.min.js" />

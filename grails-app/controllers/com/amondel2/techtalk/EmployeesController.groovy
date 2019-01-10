@@ -258,11 +258,11 @@ class EmployeesController {
         def file2
         byte[] bytes = file.bytes
 
-        File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
+        File convFile = new File(grailsApplication.config.upload.directory.toString().trim() + file.getOriginalFilename())
+        convFile.createNewFile()
+        FileOutputStream fos = new FileOutputStream(convFile)
+        fos.write(file.getBytes())
+        fos.close()
 
         EmployeeExcelImporter em = new EmployeeExcelImporter()
         em.myExcelImportService = myExcelImportService
