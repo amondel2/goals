@@ -4,18 +4,18 @@ import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/= new Date()', formats=['json', 'xml'])
 class EmployeeGoal implements Serializable  {
 
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
     static belongsTo = [employee:Employees]
-    static hasMany = [types:EmployeeGoalType]
+    static hasMany = [types:EmployeeGoalType, comments:EmployeeGoalComment]
 
     static mapping = {
         id generator:'assigned'
         version false
+        sort "title"
     }
 
     static constraints = {

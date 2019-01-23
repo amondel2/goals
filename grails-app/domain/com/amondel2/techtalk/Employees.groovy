@@ -9,7 +9,7 @@ import grails.rest.*
 @Resource(uri='/employees', formats=['json', 'xml'])
 class Employees implements Serializable  {
 
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
     static constraints = {

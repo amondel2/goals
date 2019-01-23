@@ -7,7 +7,7 @@ import groovy.transform.EqualsAndHashCode
 @Resource(uri='/employeeGoalComment', formats=['json', 'xml'])
 class EmployeeGoalComment implements Serializable  {
 
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
     static belongsTo = [employeeGoal:EmployeeGoal]

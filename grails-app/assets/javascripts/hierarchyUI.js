@@ -333,154 +333,155 @@ function editpersongoal() {
         alert("NO ACCESS TO EDIT THIS PERSON");
         return;
     }
+    window.location.href = window.fmGoalsDir + 'index?id='+ currentNodeId + '&year=' + workingYear;
     removeSelectedBtnClassFromAll();
     $('.fm-right-form').hide();
 
-    $('#fm-editpersongoals').dialog({
-        modal: true,
-        minWidth: 800,
-        minHeight: 250,
-        maxHeight: 1000,
-        resizable: true,
-
-        open: function( event, ui ) {
-            var jstree = $('#jstree').jstree(true);
-            var currentNodeId = jstree.get_selected();
-            workDropdownCount = 0;
-            $('#editpersongoalstable tr:not(:first)').remove();
-
-            var data = {};
-            data['empId'] = currentNodeId[0];
-            data['year'] = workingYear;
-
-            $.post(window.fmBaseDir + 'getResultSet', data)
-                .then(function(res) {
-                    if(res.rs && res.rs.length > 0 ) {
-                        var x = 0;
-                        for(x;x < res.rs.length;x++){
-                            workDropdownCount++;
-                            copyGoalStatusDropDowns(res.rs[x].title,res.rs[x].status.name);
-                        }
-                    }
-                }).fail(displayErrorMsg);
-            $('#fm-editpersongoals').dialog( "option", "title", $.trim(jstree.get_selected(true)[0]['text']));
-        },
-        buttons: [
-            {
-                text: 'close',
-                click: function() {
-                    $(this).dialog('close');
-                }
-            },
-            {
-              text: "view",
-                click: function() {
-                    var currentNodeId = jstree.get_selected();
-                    window.location.href = window.fmGoalsDir + 'index?id='+ currentNodeId + '&year=' + workingYear;
-                }
-            },
-            {
-                text: 'add',
-                click: function() {
-                    ++workDropdownCount;
-                    copyGoalStatusDropDowns("","");
-                }
-            },
-            {
-                text: 'save',
-                click: function(){
-                    var data = {};
-                    var selectBoxes = {};
-                    var hashBoxes = {};
-                    var responses = {};
-                    var i = 1;
-                    var that = this;
-                    var warn = false;
-                    var valid = true;
-                    var warnMsg = "";
-                    var errorMsg = "";
-                    var countPercentBox = [];
-                    $("#fm-editpersongoals table tr td").css('backgroundColor','white');
-                    for(i;i<=workDropdownCount;i++) {
-                        var selectBox = {};
-                        var hashBox = "";
-                        var val = $("#editpersongoalstable tr td select[name^='" + i + "_']");
-                        var text = $.trim(val.find("option:selected").text())
-                            if (!text || text.length === 0 ) {
-                                valid = false;
-                                var elm = $(val).parent().parent();
-                                errorMsg +=  "Row " +  ($("#editpersongoalstable tbody tr").index(elm)  + 1) + " is not completly filled out\n\r";
-                                $(elm).find('td').css('backgroundColor','red');
-                                return false;
-                            }
-                        selectBox[$(val).attr('name')] = text;
-
-
-
-                        $("#fm-editpersongoals table tr td input[name^='" + i + "_']");
-                        responseBox[$(td).attr('name')] = $(td).val();
-                            countPercentBox[index] = parseFloat(countPercentBox[index] ? countPercentBox[index] : 0)  + parseFloat($(td).val() ? $(td).val() : 0);
-                        responses[i] = responseBox;
-                        selectBoxes[i] = selectBox;
-                    }
-                    i=0;
-
-                    for(i;i<12;i++) {
-                        if(countPercentBox[i] > 100 ) {
-                            valid = false;
-                            var count = $("#fm-editpersongoals table tr").last().find('td select').length;
-                            errorMsg += "Column " + (i + count + 1) + " is over 100\r\n";
-                            $.each($("#fm-editpersongoals table tr td input").parent().parent(),function(index, val){
-
-                                $($(val).find('td input').get(i)).parent().css('backgroundColor','red');
-                            });
-                        } else if (countPercentBox[i] > 0 && countPercentBox[i] < 100  ) {
-                            warn = true;
-                            var count = $("#fm-editpersongoals table tr").last().find('td select').length;
-                            warnMsg += "Column " + (i + count + 1) + " is under 100\r\n";
-                        }
-                    }
-
-
-                    var selLen = 0;
-                    var skeys = Object.keys(selectBoxes);
-                    var keyLen = skeys.length
-                    var counter=0;
-                    while(selLen == 0 && counter < keyLen) {
-                        selLen = Object.keys(selectBoxes[skeys[counter++]]).length
-                    }
-
-                    if(selLen == 0) {
-                        valid = false;
-                        errorMsg = "You have not saved anything!"
-                    }
-
-                    if(!valid) {
-                       alert(errorMsg);
-                        return false;
-                    } else if (warn) {
-                        alert("WARNING:\r\n" + warnMsg);
-                    }
-
-                    data['successBoxes'] = JSON.stringify(selectBoxes);
-                    data['responses'] = JSON.stringify(responses);
-                    data['year'] = workingYear;
-
-                    $.post(window.fmBaseDir + 'savePortfolioProjectJobs', data)
-                        .then(function(res) {
-                            var hasNoErrors = $.isEmptyObject(res.errors);
-                            if (hasNoErrors) {
-                                displaySuccessMsg();
-                                $(that).dialog('close');
-                            } else {
-                                throwValidationErrors(res.errors);
-                            }
-                        })
-                        .fail(displayErrorMsg);
-                }
-            }
-        ]
-    });
+    // $('#fm-editpersongoals').dialog({
+    //     modal: true,
+    //     minWidth: 800,
+    //     minHeight: 250,
+    //     maxHeight: 1000,
+    //     resizable: true,
+    //
+    //     open: function( event, ui ) {
+    //         var jstree = $('#jstree').jstree(true);
+    //         var currentNodeId = jstree.get_selected();
+    //         workDropdownCount = 0;
+    //         $('#editpersongoalstable tr:not(:first)').remove();
+    //
+    //         var data = {};
+    //         data['empId'] = currentNodeId[0];
+    //         data['year'] = workingYear;
+    //         // window.location.href = window.fmGoalsDir + 'index?id='+ currentNodeId + '&year=' + workingYear;
+    //         $.post(window.fmBaseDir + 'getResultSet', data)
+    //             .then(function(res) {
+    //                 if(res.rs && res.rs.length > 0 ) {
+    //                     var x = 0;
+    //                     for(x;x < res.rs.length;x++){
+    //                         workDropdownCount++;
+    //                         copyGoalStatusDropDowns(res.rs[x].title,res.rs[x].status.name);
+    //                     }
+    //                 }
+    //             }).fail(displayErrorMsg);
+    //         $('#fm-editpersongoals').dialog( "option", "title", $.trim(jstree.get_selected(true)[0]['text']));
+    //     },
+    //     buttons: [
+    //         {
+    //             text: 'close',
+    //             click: function() {
+    //                 $(this).dialog('close');
+    //             }
+    //         },
+    //         {
+    //           text: "view",
+    //             click: function() {
+    //                 var currentNodeId = jstree.get_selected();
+    //                 window.location.href = window.fmGoalsDir + 'index?id='+ currentNodeId + '&year=' + workingYear;
+    //             }
+    //         },
+    //         {
+    //             text: 'add',
+    //             click: function() {
+    //                 ++workDropdownCount;
+    //                 copyGoalStatusDropDowns("","");
+    //             }
+    //         },
+    //         {
+    //             text: 'save',
+    //             click: function(){
+    //                 var data = {};
+    //                 var selectBoxes = {};
+    //                 var hashBoxes = {};
+    //                 var responses = {};
+    //                 var i = 1;
+    //                 var that = this;
+    //                 var warn = false;
+    //                 var valid = true;
+    //                 var warnMsg = "";
+    //                 var errorMsg = "";
+    //                 var countPercentBox = [];
+    //                 $("#fm-editpersongoals table tr td").css('backgroundColor','white');
+    //                 for(i;i<=workDropdownCount;i++) {
+    //                     var selectBox = {};
+    //                     var hashBox = "";
+    //                     var val = $("#editpersongoalstable tr td select[name^='" + i + "_']");
+    //                     var text = $.trim(val.find("option:selected").text())
+    //                         if (!text || text.length === 0 ) {
+    //                             valid = false;
+    //                             var elm = $(val).parent().parent();
+    //                             errorMsg +=  "Row " +  ($("#editpersongoalstable tbody tr").index(elm)  + 1) + " is not completly filled out\n\r";
+    //                             $(elm).find('td').css('backgroundColor','red');
+    //                             return false;
+    //                         }
+    //                     selectBox[$(val).attr('name')] = text;
+    //
+    //
+    //
+    //                     $("#fm-editpersongoals table tr td input[name^='" + i + "_']");
+    //                     responseBox[$(td).attr('name')] = $(td).val();
+    //                         countPercentBox[index] = parseFloat(countPercentBox[index] ? countPercentBox[index] : 0)  + parseFloat($(td).val() ? $(td).val() : 0);
+    //                     responses[i] = responseBox;
+    //                     selectBoxes[i] = selectBox;
+    //                 }
+    //                 i=0;
+    //
+    //                 for(i;i<12;i++) {
+    //                     if(countPercentBox[i] > 100 ) {
+    //                         valid = false;
+    //                         var count = $("#fm-editpersongoals table tr").last().find('td select').length;
+    //                         errorMsg += "Column " + (i + count + 1) + " is over 100\r\n";
+    //                         $.each($("#fm-editpersongoals table tr td input").parent().parent(),function(index, val){
+    //
+    //                             $($(val).find('td input').get(i)).parent().css('backgroundColor','red');
+    //                         });
+    //                     } else if (countPercentBox[i] > 0 && countPercentBox[i] < 100  ) {
+    //                         warn = true;
+    //                         var count = $("#fm-editpersongoals table tr").last().find('td select').length;
+    //                         warnMsg += "Column " + (i + count + 1) + " is under 100\r\n";
+    //                     }
+    //                 }
+    //
+    //
+    //                 var selLen = 0;
+    //                 var skeys = Object.keys(selectBoxes);
+    //                 var keyLen = skeys.length
+    //                 var counter=0;
+    //                 while(selLen == 0 && counter < keyLen) {
+    //                     selLen = Object.keys(selectBoxes[skeys[counter++]]).length
+    //                 }
+    //
+    //                 if(selLen == 0) {
+    //                     valid = false;
+    //                     errorMsg = "You have not saved anything!"
+    //                 }
+    //
+    //                 if(!valid) {
+    //                    alert(errorMsg);
+    //                     return false;
+    //                 } else if (warn) {
+    //                     alert("WARNING:\r\n" + warnMsg);
+    //                 }
+    //
+    //                 data['successBoxes'] = JSON.stringify(selectBoxes);
+    //                 data['responses'] = JSON.stringify(responses);
+    //                 data['year'] = workingYear;
+    //
+    //                 $.post(window.fmBaseDir + 'savePortfolioProjectJobs', data)
+    //                     .then(function(res) {
+    //                         var hasNoErrors = $.isEmptyObject(res.errors);
+    //                         if (hasNoErrors) {
+    //                             displaySuccessMsg();
+    //                             $(that).dialog('close');
+    //                         } else {
+    //                             throwValidationErrors(res.errors);
+    //                         }
+    //                     })
+    //                     .fail(displayErrorMsg);
+    //             }
+    //         }
+    //     ]
+    // });
 }
 
 function setSelectedBtn(el) {

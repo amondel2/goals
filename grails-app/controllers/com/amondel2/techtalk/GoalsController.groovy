@@ -16,7 +16,9 @@ class GoalsController {
             redirect(controller:"projectManager")
             return;
         }
-        def date = params?.myDate_year ? new GregorianCalendar(params.myDate_year?.toInteger(),0,1) : new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR),0,1)
+        def date = params?.myDate_year ? new GregorianCalendar(params.myDate_year?.toInteger(),0,1) :
+                (params.year ? new GregorianCalendar(params.year?.toInteger(),0,1) :
+                new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR),0,1))
         render(view:"index",model:[emp:e,date:date,companyName:Company.first().name,goalTypes:GoalType.list(),goalSet:goalService.getGoalSetForEmployee(e?.id,date.get(Calendar.YEAR))])
     }
 
@@ -25,6 +27,22 @@ class GoalsController {
         def goalSet = goalService.getGoalSetForEmployee(e?.id,params.myDate_year)
         withFormat {
             '*' { render goalSet as JSON}
+        }
+    }
+
+    def createCard() {
+        def p = [:]
+        p.id = Utils.getInstance().idGenerator()
+        withFormat {
+            '*' { render p as JSON}
+        }
+    }
+
+    def saveGoals() {
+        def p = [:]
+        p.titles =  goalService.saveGoals(params)
+        withFormat {
+            '*' { render p as JSON}
         }
     }
 }

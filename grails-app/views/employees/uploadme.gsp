@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="basic"/>
     <script>
-        fmBaseDir = '/${controllerName}/';
+        fmBaseDir = '${request.contextPath}/${controllerName}/';
 
     </script>
 

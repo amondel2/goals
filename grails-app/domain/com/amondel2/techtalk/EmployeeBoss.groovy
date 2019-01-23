@@ -7,7 +7,7 @@ import grails.rest.*
 class EmployeeBoss implements Serializable {
 
     private static final long serialVersionUID = 1
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
 
     String id
     Employees employee

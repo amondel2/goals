@@ -7,7 +7,7 @@ import groovy.transform.EqualsAndHashCode
 @Resource(uri='/goalType', formats=['json', 'xml'])
 class GoalType implements Serializable  {
 
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
     static hasMany = [employeeGoalTypes:EmployeeGoalType]
@@ -32,6 +32,11 @@ class GoalType implements Serializable  {
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
         }
+    }
+
+    @Override
+    String toString(){
+        return this.title
     }
 
 
