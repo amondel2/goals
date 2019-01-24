@@ -127,6 +127,8 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
 			if(params.question1.trim().size() > 4 && params.question1.trim().toLowerCase() == qa[0].trim().toLowerCase() && params.question2.trim().toLowerCase() == qa[1].trim().toLowerCase() ) {
 				RegistrationCode registrationCode = registrationService.getForgotPassLink(emp)
 				String url = generateLink('resetPassword', [t: registrationCode.token])
+				emp.restToken = null
+				emp.save();
 				redirect(url: url)
 			} else {
 				def tokenurlnya = "/register/showChanallage"
