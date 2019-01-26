@@ -65,6 +65,12 @@
                            </div>
                        </li>
                        <li>
+                           <div class="form-group">
+                               <label for="${goal.id}_orginTargetDate">Orginal Completed Date: </label>
+                               <span id="${goal.id}_orginTargetDate">${goal.orginTargetDate ? goal.orginTargetDate.format('MM-dd-YYYY'): ''}</span>
+                           </div>
+                       </li>
+                       <li>
                                <div id="${goal.id}_targetDiv" style="display: <g:if test="${goal.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]}">block</g:if><g:else>none</g:else>;">
                                <div class="form-group">
                                <label for="${goal.id}_targetDate">Target Completed Date: </label>
@@ -75,6 +81,7 @@
                                    <label>Completed Date: </label> ${(goal.actualCompletedDate ?: new Date()).format('MM-dd-YYYY')}
                                </div>
                        </li>
+
                 </ul>
               </div>
         </div>

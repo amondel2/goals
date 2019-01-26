@@ -22,11 +22,6 @@ class GoalService {
         EmployeeGoal.withCriteria {
             eq('employee', emp)
              between('targetCompletDate',gc.getTime(),ec.getTime())
-//            not{
-//                'in'('status', [GoalStatus.Cancelled, GoalStatus.Completed])
-//                gte('actualCompletedDate', gc.getTime())
-//
-//            }
         }.sort{a,b -> a.title <=> b.title}?.each { EmployeeGoal eg ->
             def rs = [:]
             rs['id'] = eg.id
@@ -34,6 +29,7 @@ class GoalService {
             rs['description'] = eg.description
             rs['actualCompletedDate'] = eg.actualCompletedDate
             rs['targetCompletDate'] = eg.targetCompletDate
+            rs['orginTargetDate'] = eg.orginTargetDate
             rs['status'] = eg.status
             rs['goalType'] = eg.types.collect{it.type.id}
             restultSet.add(rs)
@@ -71,6 +67,9 @@ class GoalService {
             if ( eg.status.toString() != p[id + "_status"]) {
                 if ( ((GoalStatus)p[id + "_status"]) in [GoalStatus.Cancelled, GoalStatus.Completed]) {
                     eg.actualCompletedDate = new Date()
+                    if(eg.targetCompletDate.equals(null)) {
+                        eg.targetCompletDate = new Date()
+                    }
                 } else {
                     eg.actualCompletedDate = null;
                 }
@@ -78,12 +77,11 @@ class GoalService {
 
             try{
                 c.set(p[id + "_targetDate_year"].toInteger(),p[id + "_targetDate_month"].toInteger() - 1,p[id + "_targetDate_day"].toInteger())
-            } catch (Exception e) {
-                if ( !((GoalStatus)p[id + "_status"]) in [GoalStatus.Cancelled, GoalStatus.Completed]) {
-                    c.add(Calendar.DAY_OF_YEAR,7)
-                }
+                eg.targetCompletDate = c.getTime()
+            } catch (Exception e) { }
+            if(eg.orginTargetDate == null ) {
+                eg.orginTargetDate =  eg.targetCompletDate
             }
-            eg.targetCompletDate = c.getTime()
 
             eg.status = p[id + "_status"]
             eg.validate()
@@ -96,11 +94,14 @@ class GoalService {
                         err[id] << messageSource.getMessage(it, locale)
                     }
                 }
-                eg.clearErrors()
-                eg.refresh()
+                try {
+                    eg.clearErrors()
+                    eg.refresh()
+                } catch (Exception e) { }
             } else {
                 eg.save(flush: true, failOnError: true)
                 EmployeeGoalType.where { employeeGoal == eg }.deleteAll()
+
                 if (p[id + "_types"] instanceof String) {
                     EmployeeGoalType egt = new EmployeeGoalType()
                     egt.employeeGoal = eg
@@ -114,9 +115,9 @@ class GoalService {
                         egt.save()
                     }
                 }
-
+                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? eg.orginTargetDate?.format('MM-dd-YYYY') : '']
             }
-            ids[id] = ps.generateTitle(goal: eg)
+
         }
 
        [titles:ids,errors: err]

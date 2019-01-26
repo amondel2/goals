@@ -24,6 +24,7 @@ class EmployeeGoal implements Serializable  {
         employee nullable: false, blank: false
         targetCompletDate nullable: false, blank: false
         actualCompletedDate  nullable: true, blank: false
+        orginTargetDate nullable: false, blank: false
     }
 
     def beforeValidate() {
@@ -37,8 +38,9 @@ class EmployeeGoal implements Serializable  {
     def beforeInsert() {
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
-            createdDate = new Date()
         }
+        createdDate = new Date()
+        modifiedDate = new Date()
     }
 
     def beforeUpdate() {
@@ -56,6 +58,7 @@ class EmployeeGoal implements Serializable  {
     String title
     GoalStatus status = GoalStatus.NotStarted
     Date targetCompletDate
+    Date orginTargetDate
     Date actualCompletedDate
     Date createdDate
     Date modifiedDate

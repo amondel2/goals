@@ -5,6 +5,9 @@ $(document).ready(function(){
  $("#YearChangeFrm select").bind('change',function(){
         $("#YearChangeFrm").submit();
      });
+ $(document).on('click', "button[remove_unsaved_goal_btn='t']" , null , function () {
+     $(this).parent().parent().parent().parent().remove();
+ });
 });
 
 var createNewCard = function() {
@@ -13,7 +16,7 @@ var createNewCard = function() {
            var count = $('.card-body').length + 1;
             var div = $('<div class="card"><div class="card-header" role="tab" id="headingTwo'+count+'">\n' +
                 '            <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo'+count+'" aria-expanded="false" aria-controls="collapseTwo'+count+'">\n' +
-                '                <h5 class="mb-0 '+ res.id + '">New Goal ' + count  +'</h5>\n' +
+                '                <h5 class="mb-0 '+ res.id + '">New Goal ' + count  +' <button remove_unsaved_goal_btn="t" class="btn btn-danger">Delete</button> </h5>\n' +
                 '            </a>\n' +
                 '        </div>' +
                 '</div>');
@@ -47,6 +50,8 @@ var createNewCard = function() {
         item.attr('id',res.id + "_types");
         divgrp.append(item);
         li.append(divgrp);
+        $(ul).append(li);
+        li = $('<li><div class="form-group"><label for="'+ res.id + '_orginTargetDate">Orginal Completed Date: </label><span id="'+ res.id + '_orginTargetDate"></span></div></li>');
         $(ul).append(li);
         li = $("<li></li>");
         var divgrp1 = $('<div id="'+ res.id + '_targetDiv"></div>');
@@ -138,7 +143,11 @@ var savebtn = function() {
             });
 
             $.each(res.titles,function(idx,value){
-                $("h5." + idx).html(value);
+                $("h5." + idx).html(value[0]);
+                if(value[1]) {
+                    $("#" + idx + "_orginTargetDate").html(value[1]);
+                }
+
             });
 
             var errorcnt1= 0
