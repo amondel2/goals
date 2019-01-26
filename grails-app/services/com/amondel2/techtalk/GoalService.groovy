@@ -2,12 +2,16 @@ package com.amondel2.techtalk
 
 import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
+import org.springframework.context.MessageSource
+import org.springframework.context.i18n.LocaleContextHolder
+import org.springframework.validation.Errors
 
 
 @Transactional
 class GoalService {
 
     GrailsApplication grailsApplication
+    MessageSource messageSource
 
     def getGoalSetForEmployee(Employees emp, year) {
         year = year ? year.toInteger() : GregorianCalendar.getInstance().get(Calendar.YEAR).toInteger()
@@ -50,7 +54,12 @@ class GoalService {
     def saveGoals(p) {
         com.amondel2.techtalk.ExtendTagsTagLib ps = grailsApplication.mainContext.getBean('com.amondel2.techtalk.ExtendTagsTagLib')
         def ids = [:]
+        def err = [:]
         Employees emp = Employees.findById(p.empId);
+        if(p['ids'] instanceof String) {
+            p['ids'] = [p['ids']]
+        }
+        def locale = LocaleContextHolder.getLocale()
         p['ids'].each { String id ->
             id = id.substring(0, id.indexOf('_'))
 
@@ -77,23 +86,40 @@ class GoalService {
             eg.targetCompletDate = c.getTime()
 
             eg.status = p[id + "_status"]
-            eg.save(flush:true,failOnError:true)
-            EmployeeGoalType.where {employeeGoal == eg}.deleteAll()
-            if(p[id + "_types"] instanceof String ) {
-                EmployeeGoalType egt = new EmployeeGoalType()
-                egt.employeeGoal = eg
-                egt.type = GoalType.findById(p[id + "_types"] )
-                egt.save()
+            eg.validate()
+            if(eg.hasErrors()) {
+                if(!err[id]) {
+                    err[id] = []
+                }
+                eg.errors.each { errs ->
+                    errs.allErrors.each {
+                        err[id] << messageSource.getMessage(it, locale)
+                    }
+                }
+                eg.clearErrors()
+                eg.refresh()
             } else {
-                p[id + "_types"].each {
+                eg.save(flush: true, failOnError: true)
+                EmployeeGoalType.where { employeeGoal == eg }.deleteAll()
+                if (p[id + "_types"] instanceof String) {
                     EmployeeGoalType egt = new EmployeeGoalType()
                     egt.employeeGoal = eg
-                    egt.type = GoalType.findById(it)
+                    egt.type = GoalType.findById(p[id + "_types"])
                     egt.save()
+                } else {
+                    p[id + "_types"].each {
+                        EmployeeGoalType egt = new EmployeeGoalType()
+                        egt.employeeGoal = eg
+                        egt.type = GoalType.findById(it)
+                        egt.save()
+                    }
                 }
+
             }
             ids[id] = ps.generateTitle(goal: eg)
         }
-        ids
+
+       [titles:ids,errors: err]
+
     }
 }

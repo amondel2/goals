@@ -47,6 +47,9 @@ class EmployeeBoss implements Serializable {
     static constraints = {
         defaultBoss display:true
         id display:true
+        defaultBoss unique: ['boss','employee']
+        employee unique: 'boss'
+        boss unique: 'employee'
     }
 
     def removeOtherDefaults() {

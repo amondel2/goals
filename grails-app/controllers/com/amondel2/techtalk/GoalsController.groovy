@@ -12,14 +12,34 @@ class GoalsController {
     def goalService
     def index() {
         Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))
-        if(!e) {
-            redirect(controller:"projectManager")
+        if (!e) {
+            redirect(controller: "projectManager")
             return;
         }
-        def date = params?.myDate_year ? new GregorianCalendar(params.myDate_year?.toInteger(),0,1) :
-                (params.year ? new GregorianCalendar(params.year?.toInteger(),0,1) :
-                new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR),0,1))
-        render(view:"index",model:[emp:e,date:date,companyName:Company.first().name,goalTypes:GoalType.list(),goalSet:goalService.getGoalSetForEmployee(e?.id,date.get(Calendar.YEAR))])
+
+        int year
+        try {
+            year = params?.myDate_year.toInteger()
+        } catch (Exception v) {
+            try {
+                year = params?.year.toInteger()
+            } catch (Exception x) {
+                try {
+                    year = Calendar.getInstance().get(Calendar.YEAR)
+                } catch (Exception z) {
+                    throw z
+                }
+            }
+        }
+        def date = new GregorianCalendar(year, 0, 1)
+        def endDate = new GregorianCalendar(year, 12, 31, 23, 59, 59)
+
+        def gts = GoalType.withCriteria {
+            eq('isActive', true)
+            between('endDate', date.getTime(), endDate.getTime())
+        }
+
+        render(view: "index", model: [emp: e, date: date, companyName: Company.first().name, goalTypes:gts , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
     }
 
     def chagneGoals()  {
@@ -40,7 +60,7 @@ class GoalsController {
 
     def saveGoals() {
         def p = [:]
-        p.titles =  goalService.saveGoals(params)
+        p =  goalService.saveGoals(params)
         withFormat {
             '*' { render p as JSON}
         }

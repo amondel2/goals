@@ -19,7 +19,9 @@ var createNewCard = function() {
                 '</div>');
 
         var ul = $('<ul style="list-style: none;"></ul>');
-        var li = $("<li></li>");
+        var li = $("<li><div id='"+res.id+"_errorsDiv' class='fm-error-msg error-details ui-state-error' style='display: none;' error_field='true'></div></li>");
+            $(ul).append(li);
+         li = $("<li></li>");
         li.append('<label for="'+ res.id + '_title">Goal Title: </label>');
         li.append('<input type="text" class="form-control" value="" minlength="3" name="'+ res.id + '_title" required="required" aria-required="true"  aria-label="title" />');
         $(ul).append(li);
@@ -121,7 +123,7 @@ var savebtn = function() {
     // var ids = [];
 
     $.each($(".card-body ul"),function(idx,val) {
-        data =data + "&ids=" + $(val).children().first().children('input').prop('name');
+        data =data + "&ids=" + $(val).children().eq(1).children('input').prop('name');
     });
 
     data = data + "&empId=" + $("#emp_id").val();
@@ -129,13 +131,32 @@ var savebtn = function() {
     // data.ids = ids;
     $.post(window.fmBaseDir + 'saveGoals',data )
         .then(function(res) {
+            $.each($('div[error_field="true"]'),function(idx,value){
+                $(value).css('display', 'none');
+                $(value).html("");
+                $("#main_error").css('display', 'none');
+            });
+
             $.each(res.titles,function(idx,value){
                 $("h5." + idx).html(value);
             });
-        }).fail(function () {
-        alert("Fail");
 
-    });
+            var errorcnt1= 0
+            var errorcnt2 = 0
+            $.each(res.errors, function(idx,value){
+                errorcnt1 += value.length;
+                errorcnt2++;
+                $("#" + idx + "_errorsDiv").html(value.join("<br />"));
+                $("#" + idx + "_errorsDiv").css('display', 'block');
+            });
+            if(errorcnt1 > 0 ) {
+                $("#main_error").html("There is " + errorcnt1 + " error(s) in " + errorcnt2 + " different Goal(s)");
+                $("#main_error").css('display', 'block');
+            }
+
+        }).fail(function () {
+            alert("Fail");
+         });
 };
 
 CKEDITOR.on('instanceReady', function(){

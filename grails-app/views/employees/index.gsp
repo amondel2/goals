@@ -35,13 +35,14 @@
                 <g:each in="${employeesList}" var="bean" status="i">
                     <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                         <g:each in="${['id','user','firstName','lastName','employeeId','restToken']}" var="p" status="j">
+                           <td>
                             <g:if test="${j==0}">
-                                <td><g:link method="GET" resource="${bean}"><f:display bean="${bean}" property="${p}" /></g:link>
+                                <g:link method="GET" resource="${bean}"><f:display bean="${bean}" property="${p}" /></g:link>
                             </g:if>
                             <g:else>
-                                <td>  <g:if test="${j==5}"><button name="resetToken" empid="${bean.id}">Create Reset Token</button><span></g:if>
-                                    <f:display bean="${bean}" property="${p}" />
-                                    <g:if test="${j==5}"> </span></g:if>
+                                <g:if test="${j==5}"><button name="resetToken" empid="${bean.id}">Create Reset Token</button><span></g:if>
+                                <f:display bean="${bean}" property="${p}" />
+                                <g:if test="${j==5}"> </span></g:if>
                             </g:else>
                             </td>
                         </g:each>
@@ -54,7 +55,7 @@
                     <g:paginate total="${employeesCount ?: 0}" />
                 </div>
             </g:if>
-
+        </div>
     <script>
         $("button[name='resetToken']").on('click',function(){
             var that = this;

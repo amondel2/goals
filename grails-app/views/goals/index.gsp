@@ -24,6 +24,8 @@
 
 
 <button type="button" id="saveBtn" class="btn btn-primary">Save</button> <button type="button" id="addBtn" class="btn btn-secondary">Add</button>
+<div id="main_error" style="display: none;" class="fm-error-msg error-details ui-state-error"></div>
+
 <form method="POST" id="gaolFrm" onsubmit="return false;">
 <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
 <g:each var="goal" in="${goalSet}" status="idx"  >
@@ -39,6 +41,7 @@
           <div id="collapseTwo${idx}" class="collapse" role="tabpanel" aria-labelledby="headingTwo${idx}" data-parent="#accordionEx">
               <div class="card-body">
                 <ul style="list-style: none;">
+                    <li><div id="${goal.id}_errorsDiv" style="display: none;" class="fm-error-msg error-details ui-state-error hide" error_field="true"></div></li>
                       <li>
                           <label for="${goal.id}_title">Goal Title: </label>
                           <input type="text" class="form-control" value="${goal.title}" minlength="3" name="${goal.id}_title" required="required" aria-required="true"  aria-label="title" /></li>
@@ -58,7 +61,7 @@
                        <li>
                            <div class="form-group">
                            <label for="${goal.id}_types">Goal Types: </label>
-                           ${ps.goalTypeDropDown([value:goal.goalType,goalTypes:goalTypes,name:goal.id + "_types"])}
+                           ${ps.goalTypeDropDown([value:goal?.goalType,goalTypes:goalTypes,name:goal.id + "_types"])}
                            </div>
                        </li>
                        <li>

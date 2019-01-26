@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>People Planner</title>
+		<title>Goal Planner</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="${assetPath(src: 'Favicon.ico')}" type="image/x-icon">
 		<asset:stylesheet src="mainjquery.css"/>
@@ -32,7 +32,7 @@
           <ul class="nav navbar-nav">
             <li><a  class="nav-link" href="${request.contextPath}/">Home</a></li>
              <sec:ifLoggedIn>
-             	<li><a  class="nav-link" href="${request.contextPath}/projectManager">Manage My Project</a></li>
+             	<li><a  class="nav-link" href="${request.contextPath}/projectManager">Manage My Goals</a></li>
 				 <sec:ifAnyGranted roles="ROLE_REPORTER,ROLE_ADMIN">
              	<li><a  class="nav-link" href="${request.contextPath}/reports">Generate Reports</a></li>
 				 </sec:ifAnyGranted>

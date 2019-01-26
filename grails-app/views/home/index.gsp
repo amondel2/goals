@@ -13,14 +13,14 @@
 
 	</head>
 	<body>
-		<h1>Project Management & Tracking</h1>
+		<h1>Goal Management</h1>
         <p class="lead">
 				<g:if test='${flash.message}'>
 					<div class='login_message'>${flash.message}</div>
 				</g:if>
 				
 				<sec:ifNotLoggedIn>
-		        	Please register (via login link)
+		        	Please login
 				</sec:ifNotLoggedIn>
 				<sec:ifLoggedIn>
 					<h2>Dashboard</h2>
