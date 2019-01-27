@@ -28,7 +28,6 @@ class Employees implements Serializable  {
     static mapping = {
         id generator:'assigned'
         version false
-        employeeJobs cascade: "all-delete-orphan"
         bosses cascade: "none"
     }
 

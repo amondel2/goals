@@ -25,10 +25,16 @@
 				<sec:ifLoggedIn>
 					<h2>Dashboard</h2>
 					<div>
-                        <h3>People with past due goals</h3>
-                        <div id="getPeopleUnder">Loading .. <asset:image src="spinner.gif" /></div>
-						<h3>People with Goals due in the next 60 days</h3>
-						<div id="getPeopleUnder1">Loading .. <asset:image src="spinner.gif" /></div>
+						<g:if test="${has_directs}">
+							<h3>People with past due goals</h3>
+							<div id="getPeopleUnder">Loading .. <asset:image src="spinner.gif" /></div>
+							<h3>People with Goals due in the next 60 days</h3>
+							<div id="getPeopleUnder1">Loading .. <asset:image src="spinner.gif" /></div>
+						</g:if>
+						<h3>My Goals that are over Due</h3>
+						<div id="myGoalsOver">Loading .. <asset:image src="spinner.gif" /></div>
+						<h3>My Goals that due in the next 60 days</h3>
+						<div id="myGoalsComming">Loading .. <asset:image src="spinner.gif" /></div>
                     </div>
 				</sec:ifLoggedIn>
 		        <br>
@@ -44,31 +50,59 @@
 		  </g:if>
 <sec:ifLoggedIn>
             <script type="text/javascript">
+              if($("#getPeopleUnder").length > 0 ) {
+					$.ajax({
+						url: window.fmBaseDir + 'getPeopleUnder',
+						method: "GET",
+						cache: false
+					}).done(function (data) {
+						if (data && data.msg) {
+							processdate($("#getPeopleUnder"),data.msg);
+
+						} else {
+							alert(data[1]);
+						}
+					});
+
+					$.ajax({
+						url: window.fmBaseDir + 'getPeopleUnder?fut=60',
+						method: "GET",
+						cache: false
+					}).done(function (data) {
+						if (data && data.msg) {
+							processdate($("#getPeopleUnder1"),data.msg);
+
+						} else {
+							alert(data[1]);
+						}
+					});
+                }
+
                 $.ajax({
-                    url: window.fmBaseDir + 'getPeopleUnder',
-                    method: "GET",
-                    cache: false
-                }).done(function (data) {
-                    if (data && data.msg) {
-                        processdate($("#getPeopleUnder"),data.msg);
+						url: window.fmBaseDir + 'getMyGoals',
+						method: "GET",
+						cache: false
+					}).done(function (data) {
+						if (data && data.msg) {
+							processdate($("#myGoalsOver"),data.msg);
 
-                    } else {
-                        alert(data[1]);
-                    }
-                });
+						} else {
+							alert(data[1]);
+						}
+					});
 
-                $.ajax({
-                    url: window.fmBaseDir + 'getPeopleUnder?fut=1',
-                    method: "GET",
-                    cache: false
-                }).done(function (data) {
-                    if (data && data.msg) {
-                        processdate($("#getPeopleUnder1"),data.msg);
+					$.ajax({
+						url: window.fmBaseDir + 'getMyGoals?fut=60',
+						method: "GET",
+						cache: false
+					}).done(function (data) {
+						if (data && data.msg) {
+							processdate($("#myGoalsComming"),data.msg);
 
-                    } else {
-                        alert(data[1]);
-                    }
-                });
+						} else {
+							alert(data[1]);
+						}
+					});
 
                 $("#downReport").on('click',function(){
 
@@ -87,10 +121,10 @@
 					    elm.html(msg.error)
 					} else {
 					    var id="tbl_" + elm.attr('id');
-					    var tbl = '<table id="' +id +'"  class="table table-bordered table-striped"><thead class="thead-light"><th data-sortable="true">Boss</th><th data-sortable="true">Employee</th></thead><tbody>';
+					    var tbl = '<table id="' +id +'"  class="table table-bordered table-striped"><thead class="thead-light"><th data-sortable="true">Employee</th><th data-sortable="true">Goal</th><th data-sortable="true">Due Date</th></thead><tbody>';
                         $.each(msg,function(index,value){
                             $.each(value,function(index1,val) {
-									tbl += "<tr><td>" + index + "</td><td>" + val + "</td></tr>";
+									tbl += "<tr><td>" + index + "</td><td>" + val.goal + "</td><td>" + val.due + "</td></tr>";
                             });
 						});
                         tbl += "</tbody></table>";

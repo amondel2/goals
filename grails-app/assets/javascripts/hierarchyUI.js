@@ -153,7 +153,7 @@ function setJSTreeSelectionLogic(portfolioData) {
 
 function setHeaderInfo(data) {
     var name = data.name,
-        employeeId = data.employeeId;
+        employeeId = data.goalStatus;
 
     $('#fm-name-field').text(name);
     $('#fm-portfolio-id-field').text(employeeId);

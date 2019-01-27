@@ -46,7 +46,7 @@
                         <span class="fm-field" id="fm-name-field"></span>
                     </div>
                     <div class="fm-field-container">
-                        <span class="fm-field-label"><g:message code="page.label.employeeId" default="Employee Id" encodeAs="HTML" />:</span>
+                        <span class="fm-field-label"><g:message code="page.label.employeeId" default="Goal Status" encodeAs="HTML" />:</span>
                         <span class="fm-field" id="fm-portfolio-id-field"></span>
                     </div>
                 </div>

@@ -45,6 +45,15 @@ abstract class MondelMapperUIController {
         }
     }
 
+    def updateParentOfEmployee() {
+        withFormat {
+            '*' {
+                render(employeeService.updateParentOfEmployee(Company.first(), params.id, params.parentId) as JSON)
+            }
+        }
+
+    }
+
     def createEmployee() {
         try {
             if (!hasWritePermission()) {
