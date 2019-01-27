@@ -60,8 +60,13 @@ class EmployeeService extends BaseService {
                         rowCount()
                     }
                 }
-                def states = getEmpGoalStates(boss,sdate,edate)
-                cmd.goalStatus = states[0] + " Goals Completed out of  " +states[1]
+
+                if(cmd.canEdit) {
+                    def states = getEmpGoalStates(boss,sdate,edate)
+                    cmd.goalStatus = states[0] + " Goals Completed out of  " + states[1]
+                } else {
+                    cmd.goalStatus = "No Access To View"
+                }
                 cmd.hasChildren = eb[0].value > 0
                 cmdList.add(cmd.getDataForJSTree())
 
