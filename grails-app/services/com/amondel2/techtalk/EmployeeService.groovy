@@ -14,6 +14,10 @@ class EmployeeService extends BaseService {
         }
     }
 
+    def getEmployee(String id){
+        Employees.load(id)
+    }
+
     def getInitialData(year,bossId) throws Exception {
 
         def cmdList = []
@@ -56,11 +60,43 @@ class EmployeeService extends BaseService {
                         rowCount()
                     }
                 }
+
+                if(cmd.canEdit) {
+                    def states = getEmpGoalStates(boss,sdate,edate)
+                    cmd.goalStatus = states[0] + " Goals Completed out of  " + states[1]
+                } else {
+                    cmd.goalStatus = "No Access To View"
+                }
                 cmd.hasChildren = eb[0].value > 0
                 cmdList.add(cmd.getDataForJSTree())
 
         }
         cmdList
+    }
+
+    def doesEmpHaveDirects(Employees emp) {
+        doesEmpHaveDirects(emp, GregorianCalendar.getInstance().get(Calendar.YEAR))
+    }
+
+
+    def doesEmpHaveDirects(Employees emp,year) {
+        def sdate =  new GregorianCalendar(year?.toInteger(),0,1,0,0,0).getTime()
+        def edate =   new GregorianCalendar(year?.toInteger() + 1,0,1,0,0,0).getTime()
+        (EmployeeBoss.withCriteria{
+            eq('boss', emp)
+            eq('defaultBoss', true)
+            employee {
+                lt('hireDate', edate)
+                or {
+                    ge('endDate', sdate)
+                    isNull('endDate')
+                }
+            }
+            projections  {
+                rowCount()
+            }
+        }?.getAt(0)?.value) > 0
+
     }
 
     def saveEmployee(EmployeeMCommand cmd) {
@@ -108,6 +144,9 @@ class EmployeeService extends BaseService {
                 }
             }
             cmd.hasChildren = eb[0].value > 0
+            def states = getEmpGoalStates(emp,sdate,edate)
+
+            cmd.goalStatus = states[0] + " Goals Completed out of  " +states[1]
             cmdList.add(cmd.getDataForJSTree())
         }
         cmdList
@@ -120,22 +159,15 @@ class EmployeeService extends BaseService {
             eq('id', id)
         }
 
-
+        EmployeeBoss.where{
+            employee == em
+        }.deleteAll()
         if (parentId.toString().size() > 4) {
-            def eb = EmployeeBoss.createCriteria().get {
-                eq( "employee", em)
-            }
-            if(!eb) {
-                eb = new EmployeeBoss()
-                eb.employee = em
-                eb.defaultBoss = true
-            }
+            EmployeeBoss eb = new EmployeeBoss()
+            eb.employee = em
+            eb.defaultBoss = true
             eb.boss = Employees.findById(parentId)
             eb.save(flush:true,failOnError:true)
-        } else {
-            EmployeeBoss.where{
-                employee == em
-            }.deleteAll()
         }
 
         [status: 'SUCCESS']
@@ -219,39 +251,65 @@ class EmployeeService extends BaseService {
             }
         }
 
+    def getEmpGoalStates(Employees emp,Date sdate, Date edate) {
+        def completedGoals = EmployeeGoal.withCriteria {
+            eq ("employee",emp)
+            'in'('status',[GoalStatus.Cancelled,GoalStatus.Completed])
+            between('actualCompletedDate',sdate,edate)
+        }
+        def totalGoals = EmployeeGoal.withCriteria {
+            eq ("employee",emp)
+            or{
+                and {
+                    'in'('status',[GoalStatus.Cancelled,GoalStatus.Completed])
+                    between('actualCompletedDate',sdate,edate)
+                }
+                and {
+                    not {'in'("status",[GoalStatus.Cancelled,GoalStatus.Completed])}
+                    between('targetCompletDate',sdate,edate)
+                }
+            }
+        }
+        [completedGoals?.size() ?: 0, totalGoals?.size() ?: 0]
+    }
 
-    def peopleUnder(rtn,me,cal) {
-
-        EmployeeBoss.findAllByBoss(me)?.each { EmployeeBoss eb ->
-            def sum = 0
-            if (!eb.employee.endDate || eb.employee.endDate > cal.getTime()) {
-                EmployeePercentMonthYear.withCriteria {
-                    employeeJRP {
-                        employee {
-                            eq('id', eb.employeeId)
-                            or {
-                                isNull('endDate')
-                                ge('endDate', cal.getTime())
-                            }
-                        }
-                    }
-                    eq('monthYear', cal.getTime())
-                }?.each {
-                    sum += it.percentage
-                }
-                if (sum < 100) {
-                    if (rtn[eb.boss.toString()]) {
-                        rtn[eb.boss.toString()] << eb.employee.toString()
-                    } else {
-                        rtn[eb.boss.toString()] = [eb.employee.toString()]
-                    }
-                }
-                if (eb.employee?.employees?.size() > 0) {
-                    peopleUnder(rtn, eb.employee,cal)
-                }
+    def getEmployeeOver(emp,cal,gtTime) {
+        EmployeeGoal.withCriteria {
+            eq("employee", emp)
+            'in'('status', [GoalStatus.NotStarted, GoalStatus.Behind, GoalStatus.Ongoing, GoalStatus.OnTrack])
+            if(gtTime) {
+                println(gtTime.format('MM-dd-YYYY') + " " + cal.format('MM-dd-YYYY' ) )
+                between('targetCompletDate',gtTime.getTime(),cal.getTime() )
+            } else {
+                lt('targetCompletDate',cal.getTime() )
             }
         }
     }
 
+    def getSingleEmployee(rtn,me,cal,gtTime) {
+        getEmployeeOver(me,cal,gtTime)?.each {
+            if (rtn[me.toString()]) {
+                rtn[me.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]
+            } else {
+                rtn[me.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]]
+            }
+        }
+    }
 
+    def peopleUnder(rtn,me,cal,gtTime) {
+        EmployeeBoss.findAllByBoss(me)?.each { EmployeeBoss eb ->
+            if (!eb.employee.endDate || eb.employee.endDate > cal.getTime()) {
+                getEmployeeOver(eb.employee,cal,gtTime)?.each {
+                    if (rtn[eb.employee.toString()]) {
+                        rtn[eb.employee.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]
+                    } else {
+                        rtn[eb.employee.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]]
+                    }
+                }
+                if (eb.employee?.employees?.size() > 0) {
+                    peopleUnder(rtn, eb.employee, cal)
+                }
+            }
+        }
+    }
 }

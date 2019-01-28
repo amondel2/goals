@@ -185,20 +185,17 @@ class EmployeesController {
             row1.createCell(0).setCellValue(emp.firstName)
             row1.createCell(1).setCellValue(emp.lastName)
             row1.createCell(2).setCellValue(emp.employeeId)
-            row1.createCell(3).setCellValue(emp.location.location.trim())
-            row1.createCell(4).setCellValue(emp.location.geo.trim())
-            row1.createCell(5).setCellValue(myExcelImportService.exportDate(emp.hireDate))
-            row1.createCell(6).setCellValue(myExcelImportService.exportDate(emp.endDate))
-           row1.createCell(7).setCellValue(emp.email)
+            row1.createCell(3).setCellValue(myExcelImportService.exportDate(emp.hireDate))
+            row1.createCell(4).setCellValue(myExcelImportService.exportDate(emp.endDate))
+            row1.createCell(5).setCellValue(emp.email)
             if (boss)
-                row1.createCell(8).setCellValue(boss.boss.employeeId)
+                row1.createCell(6).setCellValue(boss.boss.employeeId)
             if (emp.user && UserRole.findByUserAndRole(emp.user, admin_role)) {
-                row1.createCell(9).setCellValue('yes')
-                row1.createCell(10).setCellValue(emp.user.username)
+                row1.createCell(7).setCellValue('yes')
             } else if (emp.user) {
-                row1.createCell(9).setCellValue('no')
-                row1.createCell(10).setCellValue(emp.user.username)
+                row1.createCell(7).setCellValue('no')
             }
+            row1.createCell(8).setCellValue(emp.user.username)
         }
 
         response.contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -223,14 +220,22 @@ class EmployeesController {
         row1.createCell(0).setCellValue("Aaron")
         row1.createCell(1).setCellValue("Mondelblatt")
         row1.createCell(2).setCellValue("2G5939897")
-        row1.createCell(3).setCellValue("Wayne")
-        row1.createCell(4).setCellValue("US")
-        row1.createCell(5).setCellValue("08/22/2011")
-        row1.createCell(6).setCellValue("")
-        row1.createCell(7).setCellValue("amondel2@gmail.com")
-        row1.createCell(8).setCellValue("1G123456")
-        row1.createCell(9).setCellValue("")
-        row1.createCell(10).setCellValue("amondelblatt")
+        row1.createCell(3).setCellValue("08/22/2011")
+        row1.createCell(4).setCellValue("")
+        row1.createCell(5).setCellValue("amondel2@gmail.com")
+        row1.createCell(6).setCellValue("1G123456")
+        row1.createCell(7).setCellValue("no")
+        row1.createCell(8).setCellValue("amondelblatt")
+        Row row2 = sheet.createRow(2)
+        row2.createCell(0).setCellValue("Charlie")
+        row2.createCell(1).setCellValue("Barba")
+        row2.createCell(2).setCellValue("1G123456")
+        row2.createCell(3).setCellValue("08/22/2011")
+        row2.createCell(4).setCellValue("")
+        row2.createCell(5).setCellValue("cbarba@gmail.com")
+        row2.createCell(6).setCellValue("")
+        row2.createCell(7).setCellValue("yes")
+        row2.createCell(8).setCellValue("cbaraba")
 
         response.contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         response.setHeader("Content-disposition", "attachment; filename=EmployeeImport.xlsx")
@@ -253,11 +258,11 @@ class EmployeesController {
         def file2
         byte[] bytes = file.bytes
 
-        File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
-        fos.close();
+        File convFile = new File(grailsApplication.config.upload.directory.toString().trim() + file.getOriginalFilename())
+        convFile.createNewFile()
+        FileOutputStream fos = new FileOutputStream(convFile)
+        fos.write(file.getBytes())
+        fos.close()
 
         EmployeeExcelImporter em = new EmployeeExcelImporter()
         em.myExcelImportService = myExcelImportService
@@ -278,7 +283,6 @@ class EmployeesController {
             emp.lastName = employee.lastName
             emp.email = employee.email
             emp.company = c
-            emp.location = myExcelImportService.decodeEmpLocation(employee.employeeLocation,employee.employeeGeo)
             emp.hireDate = myExcelImportService.decodeHireDate(employee.hireDate)
             emp.endDate = employee.endDate ? myExcelImportService.decodeHireDate(employee.endDate) : null
             emp.validate()

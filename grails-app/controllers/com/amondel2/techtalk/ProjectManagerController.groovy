@@ -3,10 +3,9 @@ package com.amondel2.techtalk
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
-import org.hibernate.FetchMode
 
 @Secured(['ROLE_USER'])
-class ProjectManagerController extends FranchiseMapperUIController {
+class ProjectManagerController extends MondelMapperUIController {
 
     SpringSecurityService springSecurityService
     def assetResourceLocator
@@ -51,10 +50,10 @@ class ProjectManagerController extends FranchiseMapperUIController {
     }
 
     def getResultSet() {
-        def paramsback = goalService.getResponseSetForEmployee(params?.empId,params.year)
+        def paramsback = goalService.getGoalSetForEmployee(params?.empId,params.year)
             withFormat {
             '*' {
-                render([rs:paramsback[0],smonth:paramsback[1][0],emonth:paramsback[1][1]] as JSON)
+                render([rs:paramsback] as JSON)
             }
         }
     }

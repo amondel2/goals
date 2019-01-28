@@ -26,7 +26,7 @@ class ProjectManagerService {
             def i = 1
             for (i; i <= 12; i++) {
                 if (ej && thisItemsRespponses) {
-                    def thisResponse = thisItemsRespponses[index + "_" + i + "_workPercentage_" + empId]
+                    def thisResponse = thisItemsRespponses[index + "_" + i + "_title_" + empId]
                     if(thisResponse && thisResponse.size() > 0) {
                         def cal = new GregorianCalendar(params.year?.toInteger(), i - 1, 1, 0, 0, 0, 0)
                         def currentValue = EmployeePercentMonthYear.findOrCreateByMonthYearAndEmployeeJRP(cal.getTime(), ej)

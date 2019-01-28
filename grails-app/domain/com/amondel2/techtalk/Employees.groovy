@@ -9,7 +9,7 @@ import grails.rest.*
 @Resource(uri='/employees', formats=['json', 'xml'])
 class Employees implements Serializable  {
 
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
     static constraints = {
@@ -28,7 +28,6 @@ class Employees implements Serializable  {
     static mapping = {
         id generator:'assigned'
         version false
-        employeeJobs cascade: "all-delete-orphan"
         bosses cascade: "none"
     }
 
@@ -49,7 +48,7 @@ class Employees implements Serializable  {
         return this.firstName + ' ' + this.lastName
     }
 
-    static belongsTo = [company:Company,location:EmpLocation]
+    static belongsTo = [company:Company]
     static hasMany = [bosses:EmployeeBoss,employees:EmployeeBoss,goals:EmployeeGoal]
     static mappedBy = [bosses:'employee',employees:'boss']
 
@@ -58,7 +57,6 @@ class Employees implements Serializable  {
     String employeeId
     String firstName
     String lastName
-    EmpLocation location
     Date hireDate
     Date endDate
     String email

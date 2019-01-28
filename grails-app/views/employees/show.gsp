@@ -23,7 +23,7 @@
             <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
             </g:if>
-            <f:display bean="employees" except="restToken,user,bosses,employees,employeeJobs,employeeJobRolesPercents,company,manager" />
+            <f:display bean="employees" except="restToken,user,bosses,employees,goals,company,manager" />
 
 
             <sec:ifAnyGranted roles="ROLE_ADMIN">

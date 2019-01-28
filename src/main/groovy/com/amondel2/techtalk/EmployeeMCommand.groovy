@@ -18,6 +18,7 @@ class EmployeeMCommand implements Validateable {
     String employeeId
     String companyId
     String parentId
+    String goalStatus
     boolean canEdit = true
 
     boolean hasChildren = false
@@ -56,6 +57,7 @@ class EmployeeMCommand implements Validateable {
                 id: this.id,
                 name: this.name,
                 employeeId: this.employeeId,
+                goalStatus: this.goalStatus,
                 parentId: this.parentId
         ]
         ]
