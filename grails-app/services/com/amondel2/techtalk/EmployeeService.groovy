@@ -159,22 +159,15 @@ class EmployeeService extends BaseService {
             eq('id', id)
         }
 
-
+        EmployeeBoss.where{
+            employee == em
+        }.deleteAll()
         if (parentId.toString().size() > 4) {
-            def eb = EmployeeBoss.createCriteria().get {
-                eq( "employee", em)
-            }
-            if(!eb) {
-                eb = new EmployeeBoss()
-                eb.employee = em
-                eb.defaultBoss = true
-            }
+            EmployeeBoss eb = new EmployeeBoss()
+            eb.employee = em
+            eb.defaultBoss = true
             eb.boss = Employees.findById(parentId)
             eb.save(flush:true,failOnError:true)
-        } else {
-            EmployeeBoss.where{
-                employee == em
-            }.deleteAll()
         }
 
         [status: 'SUCCESS']
