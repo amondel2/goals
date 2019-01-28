@@ -124,7 +124,7 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
 				flash.message = "Profile Not Completed..Please contanct Site Admin for help"
 				redirect(controller: "login", action: "auth")
 			}
-			if(params.question1.trim().size() > 4 && params.question1.trim().toLowerCase() == qa[0].trim().toLowerCase() && params.question2.trim().toLowerCase() == qa[1].trim().toLowerCase() ) {
+			if(params.question1.trim().size() > 4 && params.question1.trim().toLowerCase() == qa[0]?.trim()?.toLowerCase() && params.question2.trim().toLowerCase() == qa[1]?.trim()?.toLowerCase() ) {
 				emp.restToken = null
 				emp.save(flush:true)
 				RegistrationCode registrationCode = registrationService.getForgotPassLink(emp)
