@@ -1,6 +1,6 @@
 package com.amondel2.techtalk
 
-import grails.rest.Resource
+
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
@@ -10,7 +10,7 @@ class EmployeeGoalType implements Serializable  {
     def utilService = new Utils()
     private static final serialVersionUID = 1L
 
-    static belongsTo = [employeeGoal:EmployeeGoal,type:GoalType]
+    static belongsTo = [employeeGoal:EmployeeGoal,type:KPOType]
 
 
     static mapping = {
@@ -37,7 +37,7 @@ class EmployeeGoalType implements Serializable  {
     }
 
 
-    GoalType type
+    KPOType type
     EmployeeGoal employeeGoal
     String id
 }
