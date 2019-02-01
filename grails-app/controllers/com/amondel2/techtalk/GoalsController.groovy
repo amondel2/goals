@@ -34,7 +34,7 @@ class GoalsController {
         def date = new GregorianCalendar(year, 0, 1)
         def endDate = new GregorianCalendar(year, 12, 31, 23, 59, 59)
 
-        def gts = GoalType.withCriteria {
+        def gts = KPOType.withCriteria {
             eq('isActive', true)
             between('endDate', date.getTime(), endDate.getTime())
         }

@@ -6,5 +6,5 @@ import grails.plugin.springsecurity.annotation.Secured
 class KPOTypeController {
 
     static responseFormats = ['html','json', 'xml']
-    static scaffold = GoalType
+    static scaffold = KPOType
 }

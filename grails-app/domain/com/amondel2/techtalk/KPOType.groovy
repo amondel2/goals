@@ -4,8 +4,8 @@ import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/goalType', formats=['json', 'xml'])
-class GoalType implements Serializable  {
+@Resource(uri='/KPOType', formats=['json', 'xml'])
+class KPOType implements Serializable  {
 
     def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
@@ -38,9 +38,6 @@ class GoalType implements Serializable  {
     String toString(){
         return this.title
     }
-
-
-
 
     String id
     String title
