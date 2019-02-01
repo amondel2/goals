@@ -3,7 +3,7 @@ package com.amondel2.techtalk
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class GoalTypeControllerSpec extends Specification implements ControllerUnitTest<GoalTypeController> {
+class KPOTypeControllerSpec extends Specification implements ControllerUnitTest<GoalTypeController> {
 
     def setup() {
     }

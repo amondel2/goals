@@ -4,8 +4,6 @@ import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
-import org.springframework.validation.Errors
-
 
 @Transactional
 class GoalService {
@@ -42,7 +40,7 @@ class GoalService {
     }
 
     def getActiveGoalTypes(){
-        GoalType.findAllByActive(true)
+        KPOType.findAllByActive(true)
     }
 
 
@@ -105,13 +103,13 @@ class GoalService {
                 if (p[id + "_types"] instanceof String) {
                     EmployeeGoalType egt = new EmployeeGoalType()
                     egt.employeeGoal = eg
-                    egt.type = GoalType.findById(p[id + "_types"])
+                    egt.type = KPOType.findById(p[id + "_types"])
                     egt.save()
                 } else {
                     p[id + "_types"].each {
                         EmployeeGoalType egt = new EmployeeGoalType()
                         egt.employeeGoal = eg
-                        egt.type = GoalType.findById(it)
+                        egt.type = KPOType.findById(it)
                         egt.save()
                     }
                 }

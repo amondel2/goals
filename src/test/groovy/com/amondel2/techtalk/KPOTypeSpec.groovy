@@ -3,7 +3,7 @@ package com.amondel2.techtalk
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class GoalTypeSpec extends Specification implements DomainUnitTest<GoalType> {
+class KPOTypeSpec extends Specification implements DomainUnitTest<KPOType> {
 
     def setup() {
     }
