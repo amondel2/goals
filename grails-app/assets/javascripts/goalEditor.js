@@ -8,6 +8,15 @@ $(document).ready(function(){
  $(document).on('click', "button[remove_unsaved_goal_btn='t']" , null , function () {
      $(this).parent().parent().parent().parent().remove();
  });
+
+    CKEDITOR.on('instanceReady', function(){
+        $.each( CKEDITOR.instances, function(instance) {
+            CKEDITOR.instances[instance].on("change", function(e) {
+                for ( instance in CKEDITOR.instances )
+                    CKEDITOR.instances[instance].updateElement();
+            });
+        });
+    });
 });
 
 var createNewCard = function() {
@@ -44,7 +53,7 @@ var createNewCard = function() {
         $(ul).append(li);
         li = $("<li></li>");
         divgrp = $('<div class="form-group"></div>');
-        divgrp.append('<label for="'+ res.id + '_types">Goal Status: </label>');
+        divgrp.append('<label for="'+ res.id + '_types">KPO Type: </label>');
         item = $('#tmp_typesdrp').clone(true,true);
         item.attr('name',res.id + "_types");
         item.attr('id',res.id + "_types");
@@ -70,12 +79,6 @@ var createNewCard = function() {
         li.append(divgrp1);
         li.append(divgrp2);
         $(ul).append(li);
-        // <li>
-            //                <div class="form-group">
-            //                <label for="${goal.id}_status">Goal Status: </label>
-            //                ${ps.goalStatusDropDown([value:goal.status,name:goal.id + "_status"])}
-            //                </div>
-            //            </li>
 
         var div1 = $('<div class="card-body"></div>').append(ul)
         var div2 = $('<div id="collapseTwo'+count+'" class="collapse" role="tabpanel" aria-labelledby="headingTwo'+count+'" data-parent="#accordionEx"></div>').append(div1);
@@ -103,7 +106,7 @@ var createNewCard = function() {
 
     });
 
-}
+};
 
 var showDateDrop = function() {
 
@@ -119,7 +122,7 @@ var showDateDrop = function() {
         $(baseSel).first().css('display','block');
     }
 
-}
+};
 
 
 var savebtn = function() {
@@ -168,11 +171,3 @@ var savebtn = function() {
          });
 };
 
-CKEDITOR.on('instanceReady', function(){
-    $.each( CKEDITOR.instances, function(instance) {
-        CKEDITOR.instances[instance].on("change", function(e) {
-            for ( instance in CKEDITOR.instances )
-                CKEDITOR.instances[instance].updateElement();
-        });
-    });
-});

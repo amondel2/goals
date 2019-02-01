@@ -60,7 +60,7 @@
 
                        <li>
                            <div class="form-group">
-                           <label for="${goal.id}_types">Goal Types: </label>
+                           <label for="${goal.id}_types">KPO Types: </label>
                            ${ps.goalTypeDropDown([value:goal?.goalType,goalTypes:goalTypes,name:goal.id + "_types"])}
                            </div>
                        </li>
