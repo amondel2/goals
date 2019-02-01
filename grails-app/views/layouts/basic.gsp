@@ -43,7 +43,7 @@
 					 <span class="caret"></span></a>
 					 <ul class="dropdown-menu">
                            <li class="nav-item dropdown-item"><a  class="nav-link"  href="${request.contextPath}/employees">Employees</a> </li>
-						 <li class="nav-item dropdown-item"><a  class="nav-link" href="${request.contextPath}/goalType">Goal Type</a></li>
+						 <li class="nav-item dropdown-item"><a  class="nav-link" href="${request.contextPath}/KPOType">KPO Type</a></li>
 						 <li class="nav-item dropdown-item"><a  class="nav-link"  href="${request.contextPath}/employeeBoss">Employee to Boss Relationship</a></li>
 						 </ul>
 					 </li>
