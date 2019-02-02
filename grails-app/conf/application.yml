@@ -99,3 +99,9 @@ environments:
     production:
         upload:
             directory: /opt/tomcat/uploads/
+
+grails:
+    plugin:
+        databasemigration:
+            updateOnStart: true
+            updateOnStartFileName: changelog.groovy

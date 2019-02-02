@@ -25,7 +25,7 @@
 
 <button type="button" id="saveBtn" class="btn btn-primary">Save</button> <button type="button" id="addBtn" class="btn btn-secondary">Add</button>
 <div id="main_error" style="display: none;" class="fm-error-msg error-details ui-state-error"></div>
-
+<div id="main_save_done" style="display: none;" class="fm-success-msg success alert-success">Save Completed with No Errors</div>
 <form method="POST" id="gaolFrm" onsubmit="return false;">
 <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
 <g:each var="goal" in="${goalSet}" status="idx"  >

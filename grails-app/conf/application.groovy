@@ -12,7 +12,7 @@ environments {
     development {
         dataSource {
             password = pass
-            dbCreate = "update"
+            dbCreate = "none"
             username = user
             url= dbString
             dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
@@ -30,7 +30,7 @@ environments {
     }
     production{
         dataSource {
-            dbCreate = "update"
+            dbCreate = "none"
             username = user
             password = pass
             dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
