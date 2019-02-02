@@ -150,7 +150,11 @@ var savebtn = function() {
     // data.ids = ids;
     $.post(window.fmBaseDir + 'saveGoals',data )
         .then(function(res) {
-
+            $.each($('div[error_field="true"]'),function(idx,value){
+                $(value).css('display', 'none');
+                $(value).html("");
+                $("#main_error").css('display', 'none');
+            });
 
             $.each(res.titles,function(idx,value){
                 $("h5." + idx).html(value[0]);
