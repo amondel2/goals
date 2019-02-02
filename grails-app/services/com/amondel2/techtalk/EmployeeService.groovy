@@ -106,7 +106,6 @@ class EmployeeService extends BaseService {
         o.firstName = name[0]
         o.lastName = name[1]
         o.employeeId = cmd.employeeId
-        o.location =  EmpLocation.first()
         o.company = Company.first()
         o.save(flush:true,failOnError:true)
         if(cmd.parentId) {

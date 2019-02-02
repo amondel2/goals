@@ -63,9 +63,6 @@ class MyExcelImportService extends org.grails.plugins.excelimport.ExcelImportSer
         getCellValue(cell, pcc, evaluator, propertyConfiguration)
     }
 
-    def encodeEmpLocation(String loc) {
-        loc.replaceAll(',','-').reverse().replaceFirst(' ', '').reverse()
-    }
 
     String exportDate(Date date) {
         if(!date) {

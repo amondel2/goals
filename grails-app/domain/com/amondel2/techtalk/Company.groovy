@@ -18,10 +18,7 @@ class Company implements Serializable  {
     static mapping = {
         id generator: 'assigned'
         version false
-        portfolios cascade: "all-delete-orphan"
-        empLocations cascade: "all-delete-orphan"
-        jobs cascade: "all-delete-orphan"
-        projects cascade: "all-delete-orphan"
+        employees cascade: "all-delete-orphan"
     }
 
     def beforeValidate() {

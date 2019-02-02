@@ -200,7 +200,7 @@ databaseChangeLog = {
                 constraints(nullable: "false")
             }
 
-            column(defaultValueComputed: "CURRENT_TIMESTAMP", name: "end_date", type: "datetime(6)") {
+            column( name: "end_date", type: "datetime(6)") {
                 constraints(nullable: "false")
             }
         }
