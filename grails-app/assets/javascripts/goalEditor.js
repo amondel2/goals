@@ -127,7 +127,12 @@ var showDateDrop = function() {
 
 var savebtn = function() {
     var data = $("#gaolFrm").serialize();
-
+    $("#main_error").css('display', 'none');
+    $("#main_save_done").css('display', 'none');
+    $.each($('div[error_field="true"]'),function(idx,value){
+        $(value).css('display', 'none');
+        $(value).html("");
+    });
     // var ids = [];
 
     $.each($(".card-body ul"),function(idx,val) {
@@ -139,11 +144,7 @@ var savebtn = function() {
     // data.ids = ids;
     $.post(window.fmBaseDir + 'saveGoals',data )
         .then(function(res) {
-            $.each($('div[error_field="true"]'),function(idx,value){
-                $(value).css('display', 'none');
-                $(value).html("");
-                $("#main_error").css('display', 'none');
-            });
+
 
             $.each(res.titles,function(idx,value){
                 $("h5." + idx).html(value[0]);
@@ -164,6 +165,8 @@ var savebtn = function() {
             if(errorcnt1 > 0 ) {
                 $("#main_error").html("There is " + errorcnt1 + " error(s) in " + errorcnt2 + " different Goal(s)");
                 $("#main_error").css('display', 'block');
+            } else {
+                $("#main_save_done").css('display', 'block');
             }
 
         }).fail(function () {
