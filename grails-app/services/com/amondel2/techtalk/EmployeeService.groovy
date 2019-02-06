@@ -295,6 +295,19 @@ class EmployeeService extends BaseService {
         }
     }
 
+    Boolean isUserHaveAccessChildren(Employees emp,User user, year) {
+        if(emp.user == user) {
+            return true
+        }
+        Employees empt = Employees.findByUser(user)
+        if(!empt) {
+            return true
+        }
+        def rtn = []
+        this.getAllEmployeesChildernFlat(empt,rtn,year)
+        rtn.find{ it == emp }?.size() > 0
+    }
+
     def peopleUnder(rtn,me,cal,gtTime) {
         EmployeeBoss.findAllByBoss(me)?.each { EmployeeBoss eb ->
             if (!eb.employee.endDate || eb.employee.endDate > cal.getTime()) {

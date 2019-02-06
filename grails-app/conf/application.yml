@@ -27,7 +27,7 @@ endpoints:
         enabled: true
 server:
     session:
-        timeout: 300
+        timeout: 3600
 ---
 grails:
     mime:

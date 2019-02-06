@@ -31,6 +31,11 @@ class GoalsController {
                 }
             }
         }
+        if (employeeService.isUserHaveAccessChildren(e,springSecurityService.getCurrentUser(),year) == false ) {
+            flash.error = "No Access"
+            redirect(controller: "projectManager")
+            return;
+        }
         def date = new GregorianCalendar(year, 0, 1)
         def endDate = new GregorianCalendar(year, 12, 31, 23, 59, 59)
 
