@@ -35,7 +35,7 @@ var createNewCard = function() {
             $(ul).append(li);
          li = $("<li></li>");
         li.append('<label for="'+ res.id + '_title">Goal Title: </label>');
-        li.append('<input type="text" class="form-control" value="" minlength="3" name="'+ res.id + '_title" required="required" aria-required="true"  aria-label="title" />');
+        li.append('<input type="text" class="form-control" value="" maxlength="100" minlength="3" name="'+ res.id + '_title" required="required" aria-required="true"  aria-label="title" />');
         $(ul).append(li);
         li = $("<li></li>");
         li.append('<label for="'+ res.id + '_descript">Goal Description: </label>');
@@ -95,8 +95,12 @@ var createNewCard = function() {
             });
 
             instance.updateElement();
+            instance.on(  'change', function (e) {
+                e.editor.updateElement();
+                $("#" + res.id + "_descript").val(e.editor.getData());
+            });
 
-            instance.on( 'blur', function (e) {
+            instance.on(  'blur', function (e) {
                 e.editor.updateElement();
                 $("#" + res.id + "_descript").val(e.editor.getData());
             });
@@ -126,13 +130,15 @@ var showDateDrop = function() {
 
 
 var savebtn = function() {
-    var data = $("#gaolFrm").serialize();
+
     $("#main_error").css('display', 'none');
     $("#main_save_done").css('display', 'none');
     $.each($('div[error_field="true"]'),function(idx,value){
         $(value).css('display', 'none');
         $(value).html("");
     });
+
+    var data = $("#gaolFrm").serialize();
     // var ids = [];
 
     $.each($(".card-body ul"),function(idx,val) {

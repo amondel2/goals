@@ -20,7 +20,6 @@ class ProjectManagerController extends MondelMapperUIController {
         }
 
 
-
         def cal = Calendar.getInstance()
         def date = params?.myDate_year ? new GregorianCalendar(params.myDate_year?.toInteger(),0,1) : new GregorianCalendar(cal.get(Calendar.YEAR),0,1)
 //        def edate = params?.myDate_year ? new GregorianCalendar(params.myDate_year?.toInteger(),11,31) : new GregorianCalendar(cal.get(Calendar.YEAR),11,31)

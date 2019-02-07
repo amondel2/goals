@@ -277,7 +277,6 @@ class EmployeeService extends BaseService {
             eq("employee", emp)
             'in'('status', [GoalStatus.NotStarted, GoalStatus.Behind, GoalStatus.Ongoing, GoalStatus.OnTrack])
             if(gtTime) {
-                println(gtTime.format('MM-dd-YYYY') + " " + cal.format('MM-dd-YYYY' ) )
                 between('targetCompletDate',gtTime.getTime(),cal.getTime() )
             } else {
                 lt('targetCompletDate',cal.getTime() )
@@ -301,11 +300,12 @@ class EmployeeService extends BaseService {
         }
         Employees empt = Employees.findByUser(user)
         if(!empt) {
+            //Super user
             return true
         }
         def rtn = []
-        this.getAllEmployeesChildernFlat(empt,rtn,year)
-        rtn.find{ it == emp }?.size() > 0
+        this.getAllEmployeesChildernFlat(empt.id,rtn,year)
+         rtn.find{ it.equals(emp) }.equals(null) == false
     }
 
     def peopleUnder(rtn,me,cal,gtTime) {
@@ -319,7 +319,7 @@ class EmployeeService extends BaseService {
                     }
                 }
                 if (eb.employee?.employees?.size() > 0) {
-                    peopleUnder(rtn, eb.employee, cal)
+                    peopleUnder(rtn, eb.employee, cal,gtTime)
                 }
             }
         }

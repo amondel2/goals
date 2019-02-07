@@ -13,6 +13,7 @@ class GoalsController {
     def index() {
         Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))
         if (!e) {
+            flash.error = "No Employee Found"
             redirect(controller: "projectManager")
             return;
         }
@@ -32,7 +33,7 @@ class GoalsController {
             }
         }
         if (employeeService.isUserHaveAccessChildren(e,springSecurityService.getCurrentUser(),year) == false ) {
-            flash.error = "No Access"
+            flash.error = "No Employee Found"
             redirect(controller: "projectManager")
             return;
         }
