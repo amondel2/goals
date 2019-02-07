@@ -16,6 +16,7 @@ class EmployeeGoal implements Serializable  {
         id generator:'assigned'
         version false
         sort "title"
+        description type: 'text'
     }
 
     static constraints = {
@@ -30,6 +31,8 @@ class EmployeeGoal implements Serializable  {
     def beforeValidate() {
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
+        }
+        if(!createdDate || createdDate.equals(null)) {
             createdDate = new Date()
             modifiedDate = new Date()
         }
