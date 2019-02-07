@@ -277,7 +277,6 @@ class EmployeeService extends BaseService {
             eq("employee", emp)
             'in'('status', [GoalStatus.NotStarted, GoalStatus.Behind, GoalStatus.Ongoing, GoalStatus.OnTrack])
             if(gtTime) {
-                println(gtTime.format('MM-dd-YYYY') + " " + cal.format('MM-dd-YYYY' ) )
                 between('targetCompletDate',gtTime.getTime(),cal.getTime() )
             } else {
                 lt('targetCompletDate',cal.getTime() )
@@ -320,7 +319,7 @@ class EmployeeService extends BaseService {
                     }
                 }
                 if (eb.employee?.employees?.size() > 0) {
-                    peopleUnder(rtn, eb.employee, cal)
+                    peopleUnder(rtn, eb.employee, cal,gtTime)
                 }
             }
         }
