@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-version "0.10"
+version "0.11"
 group "goals"
 
 apply plugin:"eclipse"
