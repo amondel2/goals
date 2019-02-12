@@ -9,16 +9,18 @@ buildscript {
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:${assetPipelineVersion}"
         classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
         classpath 'org.grails.plugins:database-migration:3.0.4'
+        classpath "org.grails.plugins:views-gradle:1.2.10"
     }
 }
 
-version "0.10"
+version "0.11"
 group "goals"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"
+apply plugin: "org.grails.plugins.views-json"
 apply plugin:"com.energizedwork.webdriver-binaries"
 apply plugin: "com.bertramlabs.asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
@@ -29,6 +31,8 @@ repositories {
 }
 
 dependencies {
+    compile "org.grails.plugins:views-json"
+    compile "org.grails.plugins:views-json-templates"
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"

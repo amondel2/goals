@@ -2,6 +2,7 @@ package com.amondel2.techtalk
 
 import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.SpringSecurityService
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 
@@ -10,6 +11,7 @@ class GoalService {
 
     GrailsApplication grailsApplication
     MessageSource messageSource
+    SpringSecurityService springSecurityService
 
     def getGoalSetForEmployee(Employees emp, year) {
         year = year ? year.toInteger() : GregorianCalendar.getInstance().get(Calendar.YEAR).toInteger()
@@ -29,6 +31,7 @@ class GoalService {
             rs['targetCompletDate'] = eg.targetCompletDate
             rs['orginTargetDate'] = eg.orginTargetDate
             rs['status'] = eg.status
+            rs['commentsCount'] = EmployeeGoalComment.countByEmployeeGoal(eg)
             rs['goalType'] = eg.types.collect{it.type.id}
             restultSet.add(rs)
         }
@@ -43,6 +46,31 @@ class GoalService {
         KPOType.findAllByActive(true)
     }
 
+    def saveGoalsComments (params) {
+        def locale = LocaleContextHolder.getLocale()
+        def egc = EmployeeGoal.findById(params.goalId)
+        def worked  = [success:true]
+        if(egc) {
+            EmployeeGoalComment eg = new EmployeeGoalComment()
+            try {
+                eg.modifiedUser = springSecurityService.getCurrentUser()
+                eg.commentStr = params.newComment
+                eg.employeeGoal = egc
+                eg.save(flush: true, failOnError: true)
+            } catch (Exception e) {
+                worked = [success:false,msg:
+                    eg.errors.collect { errs ->
+                        errs.allErrors.collect {
+                            messageSource.getMessage(it, locale)
+                        }.join(" ")
+                    }.join(" ")]
+
+            }
+        } else {
+            worked = [success:false,msg:"Must Save Parent Goal First"]
+        }
+        worked
+    }
 
 
     def saveGoals(p) {

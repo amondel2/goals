@@ -7,7 +7,7 @@ import grails.rest.*
 @Resource(uri='/company', formats=['json', 'xml','html'])
 class Company implements Serializable  {
 
-    def utilService = Utils.getInstance()
+    def utilService = new Utils()
     private static final serialVersionUID = 1L
 
     static constraints = {
@@ -38,7 +38,7 @@ class Company implements Serializable  {
         return this.name
     }
 
-    static hasMany = [employees:Employees]
+    static hasMany = [employees:Employees, empLocations:EmpLocation]
 
     String id
     String name

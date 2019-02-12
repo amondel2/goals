@@ -16,14 +16,14 @@ class ExtendTagsTagLib {
 
 	def goalTypeDropDown = {attrs, body ->
 
-		out << body() << g.select([id:attrs.name,class:"form-control",from:attrs.goalTypes,name:attrs.name,value:attrs.value, multiple:"true", optionValue:'title', optionKey: 'id'])
+		out << body() << g.select([id:attrs.name,class:"form-check-inline align-top", style: "max-width:271px;",from:attrs.goalTypes,name:attrs.name,value:attrs.value, multiple:"true", optionValue:'title', optionKey: 'id'])
 
 
 	}
 
 	def goalStatusDropDown = {attrs, body ->
 
-		out << body() << g.select([class:"form-control statusDropdownElm",from:GoalStatus,name:attrs.name,value:attrs.value,id:attrs.name])
+		out << body() << g.select([class:"form-check-inline align-top statusDropdownElm",from:GoalStatus,name:attrs.name,value:attrs.value,id:attrs.name])
 
 
 	}

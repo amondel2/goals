@@ -1,12 +1,10 @@
 <%@ page import="java.util.Calendar"%>
-<%@ page import="com.amondel2.techtalk.GoalStatus"%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="basic"/>
                 <script>
-                    fmBaseDir = '${request.contextPath}/${controllerName}/';
-                    var fmGoalsDir = '${request.contextPath}/goals/';
+                    fmBaseDir = '/${controllerName}/';
                     fmCompanyName = '${companyName}';
                     var fmBossId = '${boss?.id}';
                     var fmBossName = '${boss.toString()}';
@@ -27,7 +25,7 @@
                 <asset:stylesheet src="themes/default/style.min.css" />
 	</head>
 	<body>
-		<h1>Goal Management</h1>
+		<h1>Project Management & Tracking</h1>
     <form method="POST" id="YearChangeFrm">
         <div>Select Year: <g:datePicker name="myDate" default="${date.getTime()}" precision="year" relativeYears="[-3..2]"/> </div>
     </form>
@@ -46,14 +44,14 @@
                         <span class="fm-field" id="fm-name-field"></span>
                     </div>
                     <div class="fm-field-container">
-                        <span class="fm-field-label"><g:message code="page.label.employeeId" default="Goal Status" encodeAs="HTML" />:</span>
+                        <span class="fm-field-label"><g:message code="page.label.employeeId" default="Employee Id" encodeAs="HTML" />:</span>
                         <span class="fm-field" id="fm-portfolio-id-field"></span>
                     </div>
                 </div>
                 <div class="fm-right-info">
                         <div class="fm-right-info-buttonset">
                             <input type="button"
-                                   id="edit-person-goals-btn"
+                                   id="edit-person-work-btn"
                                    onclick="editpersongoal(this)"
                                    class="ui-button ui-widget ui-state-default ui-corner-all fm-only-on-select"
                                    value="<g:message code='page.button.editGoals' default="Edit Person Goals" encodeAs='HTML' />">
@@ -100,16 +98,10 @@
         <div id="fm-delete-confirm">
             <p><g:message code="page.orphan.msg" encodeAs="HTML" default="Are You Sure you want to delete?"/></p>
         </div>
-        <div id="fm-editpersongoals">
+        <div id="fm-editpersonwork">
             <div>
-                <table id="editpersongoalstable">
-                    <thead>
-                    <tr><th>Title</th><th>Status</th><th>Action</th></tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+                Enter Leave Date: <g:datePicker name="leaveDate" default="${date.getTime()}" precision="day" relativeYears="[-3..2]"/>
+                <input type="hidden" name="leaveEmpId" id="leaveEmpId" value="" />
             </div>
         </div>
 
@@ -123,10 +115,6 @@
             <g:each  in="${goalTypes}" var="gt">
                 <input type="checkbox" name="goalTypes[]" id="gen_${gt.id}" value="${gt.id}" /><label for="gen_${gt.id}">${gt.title}</label>
             </g:each>
-        </div>
-        <div id="gs_select">
-            <g:select name="goalStatus" from="${GoalStatus}" />
-
         </div>
     </div>
 	</body>
