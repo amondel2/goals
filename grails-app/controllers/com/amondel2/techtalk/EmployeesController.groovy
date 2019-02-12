@@ -257,8 +257,7 @@ class EmployeesController {
         MultipartFile file = params.employeeFile
         def file2
         byte[] bytes = file.bytes
-        println(grailsApplication.config.upload.directory.toString().trim())
-        File convFile = new File(grailsApplication.config.upload.directory?.toString()?.trim() ?: '' + file.getOriginalFilename())
+        File convFile = new File(grailsApplication.config.upload.directory?.toString()?.trim() + file.getOriginalFilename())
         convFile.createNewFile()
         FileOutputStream fos = new FileOutputStream(convFile)
         fos.write(file.getBytes())

@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="basic"/>
     <script>
-        fmBaseDir = '/${controllerName}/';
+        fmBaseDir = '${request.contextPath}/${controllerName}/';
 
     </script>
 
@@ -13,7 +13,7 @@
 <h1>Employee Import Sheet</h1>
 <div>${flash.message}</div>
 <div>${flash.errors}</div>
-<li><a class="home" href="/employees/importTemplate">Import Sheet Template</a></li>
+<li><a class="home" href="${request.contextPath}/employees/importTemplate">Import Sheet Template</a></li>
 <g:uploadForm name="uploadFeaturedImage" action="employeeFileUpload">
 
     Check to Append: <input type="checkbox" name="append" value="append" checked="true" />

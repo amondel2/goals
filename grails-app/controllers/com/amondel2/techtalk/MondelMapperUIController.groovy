@@ -4,8 +4,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 
 abstract class MondelMapperUIController {
-               
-    def portfolioFMService
+
     def baseFMService
     def employeeService
 

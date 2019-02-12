@@ -4,10 +4,9 @@ package com.amondel2.techtalk
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/employeeGoalType', formats=['json', 'xml'])
 class EmployeeGoalType implements Serializable  {
 
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
     static belongsTo = [employeeGoal:EmployeeGoal,type:KPOType]

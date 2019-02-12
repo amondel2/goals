@@ -7,7 +7,7 @@ import grails.rest.*
 @Resource(uri='/company', formats=['json', 'xml','html'])
 class Company implements Serializable  {
 
-    def utilService = new Utils()
+    def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
     static constraints = {
@@ -18,10 +18,7 @@ class Company implements Serializable  {
     static mapping = {
         id generator: 'assigned'
         version false
-        portfolios cascade: "all-delete-orphan"
-        empLocations cascade: "all-delete-orphan"
-        jobs cascade: "all-delete-orphan"
-        projects cascade: "all-delete-orphan"
+        employees cascade: "all-delete-orphan"
     }
 
     def beforeValidate() {
@@ -41,7 +38,7 @@ class Company implements Serializable  {
         return this.name
     }
 
-    static hasMany = [employees:Employees, empLocations:EmpLocation]
+    static hasMany = [employees:Employees]
 
     String id
     String name

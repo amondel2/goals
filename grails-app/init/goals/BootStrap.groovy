@@ -6,7 +6,7 @@ class BootStrap {
 
     def init = { servletContext ->
 
-        Company c = Company.findOrCreateByName("mycpomp")
+        Company c = Company.findOrCreateByName("Reed Tech")
         c.save()
 
 
