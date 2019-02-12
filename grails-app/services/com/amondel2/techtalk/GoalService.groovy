@@ -86,6 +86,7 @@ class GoalService {
             id = id.substring(0, id.indexOf('_'))
 
             EmployeeGoal eg = EmployeeGoal.findOrCreateById(id)
+            eg.id = id
             eg.employee = emp
             eg.title = p[id + "_title"]
             eg.description = p[id + "_descript"]?.trim()
