@@ -550,5 +550,24 @@ databaseChangeLog = {
         dropColumn(columnName: "location_id", tableName: "employees")
     }
 
+    changeSet(author: "aaron (generated)", id: "1549936586973-1") {
+        addColumn(tableName: "employee_goal_comment") {
+            column(name: "modified_date", type: "datetime") {
+                constraints(nullable: "false")
+            }
+        }
+    }
+
+    changeSet(author: "aaron (generated)", id: "1549936586973-2") {
+        addColumn(tableName: "employee_goal_comment") {
+            column(name: "modified_user_id", type: "bigint") {
+                constraints(nullable: "false")
+            }
+        }
+    }
+
+    changeSet(author: "aaron (generated)", id: "1549936586973-3") {
+        addForeignKeyConstraint(baseColumnNames: "modified_user_id", baseTableName: "employee_goal_comment", constraintName: "FKgs1bnqhy41wgeqfxhdpmyp6m9", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "user")
+    }
 
 }

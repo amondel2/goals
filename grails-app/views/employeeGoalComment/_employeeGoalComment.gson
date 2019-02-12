@@ -1,0 +1,12 @@
+import com.amondel2.techtalk.EmployeeGoalComment
+
+model {
+    EmployeeGoalComment employeeGoalComment
+}
+
+json g.render(employeeGoalComment,[expand:['modifiedUser'], excludes:['createdDate','modifiedUser']]) {
+    modifiedUser {
+        username employeeGoalComment.modifiedUser.username
+    }
+    createdDate employeeGoalComment.createdDate?.format('MM-DD-YYYY')
+}

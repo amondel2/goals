@@ -4,13 +4,13 @@ import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/employeeGoalComment', formats=['json', 'xml'])
+@Resource(uri='/employeeGoalComment', superClass=SubclassRestfulController, formats=['json', 'xml'])
 class EmployeeGoalComment implements Serializable  {
 
     def utilService = Utils.getInstance()
     private static final serialVersionUID = 1L
 
-    static belongsTo = [employeeGoal:EmployeeGoal]
+    static belongsTo = [employeeGoal:EmployeeGoal,modifiedUser:User]
 
 
     static mapping = {
@@ -22,11 +22,12 @@ class EmployeeGoalComment implements Serializable  {
     static constraints = {
         employeeGoal nullable: false, blank: false
         createdDate nullable: false, blank: false, maxSize: 500
-        commentStr nullable: false, blank: false, maxSize: 500
+        commentStr nullable: false, blank: false, maxSize: 500, minSize: 5
     }
 
     def beforeValidate() {
         createdDate = new Date()
+        modifiedDate = new Date()
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
         }
@@ -34,15 +35,22 @@ class EmployeeGoalComment implements Serializable  {
 
     def beforeInsert() {
         createdDate = new Date()
+        modifiedDate = new Date()
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
 
         }
     }
 
+    def beforeUpdate() {
+        modifiedDate = new Date()
+    }
 
+
+    Date modifiedDate
     Date createdDate
     String commentStr
+    User modifiedUser
     EmployeeGoal employeeGoal
     String id
 }

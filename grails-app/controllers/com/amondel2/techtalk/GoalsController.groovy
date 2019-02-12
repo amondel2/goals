@@ -56,6 +56,17 @@ class GoalsController {
         }
     }
 
+    def saveComments() {
+
+        def worked = goalService.saveGoalsComments(params)
+
+
+
+        withFormat {
+            '*' { render worked as JSON}
+        }
+    }
+
     def createCard() {
         def p = [:]
         p.id = Utils.getInstance().idGenerator()
