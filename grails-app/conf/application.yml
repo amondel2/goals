@@ -25,7 +25,9 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
-
+server:
+    session:
+        timeout: 3600
 ---
 grails:
     mime:
@@ -84,50 +86,22 @@ grails:
 endpoints:
     jmx:
         unique-names: true
-
+upload:
+    directory:
 ---
 hibernate:
     cache:
         queries: false
         use_second_level_cache: false
         use_query_cache: false
-dataSource:
-    pooled: true
-    jmxExport: true
-    driverClassName: com.mysql.jdbc.Driver
-    username: root
-    password: splatt66
-    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
 environments:
-    development:
-        dataSource:
-            dbCreate: create-drop
-            username: root
-            url: jdbc:mysql://localhost:3306/goals?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
-    test:
-        dataSource:
-            dbCreate: update
-            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
-        dataSource:
-            dbCreate: none
-            url: jdbc:mysql://localhost:3306/goals?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
-            properties:
-                jmxEnabled: true
-                initialSize: 5
-                maxActive: 50
-                minIdle: 5
-                maxIdle: 25
-                maxWait: 10000
-                maxAge: 600000
-                timeBetweenEvictionRunsMillis: 5000
-                minEvictableIdleTimeMillis: 60000
-                validationQuery: SELECT 1
-                validationQueryTimeout: 3
-                validationInterval: 15000
-                testOnBorrow: true
-                testWhileIdle: true
-                testOnReturn: false
-                jdbcInterceptors: ConnectionState
-                defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+        upload:
+            directory: /opt/tomcat/uploads/
+
+grails:
+    plugin:
+        databasemigration:
+            updateOnStart: true
+            updateOnStartFileName: changelog.groovy
