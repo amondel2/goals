@@ -23,7 +23,7 @@
                 </script>
                 <asset:javascript src="jstree-min.js" />
                 <asset:javascript src="hierarchyUI.js" />
-                <asset:stylesheet src="franchiseMapperUI.css" />
+                <asset:stylesheet src="mondelMapperUI.css" />
                 <asset:stylesheet src="themes/default/style.min.css" />
 	</head>
 	<body>

@@ -24,16 +24,18 @@ class GoalService {
              between('targetCompletDate',gc.getTime(),ec.getTime())
         }.sort{a,b -> a.title <=> b.title}?.each { EmployeeGoal eg ->
             def rs = [:]
-            rs['id'] = eg.id
-            rs['title'] = eg.title
-            rs['description'] = eg.description
-            rs['actualCompletedDate'] = eg.actualCompletedDate
-            rs['targetCompletDate'] = eg.targetCompletDate
-            rs['orginTargetDate'] = eg.orginTargetDate
-            rs['status'] = eg.status
-            rs['commentsCount'] = EmployeeGoalComment.countByEmployeeGoal(eg)
-            rs['goalType'] = eg.types.collect{it.type.id}
-            restultSet.add(rs)
+            if( ( !emp.showHidden && eg.status in [GoalStatus.OnTrack,GoalStatus.Behind, GoalStatus.Ongoing, GoalStatus.NotStarted] ) || emp.showHidden ) {
+                rs['id'] = eg.id
+                rs['title'] = eg.title
+                rs['description'] = eg.description
+                rs['actualCompletedDate'] = eg.actualCompletedDate
+                rs['targetCompletDate'] = eg.targetCompletDate
+                rs['orginTargetDate'] = eg.orginTargetDate
+                rs['status'] = eg.status
+                rs['commentsCount'] = EmployeeGoalComment.countByEmployeeGoal(eg)
+                rs['goalType'] = eg.types.collect { it.type.id }
+                restultSet.add(rs)
+            }
         }
         restultSet
     }
@@ -86,6 +88,7 @@ class GoalService {
             id = id.substring(0, id.indexOf('_'))
 
             EmployeeGoal eg = EmployeeGoal.findOrCreateById(id)
+            eg.id = id
             eg.employee = emp
             eg.title = p[id + "_title"]
             eg.description = p[id + "_descript"]?.trim()

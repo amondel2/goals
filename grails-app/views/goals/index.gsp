@@ -8,7 +8,7 @@
         fmBaseDir = '${request.contextPath}/${controllerName}/';
         var workingYear = parseInt('${date.get(Calendar.YEAR)}');
     </script>
-    <asset:stylesheet src="franchiseMapperUI.css" />
+    <asset:stylesheet src="mondelMapperUI.css" />
     <asset:stylesheet src="themes/default/style.min.css" />
 
     <ckeditor:resources/>
@@ -22,6 +22,8 @@
 </form>
 
 
+<input type="checkbox" name="showhiddenBox" id="showhiddenBox" aria-label="show hidden items" value="true" <g:if test="${emp.showHidden}">checked="checked" aria-checked="true"</g:if> />
+<label for="showhiddenBox">Show Closed Goals</label>
 
 <button type="button" id="saveBtn" class="btn btn-primary">Save</button> <button type="button" id="addBtn" class="btn btn-secondary">Add</button>
 <div id="main_error" style="display: none;" class="fm-error-msg error-details ui-state-error"></div>
@@ -42,7 +44,7 @@
               <div class="card-body">
                 <ul style="list-style: none;">
                     <li><div id="${goal.id}_errorsDiv" style="display: none;" class="fm-error-msg error-details ui-state-error hide" error_field="true"></div></li>
-                      <li>
+                      <li class="clearfix">
                           <label for="${goal.id}_orginTargetDate" >Orginal Completed Date: </label>
                           <span id="${goal.id}_orginTargetDate" >${goal.orginTargetDate ? goal.orginTargetDate.format('MM-dd-YYYY'): ''}</span>
                           <div id="${goal.id}_targetDiv" style="float: right;display: <g:if test="${goal.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]}">inline-block</g:if><g:else>none</g:else>;">

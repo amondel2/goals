@@ -60,6 +60,7 @@ class Employees implements Serializable  {
     Date hireDate
     Date endDate
     String email
+    Boolean showHidden = true
     String id
     String restToken = ''
     Boolean manager = false

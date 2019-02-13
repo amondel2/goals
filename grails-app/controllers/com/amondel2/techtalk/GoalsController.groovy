@@ -48,6 +48,16 @@ class GoalsController {
         render(view: "index", model: [emp: e, date: date, companyName: Company.first().name, goalTypes:gts , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
     }
 
+
+    def setHidden() {
+        Employees e = Employees.load(params.id)
+        e.showHidden = Boolean.valueOf(params.showHidden)
+        e.save(flush:true,failOnError:true)
+        withFormat {
+            '*' { render ( [msg:"success"]  as JSON) }
+        }
+    }
+
     def chagneGoals()  {
         def e = params.id ? params : Employees.findByUser(springSecurityService.getCurrentUser())
         def goalSet = goalService.getGoalSetForEmployee(e?.id,params.myDate_year)
@@ -57,11 +67,7 @@ class GoalsController {
     }
 
     def saveComments() {
-
         def worked = goalService.saveGoalsComments(params)
-
-
-
         withFormat {
             '*' { render worked as JSON}
         }

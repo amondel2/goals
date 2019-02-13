@@ -33,6 +33,15 @@ $(document).ready(function(){
         });
         return true;
     });
+
+    $("#showhiddenBox").on('change',function () {
+        var data = {id: $("#emp_id").val(), showHidden: $("#showhiddenBox").is(":checked")}
+        $.post(window.fmBaseDir + 'setHidden', data).then(function (res) {
+            if (res.msg == "success") {
+                window.location.reload(true);
+            }
+        });
+    });
 });
 
 $('#commentsModel').on('show.bs.modal', function (event) {
