@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-version "0.13"
+version "0.14"
 group "goals"
 
 apply plugin:"eclipse"
@@ -73,7 +73,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
     testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
     compile 'org.grails.plugins:spring-security-ui:3.1.1'
-    runtime 'mysql:mysql-connector-java:5.1.39'
+    runtime 'mysql:mysql-connector-java:8.0.15'
     compile 'org.apache.poi:poi:3.17'
     compile 'org.apache.poi:poi-ooxml:3.17'
     compile 'org.apache.poi:ooxml-schemas:1.4'
@@ -88,6 +88,10 @@ dependencies {
     compile "org.grails.plugins:ckeditor:4.5.9.0"
     compile 'org.grails.plugins:database-migration:3.0.4'
     compile 'org.liquibase:liquibase-core:3.5.5'
+    compile('org.grails.plugins:grails-melody-plugin:1.74.0') {
+        exclude group: 'net.bull.javamelody', module: 'javamelody-core'
+    }
+    compile 'net.bull.javamelody:javamelody-core:1.76.0'
 }
 
 bootRun {

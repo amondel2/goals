@@ -17,7 +17,6 @@ class GoalsController {
             redirect(controller: "projectManager")
             return;
         }
-
         int year
         try {
             year = params?.myDate_year.toInteger()
@@ -45,7 +44,7 @@ class GoalsController {
             between('endDate', date.getTime(), endDate.getTime())
         }
 
-        render(view: "index", model: [emp: e, date: date, companyName: Company.first().name, goalTypes:gts , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
+        render(view: "index", model: [uid:springSecurityService.getCurrentUserId(), emp: e, date: date, companyName: Company.first().name, goalTypes:gts , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
     }
 
 

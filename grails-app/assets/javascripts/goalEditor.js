@@ -9,6 +9,20 @@ $(document).ready(function(){
          $(this).parent().parent().parent().parent().remove();
      });
 
+
+    $(document).on('click', "span.deleteComment", null, function(e) {
+        var that = $(this);
+        $.ajax({
+            url: window.fmBaseDir + '../employeeGoalComment/' + $(this).attr('data'),
+            type: 'DELETE',
+            cache: false,
+            async: false,
+            success: function(res) {
+                $(that).parent().parent().remove();
+            }
+        });
+    });
+
     CKEDITOR.on('instanceReady', function(){
         $.each( CKEDITOR.instances, function(instance) {
             CKEDITOR.instances[instance].on("change", function(e) {
@@ -52,14 +66,22 @@ $('#commentsModel').on('show.bs.modal', function (event) {
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead
     var modal = $(this)
     modal.find('.modal-body #goalId').val(goalId);
-    $("#prevComments").empty();
+    // $("#prevComments").empty();
+    $("#prevComments").html("<img src='../assets/spinnger.gif />");
     $("#newComment").val('');
-    $.get(window.fmBaseDir + '../employeeGoalComment?employeeGoal=' + goalId)
+    $.get(
+        {
+        url: window.fmBaseDir + '../employeeGoalComment?employeeGoal=' + goalId,
+            cache: false
+        })
         .then(function(res) {
+            $("#prevComments").empty();
             var comment;
+            var uid = $("#uid").val();
             for( comment in res) {
-                $("#prevComments").append('<div>Created on ' + res[comment].createdDate + ' by ' + res[comment].modifiedUser.username + '</div>');
-                $("#prevComments").append('<div class="border border-dark"> ' + res[comment].commentStr + '</div>');
+                $("#prevComments").append('<div><div>Created on ' + res[comment].createdDate + ' by ' + res[comment].modifiedUser.username +
+                    ( uid ==  res[comment].modifiedUser.id ? '  <span style="cursor: pointer;" class="oi oi-circle-x deleteComment" title="Delete Comment" data="'+ res[comment].id +'" aria-hidden="false" aria-label="Delete Comment"></span>' : '' ) +
+                    '</div><div class="border border-dark"> ' + res[comment].commentStr + '</div></div>');
             }
         }).fail(function () {
         alert("Fail");
