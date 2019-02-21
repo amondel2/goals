@@ -54,7 +54,7 @@ class GoalsController {
         def year = params.year?.toInteger()
         WordprocessingMLPackage document = reportsService.generateKPOUserReport(e,year)
         response.setContentType("APPLICATION/OCTET-STREAM")
-        response.setHeader("Content-Disposition", "Attachment;Filename='${year}_${e.firstName}_KPOReport.docx'")
+        response.setHeader("Content-Disposition", "Attachment;Filename=${year}_${e.firstName}_KPOReport.docx")
         def outputStream = response.getOutputStream()
         document.save(outputStream)
         outputStream.flush()
