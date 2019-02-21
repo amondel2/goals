@@ -9,6 +9,10 @@ $(document).ready(function(){
          $(this).parent().parent().parent().parent().remove();
      });
 
+    $("#gobtn").on('click',function(){
+        window.open(window.fmBaseDir + 'generateKPOReport?year=' + $("#myDate_year").val() + "&mid=" + $("#emp_id").val(), "reportPSSHEET");
+    });
+
 
     $(document).on('click', "span.deleteComment", null, function(e) {
         var that = $(this);

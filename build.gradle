@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-version "0.14"
+version "0.15"
 group "goals"
 
 apply plugin:"eclipse"
@@ -92,6 +92,9 @@ dependencies {
         exclude group: 'net.bull.javamelody', module: 'javamelody-core'
     }
     compile 'net.bull.javamelody:javamelody-core:1.76.0'
+    compile group: 'org.docx4j', name: 'docx4j', version: '6.1.1'
+    compile group: 'org.docx4j', name: 'docx4j-ImportXHTML', version: '6.1.0'
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 }
 
 bootRun {

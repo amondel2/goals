@@ -3,6 +3,7 @@ package com.amondel2.techtalk
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 
 @Secured(['ROLE_USER'])
 class GoalsController {
@@ -10,6 +11,7 @@ class GoalsController {
     SpringSecurityService springSecurityService
     def employeeService
     def goalService
+    def reportsService
     def index() {
         Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))
         if (!e) {
@@ -45,6 +47,18 @@ class GoalsController {
         }
 
         render(view: "index", model: [uid:springSecurityService.getCurrentUserId(), emp: e, date: date, companyName: Company.first().name, goalTypes:gts , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
+    }
+
+    def generateKPOReport() {
+        Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))
+        def year = params.year?.toInteger()
+        WordprocessingMLPackage document = reportsService.generateKPOUserReport(e,year)
+        response.setContentType("APPLICATION/OCTET-STREAM")
+        response.setHeader("Content-Disposition", 'Attachment;Filename="CreateWordBulletOrDecimalList.docx"')
+        def outputStream = response.getOutputStream()
+        document.save(outputStream)
+        outputStream.flush()
+        outputStream.close()
     }
 
 
