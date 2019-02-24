@@ -44,10 +44,6 @@ class GoalService {
         getGoalSetForEmployee(Employees.findById(empId),year)
     }
 
-    def getActiveGoalTypes(){
-        KPOType.findAllByActive(true)
-    }
-
     def saveGoalsComments (params) {
         def locale = LocaleContextHolder.getLocale()
         def egc = EmployeeGoal.findById(params.goalId)

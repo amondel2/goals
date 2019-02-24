@@ -12,6 +12,8 @@ class GoalsController {
     def employeeService
     def goalService
     def reportsService
+    def kpoService
+
     def index() {
         Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))
         if (!e) {
@@ -38,15 +40,10 @@ class GoalsController {
             redirect(controller: "projectManager")
             return;
         }
-        def date = new GregorianCalendar(year, 0, 1)
-        def endDate = new GregorianCalendar(year, 12, 31, 23, 59, 59)
+        def date = new GregorianCalendar(year, 0, 1,0,0,0)
+        def endDate = new GregorianCalendar(year, 11, 31, 23, 59, 59)
 
-        def gts = KPOType.withCriteria {
-            eq('isActive', true)
-            between('endDate', date.getTime(), endDate.getTime())
-        }
-
-        render(view: "index", model: [uid:springSecurityService.getCurrentUserId(), emp: e, date: date, companyName: Company.first().name, goalTypes:gts , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
+        render(view: "index", model: [uid:springSecurityService.getCurrentUserId(), emp: e, date: date, companyName: Company.first().name, goalTypes:kpoService.getKPOList(date,endDate) , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
     }
 
     def generateKPOReport() {

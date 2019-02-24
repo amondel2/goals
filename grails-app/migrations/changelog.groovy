@@ -578,4 +578,10 @@ databaseChangeLog = {
         }
     }
 
+    changeSet(author: "aaron (generated)", id: "1550975129359-1") {
+        addColumn(tableName: "kpotype") {
+            column(name: "active_start_date", type: "datetime")
+        }
+    }
+
 }
