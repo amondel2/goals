@@ -64,8 +64,11 @@ class ReportsService {
             mdp.getContent().add(cl.addPageBreak())
             mdp.addStyledParagraphOfText("Heading1",k)
             v?.each { EmployeeGoal empg ->
+                XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl(wordMLPackage)
                 mdp.addStyledParagraphOfText("Heading2",empg.title)
-                def myList = [empg.description.replaceAll("&nbsp;", " ")]
+                wordMLPackage.getMainDocumentPart().getContent().addAll(
+                        XHTMLImporter.convert('<div>' + empg.description.replaceAll("&nbsp;", " ") + '</div>', null) );
+                def myList = []
                 if(empg.status == GoalStatus.Completed) {
                     myList << "Completed on ${empg.actualCompletedDate.format('MM-dd-yyyy')} original target was ${empg.orginTargetDate.format('MM-dd-yyyy')}"
                 } else {
@@ -80,9 +83,9 @@ class ReportsService {
                     commentList << egc.commentStr
                 }
                 myList << commentList
-                XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
+                XHTMLImporterImpl bulletImp = new XHTMLImporterImpl(wordMLPackage)
                 wordMLPackage.getMainDocumentPart().getContent().addAll(
-                        XHTMLImporter.convert( cl.createBulletsFromList(myList), null) );
+                        bulletImp.convert( cl.createBulletsFromList(myList), null) );
 
             }
         }
