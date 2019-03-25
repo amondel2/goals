@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-version "0.16"
+version "0.17"
 group "goals"
 
 apply plugin:"eclipse"
@@ -72,7 +72,7 @@ dependencies {
     testCompile "org.seleniumhq.selenium:selenium-support:3.6.0"
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
     testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
-    compile 'org.grails.plugins:spring-security-ui:3.1.1'
+    compile 'org.grails.plugins:spring-security-ui:3.1.2'
     runtime 'mysql:mysql-connector-java:8.0.15'
     compile 'org.apache.poi:poi:3.17'
     compile 'org.apache.poi:poi-ooxml:3.17'

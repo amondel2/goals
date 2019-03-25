@@ -13,6 +13,15 @@ $(document).ready(function(){
         window.open(window.fmBaseDir + 'generateKPOReport?year=' + $("#myDate_year").val() + "&mid=" + $("#emp_id").val(), "reportPSSHEET");
     });
 
+    $(document).on('change', ".statusDropdownElm", null, function () {
+        changeColor(this,$(this).val() );
+
+    });
+
+    $.each($(".statusDropdownElm"),function(idx,value)  {
+        changeColor(value,$(value).val() );
+    });
+
 
     $(document).on('click', "span.deleteComment", null, function(e) {
         var that = $(this);
@@ -91,6 +100,34 @@ $('#commentsModel').on('show.bs.modal', function (event) {
         alert("Fail");
     });
 });
+
+var changeColor = function(elm,valSt) {
+    var elmSwithc = $(elm).parent().parent().parent().parent().parent().parent().children(".card-header");
+
+    switch (valSt) {
+        case 'Ongoing':
+        case 'OnTrack':
+            $(elmSwithc).removeClass('alert-danger');
+            $(elmSwithc).removeClass('alert-info');
+            $(elmSwithc).addClass('alert-success');
+            break;
+        case 'Behind':
+            $(elmSwithc).removeClass('alert-success');
+            $(elmSwithc).removeClass('alert-info');
+            $(elmSwithc).addClass('alert-danger');
+            break;
+        case 'Completed':
+            $(elmSwithc).removeClass('alert-success');
+            $(elmSwithc).removeClass('alert-danger');
+            $(elmSwithc).addClass('alert-info');
+            break;
+        default:
+            $(elmSwithc).removeClass('alert-success');
+            $(elmSwithc).removeClass('alert-danger');
+            $(elmSwithc).removeClass('alert-info');
+
+    }
+};
 
 var createNewCard = function() {
     $.post(window.fmBaseDir + 'createCard',[] ).then(function(res) {
