@@ -287,9 +287,9 @@ class EmployeeService extends BaseService {
     def getSingleEmployee(rtn,me,cal,gtTime) {
         getEmployeeOver(me,cal,gtTime)?.each {
             if (rtn[me.toString()]) {
-                rtn[me.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]
+                rtn[me.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]
             } else {
-                rtn[me.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]]
+                rtn[me.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]]
             }
         }
     }
@@ -313,9 +313,9 @@ class EmployeeService extends BaseService {
             if (!eb.employee.endDate || eb.employee.endDate > cal.getTime()) {
                 getEmployeeOver(eb.employee,cal,gtTime)?.each {
                     if (rtn[eb.employee.toString()]) {
-                        rtn[eb.employee.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]
+                        rtn[eb.employee.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]
                     } else {
-                        rtn[eb.employee.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-YYYY')]]
+                        rtn[eb.employee.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]]
                     }
                 }
                 if (eb.employee?.employees?.size() > 0) {

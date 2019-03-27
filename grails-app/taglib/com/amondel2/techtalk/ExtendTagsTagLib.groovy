@@ -36,10 +36,10 @@ class ExtendTagsTagLib {
 		str.append(descript?.substring(0,Math.min(descript?.size()?: 0,20)))
 		if(attrs?.goal?.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]) {
 			str.append(' Goal Due: ')
-			str.append(((Date) attrs?.goal?.targetCompletDate)?.format('MM-dd-YYYY'))
+			str.append(((Date) attrs?.goal?.targetCompletDate)?.format('MM-dd-yyyy'))
 		} else {
 			str.append(' Goal Closed : ')
-			str.append(((Date) attrs?.goal?.actualCompletedDate)?.format('MM-dd-YYYY'))
+			str.append(((Date) attrs?.goal?.actualCompletedDate)?.format('MM-dd-yyyy'))
 		}
 		out << body() << str.toString()
 	}

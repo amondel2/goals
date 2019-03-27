@@ -9,5 +9,5 @@ json g.render(employeeGoalComment,[expand:['modifiedUser'], excludes:['createdDa
         username employeeGoalComment.modifiedUser.username
         id employeeGoalComment.modifiedUserId
     }
-    createdDate employeeGoalComment.createdDate?.format('MM-dd-YYYY hh:mm:ss a')
+    createdDate employeeGoalComment.createdDate?.format('MM-dd-yyyy hh:mm:ss a')
 }

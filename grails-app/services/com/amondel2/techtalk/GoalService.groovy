@@ -140,7 +140,7 @@ class GoalService {
                         egt.save()
                     }
                 }
-                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? eg.orginTargetDate?.format('MM-dd-YYYY') : '']
+                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? eg.orginTargetDate?.format('MM-dd-yyyy') : '']
             }
 
         }

@@ -49,7 +49,7 @@
                     <li><div id="${goal.id}_errorsDiv" style="display: none;" class="fm-error-msg error-details ui-state-error hide" error_field="true"></div></li>
                       <li class="clearfix">
                           <label for="${goal.id}_orginTargetDate" >Orginal Completed Date: </label>
-                          <span id="${goal.id}_orginTargetDate" >${goal.orginTargetDate ? goal.orginTargetDate.format('MM-dd-YYYY'): ''}</span>
+                          <span id="${goal.id}_orginTargetDate" >${goal.orginTargetDate ? goal.orginTargetDate.format('MM-dd-yyyy'): ''}</span>
                           <div id="${goal.id}_targetDiv" style="float: right;display: <g:if test="${goal.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]}">inline-block</g:if><g:else>none</g:else>;">
 
 
@@ -58,7 +58,7 @@
 
                           </div>
                           <div id="${goal.id}_completeDiv" style="float: right;display: <g:if test="${goal.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]}">none</g:if><g:else>inline-block</g:else>;">
-                              <label>Completed Date: </label> ${(goal.actualCompletedDate ?: new Date()).format('MM-dd-YYYY')}
+                              <label>Completed Date: </label> ${(goal.actualCompletedDate ?: new Date()).format('MM-dd-yyyy')}
                           </div>
                       </li>
                         <li>
@@ -95,7 +95,7 @@
         <g:datePicker class="form-control" name="targetDate" value="" precision="day" noSelection="['':'-Choose-']"   default="${new Date().plus(7)}"/>
     </div>
     <div id="goalId_completeDiv" >
-        ${new Date().format('MM-dd-YYYY')}
+        ${new Date().format('MM-dd-yyyy')}
     </div>
 
 </div>
