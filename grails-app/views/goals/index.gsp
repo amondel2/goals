@@ -112,7 +112,7 @@
                 <form id="commentForm">
                 <input type="hidden" name="goalId" id="goalId">
                 <label for="newComment">New Comment</label>
-                <input type="text" maxlength="255" name="newComment" id="newComment">
+                <input type="text" maxlength="490" class="newCommentsBoxSize" name="newComment" id="newComment">
                 </form>
                 <div id="prevComments"></div>
             </div>

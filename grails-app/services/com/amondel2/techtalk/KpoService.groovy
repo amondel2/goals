@@ -13,6 +13,7 @@ class KpoService {
                 lte('activeStartDate',sDate)
             }
             gte('endDate',endDate)
+            order('title','asc')
         }
     }
 
