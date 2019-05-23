@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-version "0.20"
+version "0.22"
 group "goals"
 
 apply plugin:"eclipse"
@@ -73,7 +73,8 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
     testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
     compile 'org.grails.plugins:spring-security-ui:3.1.2'
-    runtime 'mysql:mysql-connector-java:8.0.15'
+//    runtime 'mysql:mysql-connector-java:8.0.15'
+    runtime 'mysql:mysql-connector-java:5.1.47'
     compile 'org.apache.poi:poi:3.17'
     compile 'org.apache.poi:poi-ooxml:3.17'
     compile 'org.apache.poi:ooxml-schemas:1.4'
@@ -92,7 +93,7 @@ dependencies {
         exclude group: 'net.bull.javamelody', module: 'javamelody-core'
     }
     compile 'net.bull.javamelody:javamelody-core:1.76.0'
-    compile group: 'org.docx4j', name: 'docx4j', version: '6.1.1'
+    compile group: 'org.docx4j', name: 'docx4j', version: '6.1.2'
     compile group: 'org.docx4j', name: 'docx4j-ImportXHTML', version: '6.1.0'
     compile('javax.xml.bind:jaxb-api:2.3.1') {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'

@@ -1,5 +1,6 @@
 package com.amondel2.techtalk
 
+import groovy.transform.CompileStatic
 import org.docx4j.XmlUtils
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType
@@ -15,7 +16,8 @@ public class CreateWordBulletOrDecimalList {
 
     CreateWordBulletOrDecimalList() {}
 
-    String createBulletsFromList(def str) {
+    @CompileStatic
+    String createBulletsFromList(List str) {
         StringBuilder strb = new StringBuilder()
         strb.append("<ul>")
         str?.each{

@@ -1,6 +1,10 @@
 String pass = System.getProperty("DB_PASSWORD")?.toString() ?: System.getenv("DB_PASSWORD")?.toString()
 String user = System.getProperty("DB_USER")?.toString()  ?: System.getenv("DB_USER")?.toString()
 String dbString = System.getenv("JDBC_CONNECTION_STRING_GOALS")?.toString() ?: System.getProperty("JDBC_CONNECTION_STRING_GOALS")?.toString()
+
+println( "DBStr" + dbString)
+
+
 dataSource {
     pooled = true
     jmxExport = true
@@ -15,7 +19,9 @@ environments {
             dbCreate = "none"
             username = user
             url= dbString
-            dialect = "org.hibernate.dialect.MySQL8Dialect"
+//            dialect = "org.hibernate.dialect.MySQL8Dialect"
+            driverClassName = "com.mysql.jdbc.Driver"
+            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
         }
     }
     test {
@@ -33,7 +39,9 @@ environments {
             dbCreate = "none"
             username = user
             password = pass
-            dialect = "org.hibernate.dialect.MySQL8Dialect"
+//            dialect = "org.hibernate.dialect.MySQL8Dialect"
+            driverClassName = "com.mysql.jdbc.Driver"
+            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
             url = dbString
             properties {
                 jmxEnabled = true

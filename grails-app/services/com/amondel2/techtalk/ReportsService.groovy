@@ -26,6 +26,10 @@ class ReportsService {
         rs
     }
 
+    String charEncode(String str) {
+        str.replaceAll("&nbsp;", " ").replaceAll('&rsquo;',"'").replaceAll("&ndash;","-")
+    }
+
     WordprocessingMLPackage generateKPOUserReport(Employees e,year) {
         def sdate = Calendar.getInstance()
         sdate.set(year,0,1,0,0,0)
@@ -65,9 +69,9 @@ class ReportsService {
             mdp.addStyledParagraphOfText("Heading1",k)
             v?.each { EmployeeGoal empg ->
                 XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl(wordMLPackage)
-                mdp.addStyledParagraphOfText("Heading2",empg.title)
+                mdp.addStyledParagraphOfText("Heading2",charEncode(empg.title))
                 wordMLPackage.getMainDocumentPart().getContent().addAll(
-                        XHTMLImporter.convert('<div>' + empg.description.replaceAll("&nbsp;", " ") + '</div>', null) );
+                        XHTMLImporter.convert('<div>' + charEncode(empg.description) + '</div>', null) );
                 def myList = []
                 if(empg.status == GoalStatus.Completed) {
                     myList << "Completed on ${empg.actualCompletedDate.format('MM-dd-yyyy')} original target was ${empg.orginTargetDate.format('MM-dd-yyyy')}"
