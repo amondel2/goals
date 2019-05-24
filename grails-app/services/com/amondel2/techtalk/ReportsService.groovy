@@ -11,7 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
-
+import org.springframework.web.util.HtmlUtils
 
 
 @Transactional
@@ -27,7 +27,7 @@ class ReportsService {
     }
 
     String charEncode(String str) {
-        str.replaceAll("&nbsp;", " ").replaceAll('&rsquo;',"'").replaceAll("&ndash;","-")
+        HtmlUtils.htmlUnescape(str)
     }
 
     WordprocessingMLPackage generateKPOUserReport(Employees e,year) {
