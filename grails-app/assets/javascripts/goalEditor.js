@@ -1,5 +1,16 @@
 $(document).ready(function(){
-    $("#saveBtn").bind('click',savebtn);
+    $(".switchEmps").bind('click',function(){
+
+        var empcallback = function() {
+            var emp = $( "select[name='dir_emps']" ).first().val();
+            var year = $("#myDate_year").val();
+            window.location.href = window.fmBaseDir + 'index?id='+emp+'+&year=' + year;
+        };
+        savebtn(empcallback);
+    });
+    $("#saveBtn").bind('click',function(){
+        savebtn();
+    });
     $(".statusDropdownElm").bind('change',showDateDrop);
     $("#addBtn").bind('click',createNewCard);
     $("#YearChangeFrm select").bind('change',function(){
@@ -227,7 +238,7 @@ var showDateDrop = function() {
 };
 
 
-var savebtn = function() {
+var savebtn = function(successCallback) {
     $("#main_error").css('display', 'none');
     $("#main_save_done").css('display', 'none');
     $.each($('div[error_field="true"]'),function(idx,value){
@@ -264,6 +275,9 @@ var savebtn = function() {
                 $("#main_error").css('display', 'block');
             } else {
                 $("#main_save_done").css('display', 'block');
+                if(typeof(successCallback) != 'undefined') {
+                    successCallback();
+                }
             }
         }).fail(function () {
             alert("Fail");

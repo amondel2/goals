@@ -1,12 +1,14 @@
 package com.amondel2.techtalk
 
 import com.amondel2.techtalk.GoalStatus
+import com.amondel2.techtalk.Employees
 
 class ExtendTagsTagLib {
 	static namespace="ps"
     static defaultEncodeAs = [taglib:'html']
-	static encodeAsForTags = [goalTypeDropDown: 'raw',goalStatusDropDown: 'raw']
+	static encodeAsForTags = [goalTypeDropDown: 'raw',goalStatusDropDown: 'raw',dirEmployeeDropDown: 'raw']
 	def springSecurityService
+	def employeeService
 	
 	def getUserFName = {attrs,body->
 		Employees user = Employees.findByUser(springSecurityService.currentUser)
@@ -26,6 +28,20 @@ class ExtendTagsTagLib {
 		out << body() << g.select([class:"form-check-inline align-top statusDropdownElm",from:GoalStatus,name:attrs.name,value:attrs.value,id:attrs.name])
 
 
+	}
+
+	def dirEmployeeDropDown = {attrs, body ->
+
+		def str = ""
+		Employees emp = Employees.findByUser(springSecurityService.getCurrentUser())
+		if( employeeService.doesEmpHaveDirects(emp,attrs.year)) {
+			def rtn = []
+			employeeService.getAllEmployeesChildernFlat(emp.id,rtn,attrs.year)
+			rtn.sort( { k1, k2 -> k1.firstName <=> k2.firstName } as Comparator )
+			str = "<div style='padding:3px 0px;'><label for='${attrs.uid}_emps'>Select Employee: </label> " + g.select([id:attrs.uid+"_emps",name:"dir_emps",class:"form-check-inline", style: "max-width:271px;",from:rtn,optionValue:{ it.firstName + " " + it.lastName}, optionKey: 'id']) + "<button class=\"switchEmps btn btn-secondary\" >Save and Change to Selected Employee</button></div>"
+
+		}
+		out << body() << str
 	}
 
 	def generateTitle = { attrs, body ->

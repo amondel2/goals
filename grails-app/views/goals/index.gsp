@@ -21,6 +21,10 @@
     <div>Select Year: <g:datePicker name="myDate" default="${date.getTime()}" precision="year" relativeYears="[-3..2]"/> </div>
 </form>
 
+
+${ps.dirEmployeeDropDown([year:date.get(Calendar.YEAR),empId:uid])}
+
+
 <input type="hidden" value="${uid}" id="uid" />
 <input type="checkbox" name="showhiddenBox" id="showhiddenBox" aria-label="show hidden items" value="true" <g:if test="${emp.showHidden}">checked="checked" aria-checked="true"</g:if> />
 <label for="showhiddenBox">Show Closed Goals</label>
