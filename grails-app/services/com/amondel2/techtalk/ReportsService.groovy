@@ -27,7 +27,8 @@ class ReportsService {
     }
 
     String charEncode(String str) {
-        HtmlUtils.htmlUnescape(str)
+        //The only way I could think how to do this and not mess with the HTML Tags but also recode > and < to actual entities.
+        HtmlUtils.htmlUnescape(str.replaceAll('&gt;',"thegreatesttageintheworldgt12340099876543").replaceAll('&lt;',"thegreatesttageintheworldlt12340099876543")).replaceAll('&','&amp;').replaceAll("thegreatesttageintheworldgt12340099876543",'&gt;').replaceAll("thegreatesttageintheworldlt12340099876543","&lt;")
     }
 
     WordprocessingMLPackage generateKPOUserReport(Employees e,year) {

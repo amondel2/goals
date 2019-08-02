@@ -28,10 +28,6 @@ endpoints:
 server:
     session:
         timeout: 3600
-
-javamelody:
-    http-transform-pattern: \d+
-    sql-transform-pattern: \d+
 ---
 grails:
     mime:

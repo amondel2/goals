@@ -13,8 +13,10 @@ import org.docx4j.wml.STBrType
 
 
 public class CreateWordBulletOrDecimalList {
-
-    CreateWordBulletOrDecimalList() {}
+    ReportsService reportsService
+    CreateWordBulletOrDecimalList() {
+        reportsService = new ReportsService()
+    }
 
     @CompileStatic
     String createBulletsFromList(List str) {
@@ -24,7 +26,7 @@ public class CreateWordBulletOrDecimalList {
             if(it instanceof List) {
                 strb.append(createBulletsFromList(it))
             } else {
-                strb.append("<li>$it</li>")
+                strb.append("<li>${reportsService.charEncode(it.toString())}</li>")
             }
         }
         strb.append("</ul>")
