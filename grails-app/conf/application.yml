@@ -2,7 +2,7 @@
 grails:
     profile: web
     codegen:
-        defaultPackage: test
+        defaultPackage: goals
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events
@@ -14,20 +14,26 @@ info:
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
 spring:
+    jmx:
+        unique-names: true
     main:
         banner-mode: "off"
     groovy:
         template:
             check-template-location: false
+    devtools:
+        restart:
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
+management:
+    endpoints:
+        enabled-by-default: false
 
-# Spring Actuator Endpoints are Disabled by Default
-endpoints:
-    enabled: false
-    jmx:
-        enabled: true
-server:
-    session:
-        timeout: 3600
 ---
 grails:
     mime:
@@ -67,9 +73,6 @@ grails:
             maxsize: 1000
     controllers:
         defaultScope: singleton
-        upload:
-            maxFileSize: 26214400
-            maxRequestSize: 26214400
     converters:
         encoding: UTF-8
     views:
@@ -80,12 +83,13 @@ grails:
             htmlcodec: xml
             codecs:
                 expression: html
-                scriptlets: html
+                scriptlet: html
                 taglib: none
                 staticparts: none
-endpoints:
-    jmx:
-        unique-names: true
+management:
+    endpoints:
+        jmx:
+            unique-names: true
 upload:
     directory:
 ---
@@ -94,12 +98,13 @@ hibernate:
         queries: false
         use_second_level_cache: false
         use_query_cache: false
-
 environments:
     production:
         upload:
             directory: /opt/tomcat/uploads/
-
+server:
+    servlet:
+        context-path: /goal
 grails:
     plugin:
         databasemigration:

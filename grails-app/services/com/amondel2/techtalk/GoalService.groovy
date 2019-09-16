@@ -6,12 +6,15 @@ import grails.plugin.springsecurity.SpringSecurityService
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 
+import java.text.SimpleDateFormat
+
 @Transactional
 class GoalService {
 
     GrailsApplication grailsApplication
     MessageSource messageSource
     SpringSecurityService springSecurityService
+    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
 
     def getGoalSetForEmployee(Employees emp, year) {
         year = year ? year.toInteger() : GregorianCalendar.getInstance().get(Calendar.YEAR).toInteger()
@@ -140,7 +143,7 @@ class GoalService {
                         egt.save()
                     }
                 }
-                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? eg.orginTargetDate?.format('MM-dd-yyyy') : '']
+                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? sdf.format(eg.orginTargetDate) : '']
             }
 
         }

@@ -1,10 +1,15 @@
 package com.amondel2.techtalk
 
+import grails.gorm.transactions.Transactional
+
+import java.text.SimpleDateFormat
 
 
 class EmployeeService extends BaseService {
 
     def springSecurityService
+
+    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
 
     def getBosses(empId) {
         EmployeeBoss.withCriteria{
@@ -12,6 +17,14 @@ class EmployeeService extends BaseService {
                     eq('id', empId)
                 })
         }
+    }
+
+    @Transactional
+    def saveResetToken(params,String token){
+        def empid = params.emp
+        Employees emp = Employees.get(empid)
+        emp.restToken = token
+        emp.save(flush:true)
     }
 
     def getEmployee(String id){
@@ -287,9 +300,9 @@ class EmployeeService extends BaseService {
     def getSingleEmployee(rtn,me,cal,gtTime) {
         getEmployeeOver(me,cal,gtTime)?.each {
             if (rtn[me.toString()]) {
-                rtn[me.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]
+                rtn[me.toString()] << [goal:it.title,due: sdf.format(it.targetCompletDate)]
             } else {
-                rtn[me.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]]
+                rtn[me.toString()] = [[goal:it.title,due:sdf.format(it.targetCompletDate)]]
             }
         }
     }
@@ -313,9 +326,9 @@ class EmployeeService extends BaseService {
             if (!eb.employee.endDate || eb.employee.endDate > cal.getTime()) {
                 getEmployeeOver(eb.employee,cal,gtTime)?.each {
                     if (rtn[eb.employee.toString()]) {
-                        rtn[eb.employee.toString()] << [goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]
+                        rtn[eb.employee.toString()] << [goal:it.title,due:sdf.format(it.targetCompletDate)]
                     } else {
-                        rtn[eb.employee.toString()] = [[goal:it.title,due:it.targetCompletDate.format('MM-dd-yyyy')]]
+                        rtn[eb.employee.toString()] = [[goal:it.title,due:sdf.format(it.targetCompletDate)]]
                     }
                 }
                 if (eb.employee?.employees?.size() > 0) {

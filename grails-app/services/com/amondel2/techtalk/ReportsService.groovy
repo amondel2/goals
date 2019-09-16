@@ -13,10 +13,12 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
 import org.springframework.web.util.HtmlUtils
 
+import java.text.SimpleDateFormat
+
 
 @Transactional
 class ReportsService {
-
+    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
     def generateReport(year) {
         generateReport(year,null)
     }
@@ -75,9 +77,9 @@ class ReportsService {
                         XHTMLImporter.convert('<div>' + charEncode(empg.description) + '</div>', null) );
                 def myList = []
                 if(empg.status == GoalStatus.Completed) {
-                    myList << "Completed on ${empg.actualCompletedDate.format('MM-dd-yyyy')} original target was ${empg.orginTargetDate.format('MM-dd-yyyy')}"
+                    myList << "Completed on ${sdf.format(empg.actualCompletedDate)} original target was ${sdf.format(empg.orginTargetDate)}"
                 } else {
-                    myList << "<span style='color:red;'>Not Completed Targeted original target is ${empg.orginTargetDate.format('MM-dd-yyyy')} new target is ${empg.targetCompletDate.format('MM-dd-yyyy')}</span>"
+                    myList << "<span style='color:red;'>Not Completed Targeted original target is ${sdf.format(empg.orginTargetDate)} new target is ${sdf.format(empg.targetCompletDate)}</span>"
                 }
                 myList << "Comments"
 
