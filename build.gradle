@@ -168,7 +168,6 @@ dependencies {
         exclude  module: 'poi'
         exclude  module: 'ooxml-schemas'
     }
-//    compile "org.grails.plugins:ckeditor:4.5.9.0"
 //    compile 'org.grails.plugins:database-migration:3.1.0.RC1'
 //    compile 'org.liquibase:liquibase-core:3.8.0'
     compile 'org.grails.plugins:grails-melody-plugin:1.76.1'
