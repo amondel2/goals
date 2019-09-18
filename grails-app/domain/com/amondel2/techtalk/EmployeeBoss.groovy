@@ -3,7 +3,7 @@ package com.amondel2.techtalk
 import org.apache.commons.lang.builder.HashCodeBuilder
 import grails.rest.*
 
-@Resource(uri='/EmployeeBoss', formats=['json', 'xml'])
+
 class EmployeeBoss implements Serializable {
 
     private static final long serialVersionUID = 1
