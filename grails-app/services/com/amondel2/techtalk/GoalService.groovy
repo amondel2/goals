@@ -3,6 +3,8 @@ package com.amondel2.techtalk
 import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.SpringSecurityService
+import groovy.transform.CompileStatic
+import java.util.Map
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 
@@ -71,6 +73,13 @@ class GoalService {
             worked = [success:false,msg:"Must Save Parent Goal First"]
         }
         worked
+    }
+
+    @CompileStatic
+    Boolean saveHiddenStatus(Map<String, String> params) {
+        Employees e = Employees.load(params.id)
+        e.showHidden = Boolean.valueOf(params.showHidden)
+        e.save(flush:true,failOnError:true)
     }
 
 

@@ -58,11 +58,8 @@ class GoalsController {
         outputStream.close()
     }
 
-
     def setHidden() {
-        Employees e = Employees.load(params.id)
-        e.showHidden = Boolean.valueOf(params.showHidden)
-        e.save(flush:true,failOnError:true)
+        goalService.saveHiddenStatus(params)
         withFormat {
             '*' { render ( [msg:"success"]  as JSON) }
         }
