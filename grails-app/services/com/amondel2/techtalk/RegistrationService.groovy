@@ -1,6 +1,9 @@
 package com.amondel2.techtalk
 
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.ui.RegistrationCode
+
+@Transactional
 class RegistrationService {
 
     def springSecurityUiService

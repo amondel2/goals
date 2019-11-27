@@ -1,4 +1,7 @@
 package com.amondel2.techtalk
+
+import grails.gorm.transactions.Transactional
+
 //import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.ui.RegisterCommand
 import grails.plugin.springsecurity.ui.RegistrationCode
@@ -106,7 +109,7 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
 		redirect uri: "/profile/create" //+ "?autologout=true"
 	}
 	
-	
+	@Transactional
 	def checkChallenge() {
 		Employees emp
 		def qa

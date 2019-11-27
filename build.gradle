@@ -84,7 +84,7 @@ def jvmOpenModulesArgs = [
         "--add-opens=java.sql/java.sql=ALL-UNNAMED"
 ]
 
-version "0.25"
+version "0.26"
 group "goals"
 
 apply plugin:"eclipse"
