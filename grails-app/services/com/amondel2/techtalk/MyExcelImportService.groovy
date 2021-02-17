@@ -7,6 +7,7 @@ import org.apache.poi.xssf.streaming.SXSSFSheet
 import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import org.grails.plugins.excelimport.ImportCellCollector
 
+import java.sql.Time
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -29,7 +30,7 @@ class MyExcelImportService extends org.grails.plugins.excelimport.ExcelImportSer
         }
     }
 
-    def decodeHireDate(org.joda.time.LocalDate localDate) {
+    def decodeHireDate(Time localDate) {
         try {
             localDate.toDateTimeAtStartOfDay().toDate()
         } catch (Exception e) {

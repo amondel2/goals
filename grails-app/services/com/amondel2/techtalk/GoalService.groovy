@@ -3,8 +3,12 @@ package com.amondel2.techtalk
 import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.SpringSecurityService
+import groovy.transform.CompileStatic
+import java.util.Map
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
+
+import java.text.SimpleDateFormat
 
 @Transactional
 class GoalService {
@@ -12,6 +16,7 @@ class GoalService {
     GrailsApplication grailsApplication
     MessageSource messageSource
     SpringSecurityService springSecurityService
+    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
 
     def getGoalSetForEmployee(Employees emp, year) {
         year = year ? year.toInteger() : GregorianCalendar.getInstance().get(Calendar.YEAR).toInteger()
@@ -68,6 +73,13 @@ class GoalService {
             worked = [success:false,msg:"Must Save Parent Goal First"]
         }
         worked
+    }
+
+    @CompileStatic
+    Boolean saveHiddenStatus(Map<String, String> params) {
+        Employees e = Employees.load(params.id)
+        e.showHidden = Boolean.valueOf(params.showHidden)
+        e.save(flush:true,failOnError:true)
     }
 
 
@@ -140,7 +152,7 @@ class GoalService {
                         egt.save()
                     }
                 }
-                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? eg.orginTargetDate?.format('MM-dd-yyyy') : '']
+                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? sdf.format(eg.orginTargetDate) : '']
             }
 
         }

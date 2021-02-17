@@ -21,7 +21,7 @@ class EmployeesController {
     def baseService
     static responseFormats = ['html', 'json', 'xml']
     static scaffold = Employees
-
+    EmployeeService employeeService
     GrailsApplication grailsApplication
 
 
@@ -38,11 +38,8 @@ class EmployeesController {
 
     @Secured(['ROLE_ADMIN'])
     def generateResetToken() {
-        def empid = params.emp
-        def guid = UUID.randomUUID()?.toString().replaceAll("-", "")
-        def emp = Employees.load(empid)
-        emp.restToken = guid
-        emp.save(flush: true)
+        String guid = UUID.randomUUID()?.toString().replaceAll("-", "")
+        employeeService.saveResetToken(params,guid)
         def p = ['emp': guid]
         withFormat {
             '*' {

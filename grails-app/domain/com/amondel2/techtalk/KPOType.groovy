@@ -4,7 +4,6 @@ import grails.rest.Resource
 import groovy.transform.EqualsAndHashCode
 
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/KPOType', formats=['json', 'xml'])
 class KPOType implements Serializable  {
 
     def utilService = Utils.getInstance()

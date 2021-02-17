@@ -1,5 +1,6 @@
 <%@ page import="com.amondel2.techtalk.GoalStatus"%>
 <%@ page import="java.util.Calendar"%>
+<%@ page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,9 +11,8 @@
     </script>
     <asset:stylesheet src="mondelMapperUI.css" />
     <asset:stylesheet src="themes/default/style.min.css" />
-
-    <ckeditor:resources/>
-    <ckeditor:config removeButtons="Underline,JustifyCenter,Source,Flash,Image,Templates,Select,Iframe,HiddenField,TextField,Textarea,Checkbox,Button,ImageButton,Radio,Form" />
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+%{--    <ckeditor:config removeButtons="Underline,JustifyCenter,Source,Flash,Image,Templates,Select,Iframe,HiddenField,TextField,Textarea,Checkbox,Button,ImageButton,Radio,Form" />--}%
 </head>
 <body>
 <h1>Goal Set for ${emp.toString()}</h1>
@@ -53,16 +53,16 @@ ${ps.dirEmployeeDropDown([year:date.get(Calendar.YEAR),empId:uid])}
                     <li><div id="${goal.id}_errorsDiv" style="display: none;" class="fm-error-msg error-details ui-state-error hide" error_field="true"></div></li>
                       <li class="clearfix">
                           <label for="${goal.id}_orginTargetDate" >Orginal Completed Date: </label>
-                          <span id="${goal.id}_orginTargetDate" >${goal.orginTargetDate ? goal.orginTargetDate.format('MM-dd-yyyy'): ''}</span>
+                          <span id="${goal.id}_orginTargetDate" >${goal.orginTargetDate ? new SimpleDateFormat("MM-dd-yyyy").format(goal.orginTargetDate): ''}</span>
                           <div id="${goal.id}_targetDiv" style="float: right;display: <g:if test="${goal.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]}">inline-block</g:if><g:else>none</g:else>;">
 
 
                               <label for="${goal.id}_targetDate">Target Completed Date: </label>
-                                  <g:datePicker class="form-control" name="${goal.id}_targetDate" value="${goal.targetCompletDate}" precision="day" noSelection="['':'-Choose-']"   default="${new Date().plus(7)}"/>
+                                  <g:datePicker class="form-control" name="${goal.id}_targetDate" value="${goal.targetCompletDate}" precision="day" noSelection="['':'-Choose-']"   default="${new Date()}"/>
 
                           </div>
                           <div id="${goal.id}_completeDiv" style="float: right;display: <g:if test="${goal.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]}">none</g:if><g:else>inline-block</g:else>;">
-                              <label>Completed Date: </label> ${(goal.actualCompletedDate ?: new Date()).format('MM-dd-yyyy')}
+                              <label>Completed Date: </label> ${new SimpleDateFormat("MM-dd-yyyy").format(goal.actualCompletedDate ?: new Date())}
                           </div>
                       </li>
                         <li>
@@ -78,9 +78,16 @@ ${ps.dirEmployeeDropDown([year:date.get(Calendar.YEAR),empId:uid])}
                         </li>
                       <li>
                           <label for="${goal.id}_descript">Goal Description: </label>
-                          <ckeditor:editor name="${goal.id}_descript" width="80%" toolbar="Basic">
+                          <textarea name="${goal.id}_descript" width="80%" toolbar="Basic">
                         ${goal.description}
-                      </ckeditor:editor>
+                      </textarea>
+                          <script>
+
+                              CKEDITOR.replace( '${goal.id}_descript', {
+                                  removePlugins: "elementspath,save",
+                                  removeButtons:"Underline,JustifyCenter,Source,Flash,Image,Templates,Select,Iframe,HiddenField,TextField,Textarea,Checkbox,Button,ImageButton,Radio,Form"
+                              } );
+                          </script>
                       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentsModel" data-whatever="${goal.id}">Comments</button>
 
                       </li>
@@ -96,10 +103,10 @@ ${ps.dirEmployeeDropDown([year:date.get(Calendar.YEAR),empId:uid])}
     ${ps.goalStatusDropDown([value:'NotStarted',name:"tmp_statusdrp"])}
     ${ps.goalTypeDropDown([value:null,goalTypes:goalTypes,name:"tmp_typesdrp"])}
     <div id="goalId_targetDiv">
-        <g:datePicker class="form-control" name="targetDate" value="" precision="day" noSelection="['':'-Choose-']"   default="${new Date().plus(7)}"/>
+        <g:datePicker class="form-control" name="targetDate" value="" precision="day" noSelection="['':'-Choose-']"   default="${new Date()}"/>
     </div>
     <div id="goalId_completeDiv" >
-        ${new Date().format('MM-dd-yyyy')}
+        ${new SimpleDateFormat("MM-dd-yyyy").format(new Date())}
     </div>
 
 </div>

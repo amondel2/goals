@@ -23,9 +23,5 @@ class SubclassRestfulController<T> extends RestfulController<T> {
         } else {
             super.listAllResources(params)
         }
-
     }
-
-
-
 }

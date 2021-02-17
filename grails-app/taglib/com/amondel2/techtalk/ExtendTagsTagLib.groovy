@@ -3,13 +3,16 @@ package com.amondel2.techtalk
 import com.amondel2.techtalk.GoalStatus
 import com.amondel2.techtalk.Employees
 
+import java.text.SimpleDateFormat
+
 class ExtendTagsTagLib {
 	static namespace="ps"
     static defaultEncodeAs = [taglib:'html']
 	static encodeAsForTags = [goalTypeDropDown: 'raw',goalStatusDropDown: 'raw',dirEmployeeDropDown: 'raw']
 	def springSecurityService
 	def employeeService
-	
+	SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
+
 	def getUserFName = {attrs,body->
 		Employees user = Employees.findByUser(springSecurityService.currentUser)
 		  def name =  user ? user.firstName : ""
@@ -52,10 +55,10 @@ class ExtendTagsTagLib {
 		str.append(descript?.substring(0,Math.min(descript?.size()?: 0,20)))
 		if(attrs?.goal?.status in [GoalStatus.NotStarted,GoalStatus.Ongoing,GoalStatus.Behind,GoalStatus.OnTrack]) {
 			str.append(' Goal Due: ')
-			str.append(((Date) attrs?.goal?.targetCompletDate)?.format('MM-dd-yyyy'))
+			str.append(sdf.format((Date) attrs?.goal?.targetCompletDate))
 		} else {
 			str.append(' Goal Closed : ')
-			str.append(((Date) attrs?.goal?.actualCompletedDate)?.format('MM-dd-yyyy'))
+			str.append(sdf.format((Date) attrs?.goal?.actualCompletedDate))
 		}
 		out << body() << str.toString()
 	}
