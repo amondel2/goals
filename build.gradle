@@ -4,11 +4,12 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:views-gradle:2.0.0.BUILD-SNAPSHOT"
+        classpath "org.grails.plugins:views-gradle:2.0.4"
         classpath "org.grails.plugins:hibernate5:7.0.0"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.0"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.0.10"
-        classpath 'org.grails.plugins:database-migration:3.1.0.RC1'
+        classpath 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+        classpath 'org.grails.plugins:database-migration:3.1.0'
     }
 }
 
@@ -84,7 +85,7 @@ def jvmOpenModulesArgs = [
         "--add-opens=java.sql/java.sql=ALL-UNNAMED"
 ]
 
-version "0.26"
+version "0.27"
 group "goals"
 
 apply plugin:"eclipse"
@@ -137,7 +138,7 @@ dependencies {
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
     runtime "com.h2database:h2"
     runtime "org.apache.tomcat:tomcat-jdbc"
-    runtime "javax.xml.bind:jaxb-api:2.3.0"
+    runtime "javax.xml.bind:jaxb-api:2.3.1"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:3.0.10"
     testCompile "org.grails:grails-gorm-testing-support"
     testCompile "org.mockito:mockito-core"
@@ -170,7 +171,7 @@ dependencies {
     }
 //    compile 'org.grails.plugins:database-migration:3.1.0.RC1'
 //    compile 'org.liquibase:liquibase-core:3.8.0'
-    compile 'org.grails.plugins:grails-melody-plugin:1.76.1'
+    compile 'org.grails.plugins:grails-melody-plugin:1.80.0'
     compile ('org.docx4j:docx4j-core:11.1.3') {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
         exclude group: 'log4j', module: 'log4j'
