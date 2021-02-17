@@ -3,8 +3,12 @@ package com.amondel2.techtalk
 import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.SpringSecurityService
+import groovy.transform.CompileStatic
+import java.util.Map
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
+
+import java.text.SimpleDateFormat
 
 @Transactional
 class GoalService {
@@ -12,6 +16,7 @@ class GoalService {
     GrailsApplication grailsApplication
     MessageSource messageSource
     SpringSecurityService springSecurityService
+    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
 
     def getGoalSetForEmployee(Employees emp, year) {
         year = year ? year.toInteger() : GregorianCalendar.getInstance().get(Calendar.YEAR).toInteger()
@@ -24,26 +29,24 @@ class GoalService {
              between('targetCompletDate',gc.getTime(),ec.getTime())
         }.sort{a,b -> a.title <=> b.title}?.each { EmployeeGoal eg ->
             def rs = [:]
-            rs['id'] = eg.id
-            rs['title'] = eg.title
-            rs['description'] = eg.description
-            rs['actualCompletedDate'] = eg.actualCompletedDate
-            rs['targetCompletDate'] = eg.targetCompletDate
-            rs['orginTargetDate'] = eg.orginTargetDate
-            rs['status'] = eg.status
-            rs['commentsCount'] = EmployeeGoalComment.countByEmployeeGoal(eg)
-            rs['goalType'] = eg.types.collect{it.type.id}
-            restultSet.add(rs)
+            if( ( !emp.showHidden && eg.status in [GoalStatus.OnTrack,GoalStatus.Behind, GoalStatus.Ongoing, GoalStatus.NotStarted] ) || emp.showHidden ) {
+                rs['id'] = eg.id
+                rs['title'] = eg.title
+                rs['description'] = eg.description
+                rs['actualCompletedDate'] = eg.actualCompletedDate
+                rs['targetCompletDate'] = eg.targetCompletDate
+                rs['orginTargetDate'] = eg.orginTargetDate
+                rs['status'] = eg.status
+                rs['commentsCount'] = EmployeeGoalComment.countByEmployeeGoal(eg)
+                rs['goalType'] = eg.types.collect { it.type.id }
+                restultSet.add(rs)
+            }
         }
         restultSet
     }
 
     def getGoalSetForEmployee(empId, year) {
         getGoalSetForEmployee(Employees.findById(empId),year)
-    }
-
-    def getActiveGoalTypes(){
-        KPOType.findAllByActive(true)
     }
 
     def saveGoalsComments (params) {
@@ -70,6 +73,13 @@ class GoalService {
             worked = [success:false,msg:"Must Save Parent Goal First"]
         }
         worked
+    }
+
+    @CompileStatic
+    Boolean saveHiddenStatus(Map<String, String> params) {
+        Employees e = Employees.load(params.id)
+        e.showHidden = Boolean.valueOf(params.showHidden)
+        e.save(flush:true,failOnError:true)
     }
 
 
@@ -142,7 +152,7 @@ class GoalService {
                         egt.save()
                     }
                 }
-                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? eg.orginTargetDate?.format('MM-dd-YYYY') : '']
+                ids[id] = [ps.generateTitle(goal: eg),eg.orginTargetDate ? sdf.format(eg.orginTargetDate) : '']
             }
 
         }

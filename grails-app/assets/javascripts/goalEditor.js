@@ -1,5 +1,16 @@
 $(document).ready(function(){
-    $("#saveBtn").bind('click',savebtn);
+    $(".switchEmps").bind('click',function(){
+
+        var empcallback = function() {
+            var emp = $( "select[name='dir_emps']" ).first().val();
+            var year = $("#myDate_year").val();
+            window.location.href = window.fmBaseDir + 'index?id='+emp+'+&year=' + year;
+        };
+        savebtn(empcallback);
+    });
+    $("#saveBtn").bind('click',function(){
+        savebtn();
+    });
     $(".statusDropdownElm").bind('change',showDateDrop);
     $("#addBtn").bind('click',createNewCard);
     $("#YearChangeFrm select").bind('change',function(){
@@ -8,6 +19,33 @@ $(document).ready(function(){
      $(document).on('click', "button[remove_unsaved_goal_btn='t']" , null , function () {
          $(this).parent().parent().parent().parent().remove();
      });
+
+    $("#gobtn").on('click',function(){
+        window.open(window.fmBaseDir + 'generateKPOReport?year=' + $("#myDate_year").val() + "&mid=" + $("#emp_id").val(), "reportPSSHEET");
+    });
+
+    $(document).on('change', ".statusDropdownElm", null, function () {
+        changeColor(this,$(this).val() );
+
+    });
+
+    $.each($(".statusDropdownElm"),function(idx,value)  {
+        changeColor(value,$(value).val() );
+    });
+
+
+    $(document).on('click', "span.deleteComment", null, function(e) {
+        var that = $(this);
+        $.ajax({
+            url: window.fmBaseDir + '../employeeGoalComment/' + $(this).attr('data'),
+            type: 'DELETE',
+            cache: false,
+            async: false,
+            success: function(res) {
+                $(that).parent().parent().remove();
+            }
+        });
+    });
 
     CKEDITOR.on('instanceReady', function(){
         $.each( CKEDITOR.instances, function(instance) {
@@ -33,6 +71,15 @@ $(document).ready(function(){
         });
         return true;
     });
+
+    $("#showhiddenBox").on('change',function () {
+        var data = {id: $("#emp_id").val(), showHidden: $("#showhiddenBox").is(":checked")}
+        $.post(window.fmBaseDir + 'setHidden', data).then(function (res) {
+            if (res.msg == "success") {
+                window.location.reload(true);
+            }
+        });
+    });
 });
 
 $('#commentsModel').on('show.bs.modal', function (event) {
@@ -43,19 +90,55 @@ $('#commentsModel').on('show.bs.modal', function (event) {
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead
     var modal = $(this)
     modal.find('.modal-body #goalId').val(goalId);
-    $("#prevComments").empty();
+    // $("#prevComments").empty();
+    $("#prevComments").html("<img src='../assets/spinnger.gif />");
     $("#newComment").val('');
-    $.get(window.fmBaseDir + '../employeeGoalComment?employeeGoal=' + goalId)
+    $.get(
+        {
+        url: window.fmBaseDir + '../employeeGoalComment?employeeGoal=' + goalId,
+            cache: false
+        })
         .then(function(res) {
+            $("#prevComments").empty();
             var comment;
+            var uid = $("#uid").val();
             for( comment in res) {
-                $("#prevComments").append('<div>Created on ' + res[comment].createdDate + ' by ' + res[comment].modifiedUser.username + '</div>');
-                $("#prevComments").append('<div class="border border-dark"> ' + res[comment].commentStr + '</div>');
+                $("#prevComments").append('<div><div>Created on ' + res[comment].createdDate + ' by ' + res[comment].modifiedUser.username +
+                    ( uid ==  res[comment].modifiedUser.id ? '  <span style="cursor: pointer;" class="oi oi-circle-x deleteComment" title="Delete Comment" data="'+ res[comment].id +'" aria-hidden="false" aria-label="Delete Comment"></span>' : '' ) +
+                    '</div><div class="border border-dark"> ' + res[comment].commentStr + '</div></div>');
             }
         }).fail(function () {
         alert("Fail");
     });
 });
+
+var changeColor = function(elm,valSt) {
+    var elmSwithc = $(elm).parent().parent().parent().parent().parent().parent().children(".card-header");
+
+    switch (valSt) {
+        case 'Ongoing':
+        case 'OnTrack':
+            $(elmSwithc).removeClass('alert-danger');
+            $(elmSwithc).removeClass('alert-info');
+            $(elmSwithc).addClass('alert-success');
+            break;
+        case 'Behind':
+            $(elmSwithc).removeClass('alert-success');
+            $(elmSwithc).removeClass('alert-info');
+            $(elmSwithc).addClass('alert-danger');
+            break;
+        case 'Completed':
+            $(elmSwithc).removeClass('alert-success');
+            $(elmSwithc).removeClass('alert-danger');
+            $(elmSwithc).addClass('alert-info');
+            break;
+        default:
+            $(elmSwithc).removeClass('alert-success');
+            $(elmSwithc).removeClass('alert-danger');
+            $(elmSwithc).removeClass('alert-info');
+
+    }
+};
 
 var createNewCard = function() {
     $.post(window.fmBaseDir + 'createCard',[] ).then(function(res) {
@@ -155,7 +238,7 @@ var showDateDrop = function() {
 };
 
 
-var savebtn = function() {
+var savebtn = function(successCallback) {
     $("#main_error").css('display', 'none');
     $("#main_save_done").css('display', 'none');
     $.each($('div[error_field="true"]'),function(idx,value){
@@ -192,6 +275,9 @@ var savebtn = function() {
                 $("#main_error").css('display', 'block');
             } else {
                 $("#main_save_done").css('display', 'block');
+                if(typeof(successCallback) != 'undefined') {
+                    successCallback();
+                }
             }
         }).fail(function () {
             alert("Fail");

@@ -7,6 +7,7 @@ import org.apache.poi.xssf.streaming.SXSSFSheet
 import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import org.grails.plugins.excelimport.ImportCellCollector
 
+import java.sql.Time
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -29,7 +30,7 @@ class MyExcelImportService extends org.grails.plugins.excelimport.ExcelImportSer
         }
     }
 
-    def decodeHireDate(org.joda.time.LocalDate localDate) {
+    def decodeHireDate(Time localDate) {
         try {
             localDate.toDateTimeAtStartOfDay().toDate()
         } catch (Exception e) {
@@ -79,8 +80,8 @@ class MyExcelImportService extends org.grails.plugins.excelimport.ExcelImportSer
         row.createCell(0).setCellValue("First Name")
         row.createCell(1).setCellValue("Last Name")
         row.createCell(2).setCellValue("Employee Id")
-        row.createCell(3).setCellValue("Hire Date (MM/DD/YYYY)")
-        row.createCell(4).setCellValue("Exit Date (MM/DD/YYYY)")
+        row.createCell(3).setCellValue("Hire Date (MM/DD/yyyy)")
+        row.createCell(4).setCellValue("Exit Date (MM/DD/yyyy)")
         row.createCell(5).setCellValue("E-MAIL address")
         row.createCell(6).setCellValue("Boss Employee ID")
         row.createCell(7).setCellValue("Is Admin")

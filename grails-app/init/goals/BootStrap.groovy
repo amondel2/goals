@@ -1,11 +1,9 @@
 package goals
-
 import com.amondel2.techtalk.*
 
 class BootStrap {
 
     def init = { servletContext ->
-
         Company c = Company.findOrCreateByName("Reed Tech")
         c.save()
 
@@ -49,7 +47,6 @@ class BootStrap {
             ur11.save()
 
         }
-
     }
     def destroy = {
     }

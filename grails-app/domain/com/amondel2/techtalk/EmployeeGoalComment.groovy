@@ -31,6 +31,7 @@ class EmployeeGoalComment implements Serializable  {
         if(!id || id.equals(null)) {
             id  = utilService.idGenerator()
         }
+        commentStr = commentStr.replaceAll('&nbsp;',' ').trim()
     }
 
     def beforeInsert() {

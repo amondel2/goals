@@ -1,8 +1,7 @@
 package com.amondel2.techtalk
 
-@grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.ui.RegistrationCode
-import grails.transaction.Transactional
 
 @Transactional
 class RegistrationService {
@@ -11,5 +10,10 @@ class RegistrationService {
 
     RegistrationCode getForgotPassLink(Employees p) {
         springSecurityUiService.save(username: p.user.username, RegistrationCode,'sendForgotPasswordMail', transactionStatus)
+    }
+    
+    def removeLoginToken(Employees emp) {
+        emp.restToken = null
+		emp.save(flush:true)   
     }
 }

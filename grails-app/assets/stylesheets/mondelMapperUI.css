@@ -221,3 +221,44 @@
     color: #C62127;
 }
 /* Right panel end */
+
+.newCommentsBoxSize {
+    width: 53%;
+}
+
+@media screen and ( min-width: 330px) {
+    .newCommentsBoxSize {
+        width: 60%;
+    }
+}
+
+
+@media screen and ( min-width: 368px) {
+    .newCommentsBoxSize {
+        width: 64%;
+    }
+}
+
+@media screen and ( min-width: 385px) {
+    .newCommentsBoxSize {
+        width: 66%;
+    }
+}
+
+@media screen and ( min-width: 530px) {
+    .newCommentsBoxSize {
+        width: 75%;
+    }
+}
+
+@media screen and ( min-width: 1000px) {
+    .newCommentsBoxSize {
+        width: 85%;
+    }
+}
+
+@media screen  and ( min-width: 1200px) {
+    .newCommentsBoxSize {
+        width: 89%;
+    }
+}

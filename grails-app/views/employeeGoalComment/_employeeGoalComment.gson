@@ -1,5 +1,8 @@
 import com.amondel2.techtalk.EmployeeGoalComment
 
+import java.text.SimpleDateFormat
+
+SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a")
 model {
     EmployeeGoalComment employeeGoalComment
 }
@@ -7,6 +10,7 @@ model {
 json g.render(employeeGoalComment,[expand:['modifiedUser'], excludes:['createdDate','modifiedUser']]) {
     modifiedUser {
         username employeeGoalComment.modifiedUser.username
+        id employeeGoalComment.modifiedUserId
     }
-    createdDate employeeGoalComment.createdDate?.format('MM-DD-YYYY')
+    createdDate sdf.format(employeeGoalComment.createdDate)
 }

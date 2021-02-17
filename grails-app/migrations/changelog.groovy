@@ -570,4 +570,18 @@ databaseChangeLog = {
         addForeignKeyConstraint(baseColumnNames: "modified_user_id", baseTableName: "employee_goal_comment", constraintName: "FKgs1bnqhy41wgeqfxhdpmyp6m9", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "user")
     }
 
+    changeSet(author: "aaron (generated)", id: "1550022766413-1") {
+        addColumn(tableName: "employees") {
+            column(name: "show_hidden", type: "bit") {
+                constraints(nullable: "false")
+            }
+        }
+    }
+
+    changeSet(author: "aaron (generated)", id: "1550975129359-1") {
+        addColumn(tableName: "kpotype") {
+            column(name: "active_start_date", type: "datetime")
+        }
+    }
+
 }

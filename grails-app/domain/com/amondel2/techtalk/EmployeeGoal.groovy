@@ -36,6 +36,7 @@ class EmployeeGoal implements Serializable  {
             createdDate = new Date()
             modifiedDate = new Date()
         }
+        description = description.replaceAll('&nbsp;',' ').trim()
     }
 
     def beforeInsert() {

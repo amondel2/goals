@@ -3,10 +3,7 @@ package com.amondel2.techtalk
 import groovy.transform.EqualsAndHashCode
 import grails.rest.*
 
-
-
 @EqualsAndHashCode(includes=['id'])
-@Resource(uri='/employees', formats=['json', 'xml'])
 class Employees implements Serializable  {
 
     def utilService = Utils.getInstance()
@@ -60,6 +57,7 @@ class Employees implements Serializable  {
     Date hireDate
     Date endDate
     String email
+    Boolean showHidden = true
     String id
     String restToken = ''
     Boolean manager = false

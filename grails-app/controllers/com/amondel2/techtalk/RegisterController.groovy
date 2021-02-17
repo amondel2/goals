@@ -1,7 +1,6 @@
 package com.amondel2.techtalk
 
-import grails.plugin.springsecurity.authentication.dao.NullSaltSource
-
+import grails.gorm.transactions.Transactional
 
 //import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.ui.RegisterCommand
@@ -26,8 +25,7 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
 		}
 
 		def user = uiRegistrationCodeStrategy.createUser(registerCommand)
-		String salt = saltSource instanceof NullSaltSource ? null : registerCommand.username
-		RegistrationCode registrationCode = uiRegistrationCodeStrategy.register(user, registerCommand.password, salt)
+		RegistrationCode registrationCode = uiRegistrationCodeStrategy.register(user, registerCommand.password)
 
 		if (registrationCode == null || registrationCode.hasErrors()) {
 			// null means problem creating the user
@@ -111,22 +109,21 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
 		redirect uri: "/profile/create" //+ "?autologout=true"
 	}
 	
-	
+	@Transactional
 	def checkChallenge() {
 		Employees emp
 		def qa
 		withForm {
 			try{
-			def eid = params.eid
+				def eid = params.eid
 				emp = Employees.get(eid)
-			 qa = [emp.restToken,emp.employeeId]
+				qa = [emp.restToken,emp.employeeId]
 			} catch (Exception e) {
 				flash.message = "Profile Not Completed..Please contanct Site Admin for help"
 				redirect(controller: "login", action: "auth")
 			}
 			if(params.question1.trim().size() > 4 && params.question1.trim().toLowerCase() == qa[0]?.trim()?.toLowerCase() && params.question2.trim().toLowerCase() == qa[1]?.trim()?.toLowerCase() ) {
-				emp.restToken = null
-				emp.save(flush:true)
+				registrationService.removeLoginToken(emp)
 				RegistrationCode registrationCode = registrationService.getForgotPassLink(emp)
 				String url = generateLink('resetPassword', [t: registrationCode.token])
 				redirect(url: url)

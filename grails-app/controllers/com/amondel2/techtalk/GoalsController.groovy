@@ -3,6 +3,7 @@ package com.amondel2.techtalk
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 
 @Secured(['ROLE_USER'])
 class GoalsController {
@@ -10,6 +11,9 @@ class GoalsController {
     SpringSecurityService springSecurityService
     def employeeService
     def goalService
+    def reportsService
+    def kpoService
+
     def index() {
         Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))
         if (!e) {
@@ -17,7 +21,6 @@ class GoalsController {
             redirect(controller: "projectManager")
             return;
         }
-
         int year
         try {
             year = params?.myDate_year.toInteger()
@@ -37,15 +40,29 @@ class GoalsController {
             redirect(controller: "projectManager")
             return;
         }
-        def date = new GregorianCalendar(year, 0, 1)
-        def endDate = new GregorianCalendar(year, 12, 31, 23, 59, 59)
+        def date = new GregorianCalendar(year, 0, 1,0,0,0)
+        def endDate = new GregorianCalendar(year, 11, 31, 23, 59, 59)
 
-        def gts = KPOType.withCriteria {
-            eq('isActive', true)
-            between('endDate', date.getTime(), endDate.getTime())
+        render(view: "index", model: [uid:springSecurityService.getCurrentUserId(), emp: e, date: date, companyName: Company.first().name, goalTypes:kpoService.getKPOList(date,endDate) , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
+    }
+
+    def generateKPOReport() {
+        Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))
+        def year = params.year?.toInteger()
+        WordprocessingMLPackage document = reportsService.generateKPOUserReport(e,year)
+        response.setContentType("APPLICATION/OCTET-STREAM")
+        response.setHeader("Content-Disposition", "Attachment;Filename=${year}_${e.firstName}_KPOReport.docx")
+        def outputStream = response.getOutputStream()
+        document.save(outputStream)
+        outputStream.flush()
+        outputStream.close()
+    }
+
+    def setHidden() {
+        goalService.saveHiddenStatus(params)
+        withFormat {
+            '*' { render ( [msg:"success"]  as JSON) }
         }
-
-        render(view: "index", model: [emp: e, date: date, companyName: Company.first().name, goalTypes:gts , goalSet : goalService.getGoalSetForEmployee(e?.id, date.get(Calendar.YEAR))])
     }
 
     def chagneGoals()  {
@@ -57,11 +74,7 @@ class GoalsController {
     }
 
     def saveComments() {
-
         def worked = goalService.saveGoalsComments(params)
-
-
-
         withFormat {
             '*' { render worked as JSON}
         }

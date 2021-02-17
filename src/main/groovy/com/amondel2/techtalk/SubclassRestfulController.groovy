@@ -18,13 +18,10 @@ class SubclassRestfulController<T> extends RestfulController<T> {
                 employeeGoal {
                     eq('id',params.employeeGoal)
                 }
+                order 'createdDate', 'desc'
             }
         } else {
             super.listAllResources(params)
         }
-
     }
-
-
-
 }
