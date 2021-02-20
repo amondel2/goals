@@ -22,7 +22,7 @@
 </form>
 
 
-${ps.dirEmployeeDropDown([year:date.get(Calendar.YEAR),empId:uid])}
+${ps.dirEmployeeDropDown([year:date.get(Calendar.YEAR),empId:uid,selId:emp?.id])}
 
 
 <input type="hidden" value="${uid}" id="uid" />

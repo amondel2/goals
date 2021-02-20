@@ -41,7 +41,7 @@ class ExtendTagsTagLib {
 			def rtn = []
 			employeeService.getAllEmployeesChildernFlat(emp.id,rtn,attrs.year)
 			rtn.sort( { k1, k2 -> k1.firstName <=> k2.firstName } as Comparator )
-			str = "<div style='padding:3px 0px;'><label for='${attrs.uid}_emps'>Select Employee: </label> " + g.select([id:attrs.uid+"_emps",name:"dir_emps",class:"form-check-inline", style: "max-width:271px;",from:rtn,optionValue:{ it.firstName + " " + it.lastName}, optionKey: 'id']) + "<button class=\"switchEmps btn btn-secondary\" >Save and Change to Selected Employee</button></div>"
+			str = "<div style='padding:3px 0px;'><label for='${attrs.uid}_emps'>Select Employee: </label> " + g.select([ value:attrs.selId, id:attrs.uid+"_emps",name:"dir_emps",class:"form-check-inline", style: "max-width:271px;",from:rtn,optionValue:{ it.firstName + " " + it.lastName}, optionKey: 'id']) + "<button class=\"switchEmps btn btn-secondary\" >Save and Change to Selected Employee</button></div>"
 
 		}
 		out << body() << str
