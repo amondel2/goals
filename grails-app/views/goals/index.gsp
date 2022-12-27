@@ -11,7 +11,7 @@
     </script>
     <asset:stylesheet src="mondelMapperUI.css" />
     <asset:stylesheet src="themes/default/style.min.css" />
-    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
 %{--    <ckeditor:config removeButtons="Underline,JustifyCenter,Source,Flash,Image,Templates,Select,Iframe,HiddenField,TextField,Textarea,Checkbox,Button,ImageButton,Radio,Form" />--}%
 </head>
 <body>

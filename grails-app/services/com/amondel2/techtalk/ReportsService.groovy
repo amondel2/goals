@@ -65,7 +65,6 @@ class ReportsService {
         CreateWordBulletOrDecimalList cl = new CreateWordBulletOrDecimalList()
         WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage();
         MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
-
         mdp.addStyledParagraphOfText("Title", "$year KPO Report for ${e.toString()}");
         goalByKpo.each { k, v ->
             mdp.getContent().add(cl.addPageBreak())
@@ -134,7 +133,7 @@ class ReportsService {
              }
          }
          emp.each{ Employees e ->
-             def baseVal  = ['emp':e, 'empManager': e.bosses[0]?.boss?.toString()]
+             rs.add(['emp':e, 'empManager': e.bosses[0]?.boss?.toString()])
 
          }
         rs

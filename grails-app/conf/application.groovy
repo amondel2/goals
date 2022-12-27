@@ -6,8 +6,8 @@ dataSource {
     jmxExport = true
 //    driverClassName = "com.mysql.jdbc.Driver"
 //    dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
-    driverClassName = "com.mysql.cj.jdbc.Driver"
-    dialect = "org.hibernate.dialect.MySQL8Dialect"
+    driverClassName = "org.mariadb.jdbc.Driver"
+    dialect = "org.hibernate.dialect.MariaDB103Dialect"
 }
 
 environments {

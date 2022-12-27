@@ -22,6 +22,14 @@ class HomeController {
 		render(view:"index",model:[param:params,messages:[],has_directs:hasDirect])
 	}
 
+	def getText() {
+		def rtn = [message: employeeService.getTextRes()]
+		withFormat {
+			'*' {  render(rtn as JSON) }
+		}
+
+	}
+
 	def generateEmpReport() {
 		def months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec']
         def currentTime = new GregorianCalendar().getInstance()
