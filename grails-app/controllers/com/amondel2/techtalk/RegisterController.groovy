@@ -1,18 +1,20 @@
 package com.amondel2.techtalk
 
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.SpringSecurityService
 
 //import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.ui.RegisterCommand
 import grails.plugin.springsecurity.ui.RegistrationCode
+import grails.plugin.springsecurity.ui.SpringSecurityUiService
 import org.grails.web.servlet.mvc.SynchronizerTokensHolder
 import org.hibernate.NonUniqueResultException
 //import grails.validation.Validateable
 class RegisterController extends grails.plugin.springsecurity.ui.RegisterController {
 
-	def springSecurityService
-    def springSecurityUiService
-    def registrationService
+	SpringSecurityService springSecurityService
+	SpringSecurityUiService springSecurityUiService
+    RegistrationService registrationService
 	
 	def register(RegisterCommand registerCommand) {
 

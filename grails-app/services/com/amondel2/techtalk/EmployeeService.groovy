@@ -1,13 +1,16 @@
 package com.amondel2.techtalk
 
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.SpringSecurityService
+import groovy.util.logging.Slf4j
 
 import java.text.SimpleDateFormat
 
-
+@Transactional
+@Slf4j
 class EmployeeService extends BaseService {
 
-    def springSecurityService
+    SpringSecurityService springSecurityService
 
     SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
 
@@ -19,7 +22,7 @@ class EmployeeService extends BaseService {
         }
     }
 
-    @Transactional
+
     def saveResetToken(params,String token){
         def empid = params.emp
         Employees emp = Employees.get(empid)
@@ -321,6 +324,28 @@ class EmployeeService extends BaseService {
          rtn.find{ it.equals(emp) }.equals(null) == false
     }
 
+    def saveEmployee(Employees e) {
+        e.save(flush: true, failOnError: true)
+    }
+
+    def saveUser(User u) {
+        u.save(flush: true, failOnError: true)
+    }
+
+    def saveEmployeeBoss(EmployeeBoss eb) {
+        eb.save(flush: true, failOnError: true)
+    }
+
+    def saveUserRole(UserRole ur) {
+        ur.save(flush: true, failOnError: true)
+    }
+
+    def deleteEmployeeBosses(Employees emp) {
+        EmployeeBoss.where {
+            employee == emp
+        }.deleteAll()
+    }
+
     def peopleUnder(rtn,me,cal,gtTime) {
         EmployeeBoss.findAllByBoss(me)?.each { EmployeeBoss eb ->
             if (!eb.employee.endDate || eb.employee.endDate > cal.getTime()) {
@@ -337,4 +362,6 @@ class EmployeeService extends BaseService {
             }
         }
     }
+
+
 }

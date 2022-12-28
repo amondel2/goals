@@ -2,11 +2,12 @@ package com.amondel2.techtalk
 
 import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.ui.RegistrationCode
+import grails.plugin.springsecurity.ui.SpringSecurityUiService
 
 @Transactional
 class RegistrationService {
 
-    def springSecurityUiService
+    SpringSecurityUiService springSecurityUiService
 
     RegistrationCode getForgotPassLink(Employees p) {
         springSecurityUiService.save(username: p.user.username, RegistrationCode,'sendForgotPasswordMail', transactionStatus)

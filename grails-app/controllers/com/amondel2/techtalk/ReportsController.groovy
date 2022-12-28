@@ -9,7 +9,7 @@ import pl.touk.excel.export.WebXlsxExporter
 @Secured(['ROLE_REPORTER','ROLE_ADMIN'])
 class ReportsController {
 
-    def reportsService
+    ReportsService reportsService
     SpringSecurityService springSecurityService
 
     def index()

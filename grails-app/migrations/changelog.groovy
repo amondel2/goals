@@ -439,7 +439,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-23") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"employees", columnNames:"company_id, employee_id", constraintName: "UK1a98cab54bdaff149e70fa37fba4")
+                indexExists(tableName:"employees", indexName: "UK1a98cab54bdaff149e70fa37fba4")
             }
         }
         addUniqueConstraint(columnNames: "company_id, employee_id", constraintName: "UK1a98cab54bdaff149e70fa37fba4", tableName: "employees")
@@ -448,7 +448,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-24") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"employee_boss", constraintName: "UK1ef6c469bcf7b4ce5fa4c0f36556")
+                indexExists(tableName:"employee_boss", indexName: "UK1ef6c469bcf7b4ce5fa4c0f36556")
             }
         }
         addUniqueConstraint(columnNames: "boss_id, employee_id", constraintName: "UK1ef6c469bcf7b4ce5fa4c0f36556", tableName: "employee_boss")
@@ -457,7 +457,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-25") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"employee_boss", constraintName: "UK3137904eba91100d41b48c07dd17")
+                indexExists(tableName:"employee_boss", indexName: "UK3137904eba91100d41b48c07dd17")
             }
         }
         addUniqueConstraint(columnNames: "employee_id, boss_id, default_boss", constraintName: "UK3137904eba91100d41b48c07dd17", tableName: "employee_boss")
@@ -466,7 +466,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-26") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"employee_goal_type", constraintName: "UK4c3d1bf903bf988378d11d76ed57")
+                indexExists(tableName:"employee_goal_type", indexName: "UK4c3d1bf903bf988378d11d76ed57")
             }
         }
         addUniqueConstraint(columnNames: "employee_goal_id, type_id", constraintName: "UK4c3d1bf903bf988378d11d76ed57", tableName: "employee_goal_type")
@@ -475,7 +475,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-27") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"emp_location", constraintName: "UK985c693291f854af421adbd1f83b")
+                indexExists(tableName:"emp_location", indexName: "UK985c693291f854af421adbd1f83b")
             }
         }
         addUniqueConstraint(columnNames: "location, company_id, geo", constraintName: "UK985c693291f854af421adbd1f83b", tableName: "emp_location")
@@ -484,16 +484,16 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-28") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"role", constraintName: "UK_irsamgnera6angm0prq1kemt2")
+                indexExists(tableName:"role", indexName: "UK_irsamgnera6angm0prq1kemt2")
             }
         }
-        addUniqueConstraint(columnNames: "authority", constraintName: "UK_irsamgnera6angm0prq1kemt2", tableName: "role")
+        addUniqueConstraint(columnNames: "authority", indexName: "UK_irsamgnera6angm0prq1kemt2", tableName: "role")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-29") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"company", constraintName: "UK_niu8sfil2gxywcru9ah3r4ec5")
+                indexExists(tableName:"company", indexName: "UK_niu8sfil2gxywcru9ah3r4ec5")
             }
         }
         addUniqueConstraint(columnNames: "name", constraintName: "UK_niu8sfil2gxywcru9ah3r4ec5", tableName: "company")
@@ -502,7 +502,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-30") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"goal_type", constraintName: "UK_pjhi5494kakw0o4beghsbfqs2")
+                indexExists(tableName:"goal_type", indexName: "UK_pjhi5494kakw0o4beghsbfqs2")
             }
         }
         addUniqueConstraint(columnNames: "title", constraintName: "UK_pjhi5494kakw0o4beghsbfqs2", tableName: "goal_type")
@@ -511,7 +511,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-31") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"user", constraintName: "UK_sb8bbouer5wak8vyiiy4pf2bx")
+                indexExists(tableName:"user", indexName: "UK_sb8bbouer5wak8vyiiy4pf2bx")
             }
         }
         addUniqueConstraint(columnNames: "username", constraintName: "UK_sb8bbouer5wak8vyiiy4pf2bx", tableName: "user")
@@ -520,7 +520,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549077868479-32") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName:"employee_goal", constraintName: "UKc28809272a51e237db4a6222e99f")
+                indexExists(tableName:"employee_goal", indexName: "UKc28809272a51e237db4a6222e99f")
             }
         }
         addUniqueConstraint(columnNames: "employee_id, title", constraintName: "UKc28809272a51e237db4a6222e99f", tableName: "employee_goal")
@@ -572,6 +572,7 @@ databaseChangeLog = {
 
     changeSet(author: "aaron (generated)", id: "1549077868479-37") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            columnExists(tableName: "employees", columnName: "location_id")
             not {
                 indexExists(tableName:"employees", indexName: "FKetyjmkcus5t0ktpyt7xuhkv25")
             }
@@ -620,7 +621,7 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FK3dtsl9h3lnbeeqds8rm23cwja")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "company_id", baseTableName: "employees", constraintName: "FK3dtsl9h3lnbeeqds8rm23cwja", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "company")
+        addForeignKeyConstraint(baseColumnNames: "company_id", baseTableName: "employees", constraintName: "FK3dtsl9h3lnbeeqds8rm23cwja", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "company")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-42") {
@@ -629,34 +630,15 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FK41el11lou0d2jb9hwwbyv7l64")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "employee_id", baseTableName: "employee_boss", constraintName: "FK41el11lou0d2jb9hwwbyv7l64", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employees")
+        addForeignKeyConstraint(baseColumnNames: "employee_id", baseTableName: "employee_boss", constraintName: "FK41el11lou0d2jb9hwwbyv7l64", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employees")
     }
-
-    changeSet(author: "aaron (generated)", id: "1549077868479-43") {
-        preConditions(onFail: "MARK_RAN", onError: "WARN") {
-            not {
-                foreignKeyConstraintExists(foreignKeyName: "FK5a3m3p9rcef22l4yskqsl4afr")
-            }
-        }
-        addForeignKeyConstraint(baseColumnNames: "employee_goal_type_comments_id", baseTableName: "employee_goal_type_employee_goal_comment", constraintName: "FK5a3m3p9rcef22l4yskqsl4afr", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employee_goal_type")
-    }
-
     changeSet(author: "aaron (generated)", id: "1549077868479-44") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
                 foreignKeyConstraintExists(foreignKeyName: "FK859n2jvi8ivhui0rl0esws6o")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "user_role", constraintName: "FK859n2jvi8ivhui0rl0esws6o", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user")
-    }
-
-    changeSet(author: "aaron (generated)", id: "1549077868479-45") {
-        preConditions(onFail: "MARK_RAN", onError: "WARN") {
-            not {
-                foreignKeyConstraintExists(foreignKeyName: "FK8qo1kejmdd2v2m2megs2t0f2f")
-            }
-        }
-        addForeignKeyConstraint(baseColumnNames: "employee_goal_comment_id", baseTableName: "employee_goal_type_employee_goal_comment", constraintName: "FK8qo1kejmdd2v2m2megs2t0f2f", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employee_goal_comment")
+        addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "user_role", constraintName: "FK859n2jvi8ivhui0rl0esws6o", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-46") {
@@ -665,7 +647,7 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FKa68196081fvovjhkek5m97n3y")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "role_id", baseTableName: "user_role", constraintName: "FKa68196081fvovjhkek5m97n3y", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "role")
+        addForeignKeyConstraint(baseColumnNames: "role_id", baseTableName: "user_role", constraintName: "FKa68196081fvovjhkek5m97n3y", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "role")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-47") {
@@ -674,25 +656,17 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FKacbejli1fsa5atad1m01hpw95")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "boss_id", baseTableName: "employee_boss", constraintName: "FKacbejli1fsa5atad1m01hpw95", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employees")
-    }
-
-    changeSet(author: "aaron (generated)", id: "1549077868479-48") {
-        preConditions(onFail: "MARK_RAN", onError: "WARN") {
-            not {
-                foreignKeyConstraintExists(foreignKeyName: "FKb3yrxtshdoq3bhspox4emk9w0")
-            }
-        }
-        addForeignKeyConstraint(baseColumnNames: "type_id", baseTableName: "employee_goal_type", constraintName: "FKb3yrxtshdoq3bhspox4emk9w0", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "goal_type")
+        addForeignKeyConstraint(baseColumnNames: "boss_id", baseTableName: "employee_boss", constraintName: "FKacbejli1fsa5atad1m01hpw95", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employees")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-49") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            columnExists(tableName: "employees", columnName: "location_id")
             not {
                 foreignKeyConstraintExists(foreignKeyName: "FKetyjmkcus5t0ktpyt7xuhkv25")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "location_id", baseTableName: "employees", constraintName: "FKetyjmkcus5t0ktpyt7xuhkv25", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "emp_location")
+        addForeignKeyConstraint(baseColumnNames: "location_id", baseTableName: "employees", constraintName: "FKetyjmkcus5t0ktpyt7xuhkv25", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "emp_location")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-50") {
@@ -701,7 +675,7 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FKgl7ubhxtq9mnlwnmrn93baet8")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "employee_goal_id", baseTableName: "employee_goal_comment", constraintName: "FKgl7ubhxtq9mnlwnmrn93baet8", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employee_goal")
+        addForeignKeyConstraint(baseColumnNames: "employee_goal_id", baseTableName: "employee_goal_comment", constraintName: "FKgl7ubhxtq9mnlwnmrn93baet8", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employee_goal")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-51") {
@@ -710,7 +684,7 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FKgph7ais5uxsg9qyv486wu989i")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "employees", constraintName: "FKgph7ais5uxsg9qyv486wu989i", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user")
+        addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "employees", constraintName: "FKgph7ais5uxsg9qyv486wu989i", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-52") {
@@ -719,7 +693,7 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FKocffbrch7ag595us3h0vgh1v8")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "employee_goal_id", baseTableName: "employee_goal_type", constraintName: "FKocffbrch7ag595us3h0vgh1v8", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employee_goal")
+        addForeignKeyConstraint(baseColumnNames: "employee_goal_id", baseTableName: "employee_goal_type", constraintName: "FKocffbrch7ag595us3h0vgh1v8", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employee_goal")
     }
 
     changeSet(author: "aaron (generated)", id: "1549077868479-53") {
@@ -728,16 +702,7 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FKp9oxvu25dbop899yrsxdfckid")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "employee_id", baseTableName: "employee_goal", constraintName: "FKp9oxvu25dbop899yrsxdfckid", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employees")
-    }
-
-    changeSet(author: "aaron (generated)", id: "1549077868479-54") {
-        preConditions(onFail: "MARK_RAN", onError: "WARN") {
-            not {
-                foreignKeyConstraintExists(foreignKeyName: "FKsdu8o8m1mhusn7gtdgatdfdjh")
-            }
-        }
-        addForeignKeyConstraint(baseColumnNames: "company_id", baseTableName: "emp_location", constraintName: "FKsdu8o8m1mhusn7gtdgatdfdjh", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "company")
+        addForeignKeyConstraint(baseColumnNames: "employee_id", baseTableName: "employee_goal", constraintName: "FKp9oxvu25dbop899yrsxdfckid", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "employees")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-1") {
@@ -781,7 +746,7 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549107324208-3") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                uniqueConstraintExists(tableName: "kpotype", constraintName: "UC_KPOTYPETITLE_COL")
+                indexExists(tableName: "kpotype", indexName: "UC_KPOTYPETITLE_COL")
             }
         }
         addUniqueConstraint(columnNames: "title", constraintName: "UC_KPOTYPETITLE_COL", tableName: "kpotype")
@@ -793,50 +758,83 @@ databaseChangeLog = {
                 foreignKeyConstraintExists(foreignKeyName: "FK3rnd22pmcvdk8mnmpv2mapfky")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "type_id", baseTableName: "employee_goal_type", constraintName: "FK3rnd22pmcvdk8mnmpv2mapfky", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "kpotype")
+        addForeignKeyConstraint(baseColumnNames: "type_id", baseTableName: "employee_goal_type", constraintName: "FK3rnd22pmcvdk8mnmpv2mapfky", referencedColumnNames: "id", referencedTableName: "kpotype")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-5") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            foreignKeyConstraintExists(foreignKeyName: "FK5a3m3p9rcef22l4yskqsl4afr")
+        }
         dropForeignKeyConstraint(baseTableName: "employee_goal_type_employee_goal_comment", constraintName: "FK5a3m3p9rcef22l4yskqsl4afr")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-6") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            foreignKeyConstraintExists(foreignKeyName: "FK8qo1kejmdd2v2m2megs2t0f2f")
+        }
         dropForeignKeyConstraint(baseTableName: "employee_goal_type_employee_goal_comment", constraintName: "FK8qo1kejmdd2v2m2megs2t0f2f")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-7") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            foreignKeyConstraintExists(foreignKeyName: "FKb3yrxtshdoq3bhspox4emk9w0")
+        }
         dropForeignKeyConstraint(baseTableName: "employee_goal_type", constraintName: "FKb3yrxtshdoq3bhspox4emk9w0")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-8") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            foreignKeyConstraintExists(foreignKeyName: "FKetyjmkcus5t0ktpyt7xuhkv25")
+        }
         dropForeignKeyConstraint(baseTableName: "employees", constraintName: "FKetyjmkcus5t0ktpyt7xuhkv25")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-9") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            foreignKeyConstraintExists(foreignKeyName: "FKsdu8o8m1mhusn7gtdgatdfdjh")
+        }
         dropForeignKeyConstraint(baseTableName: "emp_location", constraintName: "FKsdu8o8m1mhusn7gtdgatdfdjh")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-10") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            indexExists(indexName: "UK985c693291f854af421adbd1f83b", tableName: "emp_location")
+        }
         dropUniqueConstraint(constraintName: "UK985c693291f854af421adbd1f83b", tableName: "emp_location")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-11") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            indexExists(indexName: "UK_pjhi5494kakw0o4beghsbfqs2", tableName: "goal_type")
+        }
         dropUniqueConstraint(constraintName: "UK_pjhi5494kakw0o4beghsbfqs2", tableName: "goal_type")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-12") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            tableExists(tableName: "emp_location")
+        }
         dropTable(tableName: "emp_location")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-13") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            tableExists(tableName: "employee_goal_type_employee_goal_comment")
+        }
         dropTable(tableName: "employee_goal_type_employee_goal_comment")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-14") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            tableExists(tableName: "goal_type")
+        }
         dropTable(tableName: "goal_type")
     }
 
     changeSet(author: "aaron (generated)", id: "1549107324208-15") {
+        preConditions(onFail: "MARK_RAN", onError: "WARN") {
+            columnExists(tableName: "employees", columnName: "location_id")
+        }
         dropColumn(columnName: "location_id", tableName: "employees")
     }
 
@@ -869,10 +867,10 @@ databaseChangeLog = {
     changeSet(author: "aaron (generated)", id: "1549936586973-3") {
         preConditions(onFail: "MARK_RAN", onError: "WARN") {
             not {
-                foreignKeyConstraintExists(constraintName: "FKgs1bnqhy41wgeqfxhdpmyp6m9")
+                foreignKeyConstraintExists(foreignKeyName: "FKgs1bnqhy41wgeqfxhdpmyp6m9")
             }
         }
-        addForeignKeyConstraint(baseColumnNames: "modified_user_id", baseTableName: "employee_goal_comment", constraintName: "FKgs1bnqhy41wgeqfxhdpmyp6m9", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "user")
+        addForeignKeyConstraint(baseColumnNames: "modified_user_id", baseTableName: "employee_goal_comment", constraintName: "FKgs1bnqhy41wgeqfxhdpmyp6m9", referencedColumnNames: "id", referencedTableName: "user")
     }
 
     changeSet(author: "aaron (generated)", id: "1550022766413-1") {

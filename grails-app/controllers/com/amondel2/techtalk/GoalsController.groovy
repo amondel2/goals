@@ -9,10 +9,10 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 class GoalsController {
 
     SpringSecurityService springSecurityService
-    def employeeService
-    def goalService
-    def reportsService
-    def kpoService
+    EmployeeService employeeService
+    GoalService goalService
+    ReportsService reportsService
+    KpoService kpoService
 
     def index() {
         Employees e = params.mid ? Employees.findById(params.mid) : (params.id ? Employees.findById(params.id) : Employees.findByUser(springSecurityService.getCurrentUser()))

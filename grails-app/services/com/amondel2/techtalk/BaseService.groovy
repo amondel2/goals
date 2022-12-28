@@ -4,9 +4,11 @@ import asset.pipeline.grails.AssetResourceLocator
 import com.amondel2.techtalk.Company
 
 import grails.gorm.transactions.Transactional
+import groovy.util.logging.Slf4j
 import org.grails.core.io.ResourceLocator
 
 @Transactional
+@Slf4j
 class BaseService {
 
     def generateGuid() {
