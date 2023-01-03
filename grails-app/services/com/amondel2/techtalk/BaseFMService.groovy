@@ -1,15 +1,17 @@
 package com.amondel2.techtalk
 
+import asset.pipeline.grails.AssetResourceLocator
+import grails.core.GrailsApplication
 import org.springframework.context.i18n.LocaleContextHolder as LCH
 import grails.gorm.transactions.Transactional
 
 @Transactional
 class BaseFMService {
 
-    def grailsApplication
+    GrailsApplication grailsApplication
     def messageSource
 
-   
+
 
     def getErrorList(cmd) throws Exception {
         HashMap<String, LinkedList<String>> errorMap = new HashMap<>()

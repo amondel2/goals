@@ -9,9 +9,10 @@ import pl.touk.excel.export.WebXlsxExporter
 class HomeController {
 
 	SpringSecurityService springSecurityService
-	def employeeService
-    def reportsService
-        def index() {
+	EmployeeService employeeService
+    ReportsService reportsService
+
+    def index() {
 			def hasDirect;
 			try {
 				Employees me = Employees.findByUser(springSecurityService.getCurrentUser())
@@ -20,6 +21,14 @@ class HomeController {
 				hasDirect = false;
 			}
 		render(view:"index",model:[param:params,messages:[],has_directs:hasDirect])
+	}
+
+	def getText() {
+		def rtn = [message: employeeService.getTextRes()]
+		withFormat {
+			'*' {  render(rtn as JSON) }
+		}
+
 	}
 
 	def generateEmpReport() {

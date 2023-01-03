@@ -5,8 +5,8 @@ import grails.plugin.springsecurity.SpringSecurityService
 
 abstract class MondelMapperUIController {
 
-    def baseFMService
-    def employeeService
+    BaseService baseFMService
+    EmployeeService employeeService
 
 
     abstract String getCompanyId()

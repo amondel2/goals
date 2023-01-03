@@ -1,8 +1,10 @@
 package com.amondel2.techtalk
 
 import grails.gorm.transactions.Transactional
+import groovy.util.logging.Slf4j
 
 @Transactional
+@Slf4j
 class KpoService {
 
     def getKPOList(Date sDate,Date endDate) {

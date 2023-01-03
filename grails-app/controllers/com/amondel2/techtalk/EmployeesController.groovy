@@ -2,6 +2,7 @@ package com.amondel2.techtalk
 
 import grails.converters.JSON
 import grails.core.GrailsApplication
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import org.apache.poi.ss.usermodel.Row
@@ -16,9 +17,9 @@ import static org.springframework.http.HttpStatus.OK
 @Secured(["ROLE_USER", "ROLE_ADMIN"])
 class EmployeesController {
 
-    def myExcelImportService
-    def springSecurityService
-    def baseService
+    MyExcelImportService myExcelImportService
+    SpringSecurityService springSecurityService
+    BaseService baseService
     static responseFormats = ['html', 'json', 'xml']
     static scaffold = Employees
     EmployeeService employeeService
@@ -82,9 +83,9 @@ class EmployeesController {
             p.hireDate = new Date()
             p.employeeId p.id
             if (!p.validate()) {
-                thorw new Exception(p.errors.join(" "))
+                throw new Exception(p.errors.join(" "))
             }
-            p.save(flush: true, failOnError: true)
+            employeeService.saveEmployee(p)
             rtn = [true]
         } catch (Exception e) {
             rtn = [false, e.message]
@@ -106,8 +107,7 @@ class EmployeesController {
             respond employeesInstance.errors, view: 'create', model: [user: springSecurityService.currentUser]
             return
         }
-
-        employeesInstance.save flush: true
+        employeeService.saveEmployee(employeesInstance)
 
         request.withFormat {
             form multipartForm {
@@ -151,11 +151,7 @@ class EmployeesController {
             respond employeesInstance.errors, view: 'edit', model: [user: springSecurityService.currentUser, hl: User.list()]
             return
         }
-
-
-
-        employeesInstance.save flush: true
-
+        employeeService.saveEmployee(employeesInstance)
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Profile.label', default: 'Profile'), employeesInstance.id])
@@ -297,26 +293,24 @@ class EmployeesController {
                     }
                     u.username = username + (count ?  count.toString() : '')
                     u.password = baseService.generateGuid()
-                    u.save(flush: true,failOnError: true)
+                    employeeService.saveUser(u)
                     emp.user = u
-                    emp.user.save(flush:true,failOnError: true)
+                    employeeService.saveUser(emp.user)
                 } else if (employee.username) {
                     def u = User.findByUsername(employee.username)
                     if(!u || u.id == emp.userId) {
                         emp.user.username = employee.username
                     }
-                    emp.user.save(flush: true,failOnError: true)
+                    employeeService.saveUser(emp.user)
                 }
-                emp.save(flush: true)
+                employeeService.saveEmployee(emp)
                 managerList[employee.bossEmployeeID] = (managerList[employee.bossEmployeeID] ?: []) + [employee.employeeID]
-                UserRole.findOrCreateByUserAndRole(emp.user, my_role).save(flush: true)
+                employeeService.saveUserRole(UserRole.findOrCreateByUserAndRole(emp.user, my_role))
                 if (employee.hasAdmin == 'yes') {
-                    UserRole.findOrCreateByUserAndRole(emp.user, admin_role).save(flush: true)
+                    employeeService.saveUserRole( UserRole.findOrCreateByUserAndRole(emp.user, admin_role))
                 }
                 if(!employee.bossEmployeeID || employee.bossEmployeeID.trim().size() == 0) {
-                    EmployeeBoss.where {
-                        employee == emp
-                    }.deleteAll()
+                    employeeService.deleteEmployeeBosses(emp)
                 }
             }
         }
@@ -335,15 +329,13 @@ class EmployeesController {
                         eb.defaultBoss = true
                     }
                     eb.boss = manager
-                    eb.save(flush: true, failOnError: true)
+                    employeeService.saveEmployeeBoss(eb)
                 }
             } else if (managerarry.key == "null" && managerarry.value?.size() > 0) {
                 managerarry.value.each { empId ->
                     Employees emp = Employees.findByEmployeeId(empId)
                     if (emp) {
-                        EmployeeBoss.where {
-                            employee == emp
-                        }.deleteAll()
+                        employeeService.deleteEmployeeBosses(emp)
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.amondel2.techtalk
 
+import asset.pipeline.grails.AssetResourceLocator
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
@@ -8,9 +9,9 @@ import grails.plugin.springsecurity.annotation.Secured
 class ProjectManagerController extends MondelMapperUIController {
 
     SpringSecurityService springSecurityService
-    def assetResourceLocator
-    def projectManagerService
-    def goalService
+    AssetResourceLocator assetResourceLocator
+    ProjectManagerService projectManagerService
+    GoalService goalService
 
     def index() {
         Employees me = Employees.findByUser(springSecurityService.getCurrentUser())
@@ -64,7 +65,7 @@ class ProjectManagerController extends MondelMapperUIController {
             if (e) {
                 def darr = params.leaveDate?.split("/")
                 e.endDate = new GregorianCalendar(darr[2]?.toInteger(), darr[0]?.toInteger(), darr[1]?.toInteger()).getTime()
-                e.save(flush: true, failOnError: true)
+                employeeService.saveEmployee(e)
             }
         } catch(Exception e) {
             msg = "Fail"

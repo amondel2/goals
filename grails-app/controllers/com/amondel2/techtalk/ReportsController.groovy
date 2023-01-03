@@ -9,7 +9,7 @@ import pl.touk.excel.export.WebXlsxExporter
 @Secured(['ROLE_REPORTER','ROLE_ADMIN'])
 class ReportsController {
 
-    def reportsService
+    ReportsService reportsService
     SpringSecurityService springSecurityService
 
     def index()
@@ -32,14 +32,13 @@ class ReportsController {
     }
 
     def generateEmpReport() {
-        def months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec']
+//        def months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec']
         def year = params.year?.toInteger()
-        def headers = ['First Name','Last Name','CNUM','HIRE DATE','END DATE','e-mail','Manager','Portfolio','Project','Sub Project','Job','Job Function'] + months
-        def withProperties = ['emp.firstName','emp.lastName','emp.employeeId','emp.hireDate','emp.endDate','emp.email','empManager','pfname','prname','subname','jname','jfname'] + months
+        def headers = ['First Name','Last Name','CNUM','HIRE DATE','END DATE','e-mail','Manager'] // + months
+        def withProperties = ['emp.firstName','emp.lastName','emp.employeeId','emp.hireDate','emp.endDate','emp.email','empManager'] //+ months
         def products = reportsService.generateEmpReport(year)
 
         new WebXlsxExporter().with {
-            setResponseHeaders(response)
             setHeaders(response,"Employee " + params.year.toString() + ".xlsx")
             fillHeader(headers)
             add(products, withProperties)

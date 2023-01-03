@@ -2,6 +2,7 @@ package com.amondel2.techtalk
 
 import com.amondel2.techtalk.GoalStatus
 import com.amondel2.techtalk.Employees
+import grails.plugin.springsecurity.SpringSecurityService
 
 import java.text.SimpleDateFormat
 
@@ -9,8 +10,8 @@ class ExtendTagsTagLib {
 	static namespace="ps"
     static defaultEncodeAs = [taglib:'html']
 	static encodeAsForTags = [goalTypeDropDown: 'raw',goalStatusDropDown: 'raw',dirEmployeeDropDown: 'raw']
-	def springSecurityService
-	def employeeService
+	SpringSecurityService springSecurityService
+	EmployeeService employeeService
 	SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy")
 
 	def getUserFName = {attrs,body->

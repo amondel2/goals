@@ -4,6 +4,8 @@ import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.SpringSecurityService
 import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
+
 import java.util.Map
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
@@ -11,6 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder
 import java.text.SimpleDateFormat
 
 @Transactional
+@Slf4j
 class GoalService {
 
     GrailsApplication grailsApplication
