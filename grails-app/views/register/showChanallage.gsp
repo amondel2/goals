@@ -14,7 +14,7 @@
 		</g:if>
 		<g:form controller='register' action='checkChallenge' useToken="true">
 			<fieldset class="form">
-			<g:hiddenField name="eid" value="${emp.id}" />
+			<g:hiddenField name="eid" value="${emp?.id}" />
 			<div class="form-group required">
 				<label for="question1">What is your Reset Token?<span  class="required-indicator">*</span></label>
 				<g:textField name="question1" id="question1" class="form-control" required=""

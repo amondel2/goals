@@ -68,13 +68,14 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
 					redirect(controller: "login", action: "auth")
 				} else {
 					Employees emp = Employees.findByUser(user)
-					render(view:"showChanallage",model:[emp:emp])
-
+					if(!emp) {
+						flash.message = "Missing Employee..might be an admin user"
+						redirect(controller: "login", action: "auth")
+					} else {
+						render(view: "showChanallage", model: [emp: emp])
+					}
 				}
-
-
 			}
-
 		}.invalidToken {
 			flash.message = "Invalid Form Submission"
 			redirect(controller: "login", action: "auth")
