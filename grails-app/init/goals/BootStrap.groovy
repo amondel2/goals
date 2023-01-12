@@ -1,6 +1,8 @@
 package goals
 import com.amondel2.techtalk.*
+import grails.gorm.transactions.Transactional
 
+@Transactional
 class BootStrap {
 
     def init = { servletContext ->
