@@ -113,6 +113,8 @@ grails:
         databasemigration:
             updateOnStart: true
             updateOnStartFileName: changelog.groovy
+appparams:
+    defaultcompany: Zynx
 javamelody:
     # Enable JavaMelody auto-configuration (optional, default: true)
     enabled: true
