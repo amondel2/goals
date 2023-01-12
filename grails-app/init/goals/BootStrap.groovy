@@ -1,15 +1,22 @@
 package goals
 import com.amondel2.techtalk.*
+import grails.core.GrailsApplication
 import grails.gorm.transactions.Transactional
 
 @Transactional
 class BootStrap {
 
+
+    GrailsApplication grailsApplication
+
     def init = { servletContext ->
-        Company c = Company.findOrCreateByName("Reed Tech")
-        c.save()
+        update()
+    }
 
-
+    @Transactional
+    def update() {
+        Company c = Company.findOrCreateByName(grailsApplication.config.getProperty('appparams.defaultcompany'))
+        c.save(flush:true,failOnError:true)
         Role r = Role.findOrCreateByAuthority('ROLE_USER')
         r.save()
         Role r1 = Role.findOrCreateByAuthority('ROLE_ADMIN')
@@ -50,6 +57,7 @@ class BootStrap {
 
         }
     }
+
     def destroy = {
     }
 }
